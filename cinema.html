@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCinema - 智能影院选座系统</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", -apple-system, sans-serif;
+            background: #0a0a1a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== 顶栏 ===== */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #12122a, #1a1a3e);
+            border-bottom: 1px solid rgba(100, 140, 255, 0.15);
+        }
+
+        header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #64b5f6, #42a5f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-info {
+            font-size: 13px;
+            color: #aaa;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .user-info .username {
+            color: #64b5f6;
+            font-weight: 600;
+        }
+
+        .role-tag {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .role-tag.admin {
+            background: rgba(229, 57, 53, 0.2);
+            color: #ef5350;
+        }
+
+        .role-tag.member {
+            background: rgba(67, 160, 71, 0.2);
+            color: #66bb6a;
+        }
+
+        .logout-btn {
+            padding: 6px 16px;
+            border: 1px solid rgba(229, 57, 53, 0.4);
+            border-radius: 6px;
+            background: transparent;
+            color: #ef5350;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(229, 57, 53, 0.15);
+        }
+
+        .hall-selector {
+            display: flex;
+            gap: 8px;
+        }
+
+        .hall-btn {
+            padding: 8px 18px;
+            border: 1px solid rgba(100, 140, 255, 0.3);
+            border-radius: 6px;
+            background: transparent;
+            color: #aaa;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .hall-btn:hover {
+            border-color: rgba(100, 140, 255, 0.6);
+            color: #ddd;
+        }
+
+        .hall-btn.active {
+            background: rgba(66, 165, 245, 0.15);
+            border-color: #42a5f5;
+            color: #64b5f6;
+        }
+
+        /* ===== 主区域 ===== */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 10px 20px;
+            overflow: hidden;
+        }
+
+        #cinema-canvas {
+            display: block;
+            width: 100%;
+            max-width: 1100px;
+            height: auto;
+            cursor: pointer;
+        }
+
+        /* ===== 底栏 ===== */
+        footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 28px;
+            background: #12122a;
+            border-top: 1px solid rgba(100, 140, 255, 0.15);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .legend {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #bbb;
+        }
+
+        .legend-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+        }
+
+        .legend-dot.empty    { background: #43a047; }
+        .legend-dot.selected { background: #ffb300; }
+        .legend-dot.sold     { background: #e53935; }
+
+        .selected-info {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .selected-info span {
+            color: #ffb300;
+            font-weight: 600;
+        }
+
+        /* ===== 悬浮提示 ===== */
+        #tooltip {
+            position: fixed;
+            display: none;
+            background: rgba(20, 20, 45, 0.95);
+            border: 1px solid rgba(100, 140, 255, 0.3);
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 13px;
+            color: #ddd;
+            pointer-events: none;
+            z-index: 100;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>SmartCinema</h1>
+        <div class="header-right">
+            <div class="user-info" id="user-info"></div>
+            <div class="hall-selector">
+                <button class="hall-btn active" data-hall="small">小厅 (100座)</button>
+                <button class="hall-btn" data-hall="medium">中厅 (200座)</button>
+                <button class="hall-btn" data-hall="large">大厅 (300座)</button>
+            </div>
+            <button class="logout-btn" id="logout-btn" onclick="logout()">登出</button>
+        </div>
+    </header>
+
+    <main>
+        <canvas id="cinema-canvas"></canvas>
+    </main>
+
+    <footer>
+        <div class="legend">
+            <div class="legend-item"><div class="legend-dot empty"></div>空座</div>
+            <div class="legend-item"><div class="legend-dot selected"></div>选中未售</div>
+            <div class="legend-item"><div class="legend-dot sold"></div>已售</div>
+        </div>
+        <div class="selected-info">
+            已选 <span id="selected-count">0</span> 个座位
+        </div>
+    </footer>
+
+    <div id="tooltip"></div>
+
+    <script>
+        // ============================================================
+        //  数据定义
+        // ============================================================
+        const HALLS = {
+            small:  { name: '小厅', seatsPerRow: 10, rows: 10 },
+            medium: { name: '中厅', seatsPerRow: 20, rows: 10 },
+            large:  { name: '大厅', seatsPerRow: 30, rows: 10 }
+        };
+
+        // 座位状态
+        const EMPTY    = 0;  // 绿色
+        const SELECTED = 1;  // 黄色
+        const SOLD     = 2;  // 红色
+
+        const COLORS = {
+            0: { fill: '#43a047', stroke: '#2e7d32', text: '#ffffff' },
+            1: { fill: '#ffb300', stroke: '#ff8f00', text: '#333333' },
+            2: { fill: '#e53935', stroke: '#c62828', text: '#ffffff' }
+        };
+
+        let currentHall = 'small';
+        let seats = [];       // seats[row][col] = { row, col, state, x, y, angle }
+        let layout = null;    // 布局参数
+        let hoverSeat = null;
+
+        // ============================================================
+        //  登录状态与用户信息
+        // ============================================================
+        function getQueryParam(name) {
+            const params = new URLSearchParams(window.location.search);
+            return params.get(name);
+        }
+
+        function initUserInfo() {
+            const user = getQueryParam('user');
+            const role = getQueryParam('role') || 'member';
+            const el = document.getElementById('user-info');
+            if (user) {
+                const roleText = role === 'admin' ? '管理员' : '会员';
+                el.innerHTML = '<span class="username">' + user + '</span>' +
+                    '<span class="role-tag ' + role + '">' + roleText + '</span>';
+            } else {
+                el.innerHTML = '<span style="color:#666;">未登录</span>' +
+                    '<span class="role-tag member" style="cursor:pointer;" onclick="window.location.href=\'login.html\'">去登录</span>';
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('smartCinemaCurrentUser');
+            window.location.href = 'login.html';
+        }
+
+        // ============================================================
+        //  Canvas 初始化
+        // ============================================================
+        const canvas = document.getElementById('cinema-canvas');
+        const ctx = canvas.getContext('2d');
+        const tooltip = document.getElementById('tooltip');
+        let cssW = 0, cssH = 0;
+
+        function resizeCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            const containerW = Math.min(canvas.parentElement.clientWidth - 40, 1100);
+            cssW = containerW;
+            cssH = Math.round(containerW * 0.62);  // 16:10 比例
+            canvas.style.width  = cssW + 'px';
+            canvas.style.height = cssH + 'px';
+            canvas.width  = cssW * dpr;
+            canvas.height = cssH * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            calculateLayout();
+            draw();
+        }
+
+        // ============================================================
+        //  座位数据初始化
+        // ============================================================
+        function initSeats(hallKey) {
+            const config = HALLS[hallKey];
+            seats = [];
+            for (let r = 0; r < config.rows; r++) {
+                const row = [];
+                for (let c = 0; c < config.seatsPerRow; c++) {
+                    row.push({
+                        row: r + 1,
+                        col: c + 1,
+                        state: Math.random() < 0.18 ? SOLD : EMPTY
+                    });
+                }
+                seats.push(row);
+            }
+        }
+
+        // ============================================================
+        //  布局计算（弧形排列）
+        // ============================================================
+        function calculateLayout() {
+            const config = HALLS[currentHall];
+            const W = cssW;
+            const H = cssH;
+            const seatsPerRow = config.seatsPerRow;
+
+            // 银幕参数
+            const screenH = 14;
+
+            // 弧形圆心在画布顶部（银幕所在位置）
+            // 座位在圆心下方呈扇形展开：离银幕越远半径越大、座位越稀疏
+            const arcCenterX = W / 2;
+            const arcCenterY = 28;  // 银幕位置（画布顶部，即圆心）
+
+            // 半径：第1排最小（靠近银幕/圆心），第10排最大（远离银幕）
+            const bottomPadding = 30;
+            const maxRadius = (H - bottomPadding) - arcCenterY;  // 第10排半径
+            const minRadius = maxRadius * 0.4;                    // 第1排半径
+            const rowSpacing = (maxRadius - minRadius) / (config.rows - 1);
+
+            // 弧形跨度角度：座位越多角度越大
+            let arcSpan;
+            if (seatsPerRow <= 10)      arcSpan = 0.78;  // ~45°
+            else if (seatsPerRow <= 20) arcSpan = 1.05;  // ~60°
+            else                        arcSpan = 1.35;  // ~77°
+
+            // 确保最宽排（第10排，半径最大）不超出画布
+            const halfSpan = arcSpan / 2;
+            const maxReach = maxRadius * Math.sin(halfSpan);
+            const margin = 50;
+            if (maxReach > W / 2 - margin) {
+                arcSpan = 2 * Math.asin((W / 2 - margin) / maxRadius);
+            }
+
+            // 座位尺寸：取第1排（半径最小、最密集）的间距为基准
+            const frontArcLen = minRadius * arcSpan;
+            const seatSpacing = frontArcLen / seatsPerRow;
+            const seatSize = Math.max(10, Math.min(seatSpacing * 0.82, 24));
+
+            // 计算每个座位坐标（座位在圆心下方扇形展开）
+            for (let r = 0; r < config.rows; r++) {
+                const radius = minRadius + r * rowSpacing;  // 第1排小，逐排递增
+                for (let c = 0; c < seatsPerRow; c++) {
+                    const angle = -arcSpan / 2 +
+                        (seatsPerRow === 1 ? 0 : (c / (seatsPerRow - 1)) * arcSpan);
+                    const seat = seats[r][c];
+                    seat.x = arcCenterX + radius * Math.sin(angle);
+                    seat.y = arcCenterY + radius * Math.cos(angle);  // 向下展开
+                    seat.angle = angle;
+                    seat.radius = radius;
+                }
+            }
+
+            layout = { arcCenterX, arcCenterY, maxRadius, minRadius,
+                       rowSpacing, arcSpan, seatSize, halfSpan,
+                       screenH, config };
+        }
+
+        // ============================================================
+        //  绘制：银幕
+        // ============================================================
+        function drawScreen() {
+            const { arcCenterX, arcCenterY, minRadius, arcSpan, screenH } = layout;
+
+            // 银幕弧线：在第1排内侧（更靠近圆心），半径比第1排略小
+            ctx.save();
+            const r = Math.max(18, minRadius - 26);
+            // 角度方向：座位在圆心下方(π/2方向)，银幕也在下方但半径更小
+            const startAngle = Math.PI / 2 - arcSpan * 0.38;
+            const endAngle   = Math.PI / 2 + arcSpan * 0.38;
+
+            // 银幕发光底
+            ctx.shadowColor = 'rgba(100, 180, 255, 0.6)';
+            ctx.shadowBlur = 25;
+            ctx.strokeStyle = 'rgba(120, 190, 255, 0.9)';
+            ctx.lineWidth = screenH;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.arc(arcCenterX, arcCenterY, r, startAngle, endAngle);
+            ctx.stroke();
+
+            // 银幕文字（在银幕弧线上方，紧贴银幕）
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+            ctx.font = '600 13px "Microsoft YaHei", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('银幕 / SCREEN', arcCenterX, arcCenterY + r - screenH / 2 - 10);
+            ctx.restore();
+        }
+
+        // ============================================================
+        //  绘制：单个座位
+        // ============================================================
+        function drawSeat(seat) {
+            const size = layout.seatSize;
+            const color = COLORS[seat.state];
+            const isHover = hoverSeat === seat;
+
+            ctx.save();
+            ctx.translate(seat.x, seat.y);
+            ctx.rotate(seat.angle);  // 座位朝向银幕
+
+            // 悬浮高亮
+            if (isHover && seat.state !== SOLD) {
+                ctx.shadowColor = 'rgba(255, 255, 255, 0.5)';
+                ctx.shadowBlur = 12;
+            }
+
+            // 座位主体（圆角矩形）
+            const half = size / 2;
+            const r = size * 0.22;
+            ctx.fillStyle = color.fill;
+            ctx.strokeStyle = isHover ? '#ffffff' : color.stroke;
+            ctx.lineWidth = isHover ? 2 : 1;
+
+            ctx.beginPath();
+            ctx.moveTo(-half + r, -half);
+            ctx.lineTo(half - r, -half);
+            ctx.quadraticCurveTo(half, -half, half, -half + r);
+            ctx.lineTo(half, half - r);
+            ctx.quadraticCurveTo(half, half, half - r, half);
+            ctx.lineTo(-half + r, half);
+            ctx.quadraticCurveTo(-half, half, -half, half - r);
+            ctx.lineTo(-half, -half + r);
+            ctx.quadraticCurveTo(-half, -half, -half + r, -half);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.shadowBlur = 0;
+
+            // 座位号
+            if (size >= 12) {
+                ctx.fillStyle = color.text;
+                ctx.font = '600 ' + Math.max(8, Math.round(size * 0.4)) + 'px Arial, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.rotate(-seat.angle); // 文字保持水平
+                ctx.fillText(seat.col, 0, 0);
+            }
+
+            ctx.restore();
+        }
+
+        // ============================================================
+        //  绘制：排号
+        // ============================================================
+        function drawRowLabels() {
+            const { config, arcCenterX, arcCenterY, minRadius, rowSpacing, arcSpan, seatSize } = layout;
+            ctx.save();
+            ctx.fillStyle = 'rgba(160, 180, 220, 0.5)';
+            ctx.font = '11px Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            for (let r = 0; r < config.rows; r++) {
+                const radius = minRadius + r * rowSpacing;
+                const labelAngle = arcSpan / 2 + 0.06;
+                // 左侧排号
+                const lx = arcCenterX + radius * Math.sin(-labelAngle);
+                const ly = arcCenterY + radius * Math.cos(-labelAngle);
+                ctx.fillText(r + 1, lx, ly);
+                // 右侧排号
+                const rx = arcCenterX + radius * Math.sin(labelAngle);
+                const ry = arcCenterY + radius * Math.cos(labelAngle);
+                ctx.fillText(r + 1, rx, ry);
+            }
+            ctx.restore();
+        }
+
+        // ============================================================
+        //  绘制：整体
+        // ============================================================
+        function draw() {
+            // 清屏
+            ctx.fillStyle = '#0a0a1a';
+            ctx.fillRect(0, 0, cssW, cssH);
+
+            drawScreen();
+            drawRowLabels();
+
+            // 绘制所有座位
+            for (let r = 0; r < seats.length; r++) {
+                for (let c = 0; c < seats[r].length; c++) {
+                    drawSeat(seats[r][c]);
+                }
+            }
+        }
+
+        // ============================================================
+        //  交互：点击选座
+        // ============================================================
+        function getSeatAt(mx, my) {
+            const size = layout.seatSize;
+            const half = size / 2 + 2;  // 留一点容差
+            for (let r = 0; r < seats.length; r++) {
+                for (let c = 0; c < seats[r].length; c++) {
+                    const s = seats[r][c];
+                    // 简化为矩形命中检测（旋转后的座位近似圆形检测更稳妥）
+                    const dx = mx - s.x;
+                    const dy = my - s.y;
+                    if (dx * dx + dy * dy < (half + 2) * (half + 2)) {
+                        return s;
+                    }
+                }
+            }
+            return null;
+        }
+
+        canvas.addEventListener('click', function (e) {
+            const rect = canvas.getBoundingClientRect();
+            const mx = e.clientX - rect.left;
+            const my = e.clientY - rect.top;
+            const seat = getSeatAt(mx, my);
+            if (seat && seat.state !== SOLD) {
+                seat.state = (seat.state === EMPTY) ? SELECTED : EMPTY;
+                updateSelectedCount();
+                draw();
+            }
+        });
+
+        // ============================================================
+        //  交互：悬浮提示
+        // ============================================================
+        canvas.addEventListener('mousemove', function (e) {
+            const rect = canvas.getBoundingClientRect();
+            const mx = e.clientX - rect.left;
+            const my = e.clientY - rect.top;
+            const seat = getSeatAt(mx, my);
+
+            if (seat) {
+                hoverSeat = seat;
+                canvas.style.cursor = (seat.state === SOLD) ? 'not-allowed' : 'pointer';
+                const stateText = ['空座', '选中', '已售'][seat.state];
+                tooltip.style.display = 'block';
+                tooltip.style.left = (e.clientX + 14) + 'px';
+                tooltip.style.top = (e.clientY - 10) + 'px';
+                tooltip.innerHTML = seat.row + '排 ' + seat.col + '座 — ' + stateText;
+                draw();
+            } else {
+                if (hoverSeat) {
+                    hoverSeat = null;
+                    draw();
+                }
+                canvas.style.cursor = 'default';
+                tooltip.style.display = 'none';
+            }
+        });
+
+        canvas.addEventListener('mouseleave', function () {
+            hoverSeat = null;
+            tooltip.style.display = 'none';
+            draw();
+        });
+
+        // ============================================================
+        //  厅切换
+        // ============================================================
+        document.querySelectorAll('.hall-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.hall-btn').forEach(function (b) {
+                    b.classList.remove('active');
+                });
+                btn.classList.add('active');
+                currentHall = btn.dataset.hall;
+                initSeats(currentHall);
+                calculateLayout();
+                updateSelectedCount();
+                draw();
+            });
+        });
+
+        // ============================================================
+        //  已选数量
+        // ============================================================
+        function updateSelectedCount() {
+            let count = 0;
+            for (let r = 0; r < seats.length; r++) {
+                for (let c = 0; c < seats[r].length; c++) {
+                    if (seats[r][c].state === SELECTED) count++;
+                }
+            }
+            document.getElementById('selected-count').textContent = count;
+        }
+
+        // ============================================================
+        //  启动
+        // ============================================================
+        initUserInfo();
+        initSeats(currentHall);
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+    </script>
+</body>
+</html>

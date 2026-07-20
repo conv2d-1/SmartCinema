@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCinema - 登录注册</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", -apple-system, sans-serif;
+            background: #0a0a1a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== 顶栏 ===== */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #12122a, #1a1a3e);
+            border-bottom: 1px solid rgba(100, 140, 255, 0.15);
+        }
+
+        header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #64b5f6, #42a5f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-tip {
+            font-size: 13px;
+            color: #888;
+        }
+
+        /* ===== 主区域 ===== */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        /* ===== 登录卡片 ===== */
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 32px 34px;
+            width: 360px;
+            max-width: 100%;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-tabs {
+            display: flex;
+            margin-bottom: 24px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .card-tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 15px;
+            font-weight: 600;
+            color: #999;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+
+        .card-tab.active {
+            color: #e53935;
+            border-bottom-color: #e53935;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #333;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #e53935;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 6px;
+        }
+
+        .submit-btn.login {
+            background: linear-gradient(135deg, #43a047, #66bb6a);
+        }
+
+        .submit-btn.login:hover {
+            box-shadow: 0 4px 16px rgba(67, 160, 71, 0.4);
+        }
+
+        .submit-btn.register {
+            background: linear-gradient(135deg, #1e88e5, #42a5f5);
+        }
+
+        .submit-btn.register:hover {
+            box-shadow: 0 4px 16px rgba(33, 150, 243, 0.4);
+        }
+
+        .error-msg {
+            color: #e53935;
+            font-size: 12.5px;
+            margin-top: 4px;
+            min-height: 18px;
+        }
+
+        /* ===== 底栏 ===== */
+        footer {
+            text-align: center;
+            padding: 14px;
+            font-size: 12px;
+            color: #555;
+            background: #12122a;
+        }
+
+        /* 隐藏控制 */
+        .hidden { display: none !important; }
+
+        /* 响应式 */
+        @media (max-width: 860px) {
+            main { flex-direction: column; }
+            .card { width: 100%; max-width: 420px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>SmartCinema 智能影院选座系统</h1>
+        <span class="header-tip">登录注册</span>
+    </header>
+
+    <main>
+        <!-- 登录注册卡片 -->
+        <div class="card">
+            <div class="card-tabs">
+                <div class="card-tab active" id="tab-login" onclick="switchTab('login')">登录</div>
+                <div class="card-tab" id="tab-register" onclick="switchTab('register')">注册</div>
+            </div>
+
+            <!-- 登录表单 -->
+            <form id="login-form" onsubmit="return false;">
+                <div class="form-group">
+                    <label>用户名</label>
+                    <input type="text" id="login-username" placeholder="请输入用户名" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" id="login-password" placeholder="请输入密码">
+                </div>
+                <div class="error-msg" id="login-error"></div>
+                <button type="submit" class="submit-btn login" onclick="doLogin()">登录</button>
+            </form>
+
+            <!-- 注册表单 -->
+            <form id="register-form" class="hidden" onsubmit="return false;">
+                <div class="form-group">
+                    <label>用户名</label>
+                    <input type="text" id="reg-username" placeholder="请设置用户名" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" id="reg-password" placeholder="请设置密码">
+                </div>
+                <div class="form-group">
+                    <label>确认密码</label>
+                    <input type="password" id="reg-confirm" placeholder="请再次输入密码">
+                </div>
+                <div class="error-msg" id="reg-error"></div>
+                <button type="submit" class="submit-btn register" onclick="doRegister()">注册</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        SmartCinema © 2026 · 清华大学前端小学期大作业 · 魏奕然 2024012469
+    </footer>
+
+    <script>
+        // ============================================================
+        //  常量与存储键
+        // ============================================================
+        const USERS_KEY = 'smartCinemaUsers';       // 用户数据（持久）
+        const SESSION_KEY = 'smartCinemaCurrentUser'; // 当前登录会话（会话级）
+
+        // ============================================================
+        //  初始化默认管理员账号
+        // ============================================================
+        function initDefaultAdmin() {
+            let users = getUsers();
+            if (!users['admin']) {
+                users['admin'] = {
+                    password: 'admin123',
+                    role: 'admin',
+                    registerTime: new Date().toISOString()
+                };
+                saveUsers(users);
+            }
+        }
+
+        // ============================================================
+        //  LocalStorage 读写
+        // ============================================================
+        function getUsers() {
+            return JSON.parse(localStorage.getItem(USERS_KEY) || '{}');
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem(USERS_KEY, JSON.stringify(users));
+        }
+
+        // ============================================================
+        //  Tab 切换
+        // ============================================================
+        function switchTab(tab) {
+            const loginTab = document.getElementById('tab-login');
+            const regTab = document.getElementById('tab-register');
+            const loginForm = document.getElementById('login-form');
+            const regForm = document.getElementById('register-form');
+
+            if (tab === 'login') {
+                loginTab.classList.add('active');
+                regTab.classList.remove('active');
+                loginForm.classList.remove('hidden');
+                regForm.classList.add('hidden');
+            } else {
+                regTab.classList.add('active');
+                loginTab.classList.remove('active');
+                regForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+            }
+            // 清空错误提示
+            document.getElementById('login-error').textContent = '';
+            document.getElementById('reg-error').textContent = '';
+        }
+
+        // ============================================================
+        //  注册
+        // ============================================================
+        function doRegister() {
+            const username = document.getElementById('reg-username').value.trim();
+            const password = document.getElementById('reg-password').value;
+            const confirm  = document.getElementById('reg-confirm').value;
+            const errorEl  = document.getElementById('reg-error');
+
+            // 校验
+            if (!username || !password) {
+                errorEl.textContent = '用户名和密码不能为空';
+                return;
+            }
+            if (username.length < 2) {
+                errorEl.textContent = '用户名至少 2 个字符';
+                return;
+            }
+            if (password.length < 4) {
+                errorEl.textContent = '密码至少 4 位';
+                return;
+            }
+            if (password !== confirm) {
+                errorEl.textContent = '两次输入的密码不一致';
+                return;
+            }
+
+            const users = getUsers();
+            if (users[username]) {
+                errorEl.textContent = '该用户名已被注册';
+                return;
+            }
+
+            // 写入存储（注册一律为普通会员）
+            users[username] = {
+                password: password,
+                role: 'member',
+                registerTime: new Date().toISOString()
+            };
+            saveUsers(users);
+
+            // 注册成功，切换到登录并预填用户名
+            errorEl.textContent = '';
+            alert('注册成功！请登录');
+            document.getElementById('login-username').value = username;
+            document.getElementById('login-password').value = '';
+            switchTab('login');
+        }
+
+        // ============================================================
+        //  登录
+        // ============================================================
+        function doLogin() {
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value;
+            const errorEl  = document.getElementById('login-error');
+
+            if (!username || !password) {
+                errorEl.textContent = '请输入用户名和密码';
+                return;
+            }
+
+            const users = getUsers();
+            if (!users[username]) {
+                errorEl.textContent = '用户不存在，请先注册';
+                return;
+            }
+            if (users[username].password !== password) {
+                errorEl.textContent = '密码错误';
+                return;
+            }
+
+            // 登录成功，记录会话
+            const session = {
+                username: username,
+                role: users[username].role,
+                loginTime: new Date().toISOString()
+            };
+            sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+
+            // 根据角色跳转
+            const target = 'cinema.html?user=' + encodeURIComponent(username) +
+                           '&role=' + session.role;
+            window.location.href = target;
+        }
+
+        // ============================================================
+        //  启动
+        // ============================================================
+        initDefaultAdmin();
+
+        // 回车键提交
+        document.getElementById('login-password').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') doLogin();
+        });
+        document.getElementById('reg-confirm').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') doRegister();
+        });
+    </script>
+</body>
+</html>
