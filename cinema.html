@@ -16,7 +16,6 @@
             flex-direction: column;
         }
 
-        /* ===== 顶栏 ===== */
         header {
             display: flex;
             justify-content: space-between;
@@ -24,6 +23,8 @@
             padding: 14px 28px;
             background: linear-gradient(135deg, #12122a, #1a1a3e);
             border-bottom: 1px solid rgba(100, 140, 255, 0.15);
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         header h1 {
@@ -39,6 +40,7 @@
             display: flex;
             align-items: center;
             gap: 16px;
+            flex-wrap: wrap;
         }
 
         .user-info {
@@ -89,6 +91,7 @@
         .hall-selector {
             display: flex;
             gap: 8px;
+            flex-wrap: wrap;
         }
 
         .hall-btn {
@@ -117,10 +120,19 @@
         main {
             flex: 1;
             display: flex;
+            gap: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ===== Canvas 容器 ===== */
+        .canvas-wrapper {
+            flex: 1;
+            display: flex;
             justify-content: center;
             align-items: flex-start;
             padding: 10px 20px;
-            overflow: hidden;
+            min-width: 0;
         }
 
         #cinema-canvas {
@@ -131,7 +143,199 @@
             cursor: pointer;
         }
 
-        /* ===== 底栏 ===== */
+        /* ===== 侧边栏 ===== */
+        #sidebar {
+            width: 300px;
+            min-width: 300px;
+            background: #12122a;
+            border-left: 1px solid rgba(100, 140, 255, 0.15);
+            padding: 16px 18px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            transition: all 0.3s;
+        }
+
+        #sidebar h2 {
+            font-size: 16px;
+            color: #64b5f6;
+            border-bottom: 1px solid rgba(100, 140, 255, 0.2);
+            padding-bottom: 8px;
+            margin-bottom: 4px;
+        }
+
+        .mode-tabs {
+            display: flex;
+            gap: 6px;
+            border-bottom: 1px solid rgba(100, 140, 255, 0.15);
+            padding-bottom: 8px;
+        }
+
+        .mode-tab {
+            flex: 1;
+            text-align: center;
+            padding: 6px 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: #888;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .mode-tab.active {
+            color: #64b5f6;
+            border-bottom-color: #64b5f6;
+        }
+
+        .mode-content {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .mode-content.active {
+            display: flex;
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .form-row label {
+            font-size: 13px;
+            color: #aaa;
+            font-weight: 500;
+        }
+
+        .form-row select,
+        .form-row input {
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(100, 140, 255, 0.2);
+            background: #1a1a3e;
+            color: #e0e0e0;
+            font-size: 13px;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        .form-row select:focus,
+        .form-row input:focus {
+            border-color: #64b5f6;
+        }
+
+        .form-row input[type="number"] {
+            width: 80px;
+        }
+
+        .dynamic-members {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 180px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .member-entry {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            background: #1a1a3e;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .member-entry input {
+            flex: 1;
+            padding: 4px 8px;
+            border: 1px solid rgba(100, 140, 255, 0.15);
+            border-radius: 4px;
+            background: #0f0f2a;
+            color: #e0e0e0;
+            font-size: 12px;
+        }
+
+        .member-entry input[type="number"] {
+            flex: 0 0 60px;
+        }
+
+        .btn-primary {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #42a5f5, #1e88e5);
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 4px 12px rgba(66, 165, 245, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            padding: 6px 14px;
+            border: 1px solid rgba(100, 140, 255, 0.3);
+            border-radius: 6px;
+            background: transparent;
+            color: #64b5f6;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(66, 165, 245, 0.1);
+        }
+
+        .info-box {
+            background: rgba(66, 165, 245, 0.08);
+            border-left: 3px solid #64b5f6;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #bbb;
+            line-height: 1.6;
+        }
+
+        .info-box strong {
+            color: #64b5f6;
+        }
+
+        .recommend-result {
+            background: rgba(255, 193, 7, 0.08);
+            border-left: 3px solid #ffb300;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #ddd;
+            display: none;
+        }
+
+        .recommend-result.show {
+            display: block;
+        }
+
+        .error-msg {
+            color: #ef5350;
+            font-size: 12px;
+            min-height: 20px;
+        }
+
+        /* ===== 底部栏 ===== */
         footer {
             display: flex;
             justify-content: space-between;
@@ -147,6 +351,7 @@
             display: flex;
             gap: 22px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .legend-item {
@@ -166,6 +371,7 @@
         .legend-dot.empty    { background: #43a047; }
         .legend-dot.selected { background: #ffb300; }
         .legend-dot.sold     { background: #e53935; }
+        .legend-dot.recommended { background: #42a5f5; border: 1px solid #90caf9; }
 
         .selected-info {
             font-size: 13px;
@@ -191,6 +397,27 @@
             z-index: 100;
             white-space: nowrap;
         }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 860px) {
+            main {
+                flex-direction: column;
+            }
+            #sidebar {
+                width: 100%;
+                min-width: unset;
+                max-height: 50vh;
+                border-left: none;
+                border-top: 1px solid rgba(100, 140, 255, 0.15);
+                overflow-y: auto;
+            }
+            .canvas-wrapper {
+                padding: 10px 10px;
+            }
+        }
+
+        .hidden { display: none !important; }
+        .text-muted { color: #888; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -208,7 +435,62 @@
     </header>
 
     <main>
-        <canvas id="cinema-canvas"></canvas>
+        <div class="canvas-wrapper">
+            <canvas id="cinema-canvas"></canvas>
+        </div>
+
+        <aside id="sidebar">
+            <h2>🎬 选座工具</h2>
+            <div class="mode-tabs">
+                <div class="mode-tab active" data-mode="recommend" onclick="switchMode('recommend')">智能推荐</div>
+                <div class="mode-tab" data-mode="manual" onclick="switchMode('manual')">手动选座</div>
+            </div>
+
+            <!-- 推荐模式 -->
+            <div id="mode-recommend" class="mode-content active">
+                <div class="form-row">
+                    <label>票型</label>
+                    <select id="ticket-type" onchange="onTicketTypeChange()">
+                        <option value="individual">个人票</option>
+                        <option value="couple">情侣票</option>
+                        <option value="family">家庭票</option>
+                        <option value="group">团体票</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label>人数</label>
+                    <input type="number" id="member-count" value="1" min="1" max="20" onchange="onMemberCountChange()">
+                </div>
+                <div class="form-row">
+                    <label>成员信息</label>
+                    <div id="member-list" class="dynamic-members"></div>
+                </div>
+                <button class="btn-primary" id="recommend-btn" onclick="doRecommend()">✨ 推荐座位</button>
+                <div id="recommend-result" class="recommend-result"></div>
+                <div id="recommend-error" class="error-msg"></div>
+                <div class="info-box">
+                    <strong>规则提醒</strong><br>
+                    • 少年（&lt;15岁）不可坐前3排<br>
+                    • 老年（≥60岁）不可坐后3排<br>
+                    • 情侣优先中间双座<br>
+                    • 家庭优先中后排连续<br>
+                    • 团体要求同排连续（5~20人）
+                </div>
+            </div>
+
+            <!-- 手动模式 -->
+            <div id="mode-manual" class="mode-content">
+                <div class="info-box">
+                    <strong>手动操作</strong><br>
+                    • <strong>单击</strong>：切换空座↔选中<br>
+                    • <strong>Ctrl+单击</strong>：多选切换<br>
+                    • <strong>拖拽滑动</strong>：连续切换座位<br>
+                    • 已售（红色）不可操作
+                </div>
+                <button class="btn-secondary" onclick="clearAllSelected()">清空所有选中</button>
+                <div class="text-muted" style="margin-top:8px;">当前模式：手动选座</div>
+            </div>
+        </aside>
     </main>
 
     <footer>
@@ -216,6 +498,7 @@
             <div class="legend-item"><div class="legend-dot empty"></div>空座</div>
             <div class="legend-item"><div class="legend-dot selected"></div>选中未售</div>
             <div class="legend-item"><div class="legend-dot sold"></div>已售</div>
+            <div class="legend-item"><div class="legend-dot recommended"></div>推荐</div>
         </div>
         <div class="selected-info">
             已选 <span id="selected-count">0</span> 个座位
@@ -226,7 +509,7 @@
 
     <script>
         // ============================================================
-        //  数据定义
+        //  常量与全局变量
         // ============================================================
         const HALLS = {
             small:  { name: '小厅', seatsPerRow: 10, rows: 10 },
@@ -234,24 +517,653 @@
             large:  { name: '大厅', seatsPerRow: 30, rows: 10 }
         };
 
-        // 座位状态
-        const EMPTY    = 0;  // 绿色
-        const SELECTED = 1;  // 黄色
-        const SOLD     = 2;  // 红色
+        const EMPTY    = 0;
+        const SELECTED = 1;
+        const SOLD     = 2;
+        const RECOMMENDED = 3;
 
         const COLORS = {
             0: { fill: '#43a047', stroke: '#2e7d32', text: '#ffffff' },
             1: { fill: '#ffb300', stroke: '#ff8f00', text: '#333333' },
-            2: { fill: '#e53935', stroke: '#c62828', text: '#ffffff' }
+            2: { fill: '#e53935', stroke: '#c62828', text: '#ffffff' },
+            3: { fill: '#42a5f5', stroke: '#1e88e5', text: '#ffffff' }
         };
 
         let currentHall = 'small';
-        let seats = [];       // seats[row][col] = { row, col, state, x, y, angle }
-        let layout = null;    // 布局参数
+        let seats = [];
+        let layout = null;
         let hoverSeat = null;
+        let recommendSeats = [];
+        let blinkPhase = 0;
+        let blinkTimer = null;
 
         // ============================================================
-        //  登录状态与用户信息
+        //  持久化存储
+        // ============================================================
+        function loadSeatsFromLocal(hallKey) {
+            const key = 'smartCinemaSeats';
+            const data = JSON.parse(localStorage.getItem(key) || '{}');
+            if (data[hallKey]) {
+                const saved = data[hallKey];
+                const config = HALLS[hallKey];
+                if (saved.rows === config.rows && saved.cols === config.seatsPerRow) {
+                    const newSeats = [];
+                    for (let r = 0; r < saved.rows; r++) {
+                        const row = [];
+                        for (let c = 0; c < saved.cols; c++) {
+                            // 存储中只有 0(EMPTY) 和 2(SOLD)
+                            row.push({
+                                row: r + 1,
+                                col: c + 1,
+                                state: saved.data[r][c] || EMPTY
+                            });
+                        }
+                        newSeats.push(row);
+                    }
+                    return newSeats;
+                }
+            }
+            return null;
+        }
+
+        function saveSeatsToLocal() {
+            const key = 'smartCinemaSeats';
+            const data = JSON.parse(localStorage.getItem(key) || '{}');
+            // 只保存 EMPTY 和 SOLD，将 SELECTED 和 RECOMMENDED 映射为 EMPTY
+            const storageData = seats.map(row => row.map(s => {
+                if (s.state === SELECTED || s.state === RECOMMENDED) {
+                    return EMPTY;
+                }
+                return s.state; // 0 或 2
+            }));
+            data[currentHall] = {
+                rows: seats.length,
+                cols: seats[0].length,
+                data: storageData
+            };
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+
+        // ============================================================
+        //  初始化座位
+        // ============================================================
+        function initSeats(hallKey) {
+            const loaded = loadSeatsFromLocal(hallKey);
+            if (loaded) {
+                seats = loaded;
+                return;
+            }
+            const config = HALLS[hallKey];
+            seats = [];
+            for (let r = 0; r < config.rows; r++) {
+                const row = [];
+                for (let c = 0; c < config.seatsPerRow; c++) {
+                    row.push({
+                        row: r + 1,
+                        col: c + 1,
+                        state: Math.random() < 0.18 ? SOLD : EMPTY
+                    });
+                }
+                seats.push(row);
+            }
+            saveSeatsToLocal();
+        }
+
+        // ============================================================
+        //  更新选中计数
+        // ============================================================
+        function updateSelectedCount() {
+            let count = 0;
+            for (let r = 0; r < seats.length; r++) {
+                for (let c = 0; c < seats[r].length; c++) {
+                    if (seats[r][c].state === SELECTED) count++;
+                }
+            }
+            document.getElementById('selected-count').textContent = count;
+        }
+
+        // ============================================================
+        //  清空所有选中 & 清除推荐
+        // ============================================================
+        function clearAllSelected() {
+            for (let r = 0; r < seats.length; r++) {
+                for (let c = 0; c < seats[r].length; c++) {
+                    if (seats[r][c].state === SELECTED) {
+                        seats[r][c].state = EMPTY;
+                    }
+                }
+            }
+            clearRecommendHighlights();
+            saveSeatsToLocal();
+            updateSelectedCount();
+            draw();
+        }
+
+        function clearRecommendHighlights() {
+            for (let r = 0; r < seats.length; r++) {
+                for (let c = 0; c < seats[r].length; c++) {
+                    if (seats[r][c].state === RECOMMENDED) {
+                        seats[r][c].state = EMPTY;
+                    }
+                }
+            }
+            recommendSeats = [];
+            document.getElementById('recommend-result').classList.remove('show');
+            document.getElementById('recommend-error').textContent = '';
+            if (blinkTimer) {
+                clearInterval(blinkTimer);
+                blinkTimer = null;
+            }
+        }
+
+        // ============================================================
+        //  模式切换
+        // ============================================================
+        function switchMode(mode) {
+            document.querySelectorAll('.mode-tab').forEach(el => el.classList.remove('active'));
+            document.querySelector(`.mode-tab[data-mode="${mode}"]`).classList.add('active');
+            document.querySelectorAll('.mode-content').forEach(el => el.classList.remove('active'));
+            document.getElementById(`mode-${mode}`).classList.add('active');
+            clearRecommendHighlights();
+            draw();
+        }
+
+        // ============================================================
+        //  推荐表单动态成员
+        // ============================================================
+        function onTicketTypeChange() {
+            const type = document.getElementById('ticket-type').value;
+            const countInput = document.getElementById('member-count');
+            let defaultCount = 1, min = 1, max = 20;
+            if (type === 'couple') { defaultCount = 2; min = 2; max = 2; }
+            else if (type === 'family') { defaultCount = 3; min = 2; max = 10; }
+            else if (type === 'group') { defaultCount = 5; min = 5; max = 20; }
+            else { // individual
+                defaultCount = 1; min = 1; max = 20;
+            }
+            countInput.value = defaultCount;
+            countInput.min = min;
+            countInput.max = max;
+            onMemberCountChange();
+        }
+
+        function onMemberCountChange() {
+            const count = parseInt(document.getElementById('member-count').value) || 1;
+            const container = document.getElementById('member-list');
+            container.innerHTML = '';
+            for (let i = 0; i < count; i++) {
+                const div = document.createElement('div');
+                div.className = 'member-entry';
+                div.innerHTML = `
+                    <span style="font-size:12px;color:#888;">${i+1}</span>
+                    <input type="text" placeholder="姓名" class="member-name" value="成员${i+1}">
+                    <input type="number" placeholder="年龄" class="member-age" value="30" min="1" max="120">
+                `;
+                container.appendChild(div);
+            }
+        }
+
+        onTicketTypeChange();
+
+        // ============================================================
+        //  推荐算法核心
+        // ============================================================
+        function doRecommend() {
+            clearRecommendHighlights();
+
+            const type = document.getElementById('ticket-type').value;
+            const count = parseInt(document.getElementById('member-count').value) || 0;
+
+            // 人数校验
+            if (count < 1) {
+                document.getElementById('recommend-error').textContent = '人数至少为1';
+                return;
+            }
+            if (type === 'group' && (count < 5 || count > 20)) {
+                document.getElementById('recommend-error').textContent = '团体票人数需在 5~20 之间';
+                return;
+            }
+            if (type === 'couple' && count !== 2) {
+                document.getElementById('recommend-error').textContent = '情侣票人数必须为2';
+                return;
+            }
+            if (type === 'family' && count < 2) {
+                document.getElementById('recommend-error').textContent = '家庭票至少2人';
+                return;
+            }
+
+            const nameInputs = document.querySelectorAll('.member-name');
+            const ageInputs = document.querySelectorAll('.member-age');
+            const members = [];
+            for (let i = 0; i < nameInputs.length; i++) {
+                members.push({
+                    name: nameInputs[i].value.trim() || `成员${i+1}`,
+                    age: parseInt(ageInputs[i].value) || 30
+                });
+            }
+            if (members.length === 0) {
+                document.getElementById('recommend-error').textContent = '请至少添加一位成员';
+                return;
+            }
+
+            const totalRows = seats.length;
+            const totalCols = seats[0].length;
+            let forbiddenRows = new Set();
+            for (let m of members) {
+                if (m.age < 15) {
+                    for (let i = 0; i < 3 && i < totalRows; i++) forbiddenRows.add(i);
+                }
+                if (m.age >= 60) {
+                    for (let i = totalRows - 3; i < totalRows; i++) if (i >= 0) forbiddenRows.add(i);
+                }
+            }
+            const availableRows = [];
+            for (let r = 0; r < totalRows; r++) {
+                if (!forbiddenRows.has(r)) availableRows.push(r);
+            }
+            if (availableRows.length === 0) {
+                document.getElementById('recommend-error').textContent = '年龄约束排除了所有排，无法推荐';
+                return;
+            }
+
+            let candidates = [];
+            const required = count;
+
+            for (let r of availableRows) {
+                const rowSeats = seats[r];
+                let c = 0;
+                while (c < totalCols) {
+                    if (rowSeats[c].state === EMPTY) {
+                        let start = c;
+                        while (c < totalCols && rowSeats[c].state === EMPTY) c++;
+                        let end = c - 1;
+                        const len = end - start + 1;
+                        if (len >= required) {
+                            let score = 0;
+                            const mid = (totalCols - 1) / 2;
+                            const centerDist = Math.abs((start + end) / 2 - mid);
+                            if (type === 'couple') {
+                                score = 100 - centerDist * 2;
+                                if (len % 2 === 0) score += 20;
+                            } else if (type === 'family') {
+                                const idealRow = totalRows * 0.6;
+                                score = 100 - Math.abs(r - idealRow) * 3 - centerDist;
+                            } else if (type === 'group') {
+                                const idealRow = totalRows * 0.5;
+                                score = 100 - Math.abs(r - idealRow) * 2 - centerDist * 0.5;
+                            } else {
+                                const idealRow = totalRows * 0.5;
+                                score = 80 - Math.abs(r - idealRow) * 1.5 - centerDist;
+                            }
+                            if (centerDist < 2) score += 10;
+                            candidates.push({ row: r, start, end, length: len, score });
+                        }
+                    } else {
+                        c++;
+                    }
+                }
+            }
+
+            if (candidates.length === 0) {
+                document.getElementById('recommend-error').textContent = '当前影厅没有足够的连续空位满足需求';
+                return;
+            }
+
+            candidates.sort((a, b) => b.score - a.score);
+            const best = candidates[0];
+            const rowSeats = seats[best.row];
+            let highlighted = 0;
+            for (let c = best.start; c <= best.end && highlighted < required; c++) {
+                if (rowSeats[c].state === EMPTY) {
+                    rowSeats[c].state = RECOMMENDED;
+                    recommendSeats.push(rowSeats[c]);
+                    highlighted++;
+                }
+            }
+
+            const resultEl = document.getElementById('recommend-result');
+            resultEl.innerHTML = `
+                ✅ 推荐座位：<strong>第 ${best.row+1} 排</strong>，座位 ${best.start+1} ~ ${best.start+required} 号<br>
+                <span class="text-muted">（点击蓝色座位可选中）</span>
+            `;
+            resultEl.classList.add('show');
+            document.getElementById('recommend-error').textContent = '';
+
+            saveSeatsToLocal();
+            draw();
+        }
+
+        // ============================================================
+        //  Canvas 相关
+        // ============================================================
+        const canvas = document.getElementById('cinema-canvas');
+        const ctx = canvas.getContext('2d');
+        const tooltip = document.getElementById('tooltip');
+        let cssW = 0, cssH = 0;
+
+        function resizeCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            const containerW = Math.min(canvas.parentElement.clientWidth - 40, 1100);
+            cssW = containerW;
+            cssH = Math.round(containerW * 0.62);
+            canvas.style.width  = cssW + 'px';
+            canvas.style.height = cssH + 'px';
+            canvas.width  = cssW * dpr;
+            canvas.height = cssH * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            calculateLayout();
+            draw();
+        }
+
+        function calculateLayout() {
+            const config = HALLS[currentHall];
+            const W = cssW;
+            const H = cssH;
+            const seatsPerRow = config.seatsPerRow;
+            const screenH = 14;
+
+            const arcCenterX = W / 2;
+            const arcCenterY = 28;
+            const bottomPadding = 30;
+            const maxRadius = (H - bottomPadding) - arcCenterY;
+            const minRadius = maxRadius * 0.4;
+            const rowSpacing = (maxRadius - minRadius) / (config.rows - 1);
+
+            let arcSpan;
+            if (seatsPerRow <= 10)      arcSpan = 0.78;
+            else if (seatsPerRow <= 20) arcSpan = 1.05;
+            else                        arcSpan = 1.35;
+
+            const halfSpan = arcSpan / 2;
+            const maxReach = maxRadius * Math.sin(halfSpan);
+            const margin = 50;
+            if (maxReach > W / 2 - margin) {
+                arcSpan = 2 * Math.asin((W / 2 - margin) / maxRadius);
+            }
+
+            const frontArcLen = minRadius * arcSpan;
+            const seatSpacing = frontArcLen / seatsPerRow;
+            const seatSize = Math.max(10, Math.min(seatSpacing * 0.82, 24));
+
+            for (let r = 0; r < config.rows; r++) {
+                const radius = minRadius + r * rowSpacing;
+                for (let c = 0; c < seatsPerRow; c++) {
+                    const angle = -arcSpan / 2 +
+                        (seatsPerRow === 1 ? 0 : (c / (seatsPerRow - 1)) * arcSpan);
+                    const seat = seats[r][c];
+                    seat.x = arcCenterX + radius * Math.sin(angle);
+                    seat.y = arcCenterY + radius * Math.cos(angle);
+                    seat.angle = angle;
+                    seat.radius = radius;
+                }
+            }
+
+            layout = { arcCenterX, arcCenterY, maxRadius, minRadius,
+                       rowSpacing, arcSpan, seatSize, halfSpan,
+                       screenH, config };
+        }
+
+        function drawScreen() {
+            const { arcCenterX, arcCenterY, minRadius, arcSpan, screenH } = layout;
+            ctx.save();
+            const r = Math.max(18, minRadius - 26);
+            const startAngle = Math.PI / 2 - arcSpan * 0.38;
+            const endAngle   = Math.PI / 2 + arcSpan * 0.38;
+
+            ctx.shadowColor = 'rgba(100, 180, 255, 0.6)';
+            ctx.shadowBlur = 25;
+            ctx.strokeStyle = 'rgba(120, 190, 255, 0.9)';
+            ctx.lineWidth = screenH;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.arc(arcCenterX, arcCenterY, r, startAngle, endAngle);
+            ctx.stroke();
+
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+            ctx.font = '600 13px "Microsoft YaHei", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('银幕 / SCREEN', arcCenterX, arcCenterY + r - screenH / 2 - 10);
+            ctx.restore();
+        }
+
+        function drawSeat(seat) {
+            const size = layout.seatSize;
+            const color = COLORS[seat.state];
+            const isHover = hoverSeat === seat;
+            const isRecommended = (seat.state === RECOMMENDED);
+
+            ctx.save();
+            ctx.translate(seat.x, seat.y);
+            ctx.rotate(seat.angle);
+
+            if (isHover && seat.state !== SOLD) {
+                ctx.shadowColor = 'rgba(255, 255, 255, 0.5)';
+                ctx.shadowBlur = 12;
+            }
+
+            const half = size / 2;
+            const r = size * 0.22;
+            ctx.fillStyle = color.fill;
+            ctx.strokeStyle = isHover ? '#ffffff' : color.stroke;
+            ctx.lineWidth = isHover ? 2 : 1;
+
+            if (isRecommended) {
+                ctx.strokeStyle = (blinkPhase === 0) ? '#90caf9' : '#42a5f5';
+                ctx.lineWidth = 2.5;
+            }
+
+            ctx.beginPath();
+            ctx.moveTo(-half + r, -half);
+            ctx.lineTo(half - r, -half);
+            ctx.quadraticCurveTo(half, -half, half, -half + r);
+            ctx.lineTo(half, half - r);
+            ctx.quadraticCurveTo(half, half, half - r, half);
+            ctx.lineTo(-half + r, half);
+            ctx.quadraticCurveTo(-half, half, -half, half - r);
+            ctx.lineTo(-half, -half + r);
+            ctx.quadraticCurveTo(-half, -half, -half + r, -half);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.shadowBlur = 0;
+
+            if (size >= 12) {
+                ctx.fillStyle = color.text;
+                ctx.font = '600 ' + Math.max(8, Math.round(size * 0.4)) + 'px Arial, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.rotate(-seat.angle);
+                ctx.fillText(seat.col, 0, 0);
+            }
+
+            ctx.restore();
+        }
+
+        function drawRowLabels() {
+            const { config, arcCenterX, arcCenterY, minRadius, rowSpacing, arcSpan } = layout;
+            ctx.save();
+            ctx.fillStyle = 'rgba(160, 180, 220, 0.5)';
+            ctx.font = '11px Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            for (let r = 0; r < config.rows; r++) {
+                const radius = minRadius + r * rowSpacing;
+                const labelAngle = arcSpan / 2 + 0.06;
+                const lx = arcCenterX + radius * Math.sin(-labelAngle);
+                const ly = arcCenterY + radius * Math.cos(-labelAngle);
+                ctx.fillText(r + 1, lx, ly);
+                const rx = arcCenterX + radius * Math.sin(labelAngle);
+                const ry = arcCenterY + radius * Math.cos(labelAngle);
+                ctx.fillText(r + 1, rx, ry);
+            }
+            ctx.restore();
+        }
+
+        function draw() {
+            ctx.fillStyle = '#0a0a1a';
+            ctx.fillRect(0, 0, cssW, cssH);
+
+            drawScreen();
+            drawRowLabels();
+
+            for (let r = 0; r < seats.length; r++) {
+                for (let c = 0; c < seats[r].length; c++) {
+                    drawSeat(seats[r][c]);
+                }
+            }
+
+            // 启动/停止闪烁
+            let hasRec = false;
+            for (let r = 0; r < seats.length; r++) {
+                for (let c = 0; c < seats[r].length; c++) {
+                    if (seats[r][c].state === RECOMMENDED) { hasRec = true; break; }
+                }
+                if (hasRec) break;
+            }
+            if (hasRec) {
+                if (!blinkTimer) {
+                    blinkTimer = setInterval(() => {
+                        blinkPhase = (blinkPhase + 1) % 2;
+                        draw();
+                    }, 500);
+                }
+            } else {
+                if (blinkTimer) {
+                    clearInterval(blinkTimer);
+                    blinkTimer = null;
+                }
+            }
+        }
+
+        // ============================================================
+        //  交互：点击（Ctrl+单击）
+        // ============================================================
+        function getSeatAt(mx, my) {
+            const size = layout.seatSize;
+            const half = size / 2 + 2;
+            for (let r = 0; r < seats.length; r++) {
+                for (let c = 0; c < seats[r].length; c++) {
+                    const s = seats[r][c];
+                    const dx = mx - s.x;
+                    const dy = my - s.y;
+                    if (dx * dx + dy * dy < (half + 2) * (half + 2)) {
+                        return s;
+                    }
+                }
+            }
+            return null;
+        }
+
+        canvas.addEventListener('click', function (e) {
+            const rect = canvas.getBoundingClientRect();
+            const mx = e.clientX - rect.left;
+            const my = e.clientY - rect.top;
+            const seat = getSeatAt(mx, my);
+            if (!seat || seat.state === SOLD) return;
+
+            if (e.ctrlKey) {
+                // 空座或推荐 → 选中；选中 → 空座
+                if (seat.state === EMPTY || seat.state === RECOMMENDED) {
+                    seat.state = SELECTED;
+                } else if (seat.state === SELECTED) {
+                    seat.state = EMPTY;
+                }
+            } else {
+                if (seat.state === EMPTY || seat.state === RECOMMENDED) {
+                    seat.state = SELECTED;
+                } else if (seat.state === SELECTED) {
+                    seat.state = EMPTY;
+                }
+            }
+
+            clearRecommendHighlights();
+            saveSeatsToLocal();   // 保存时自动将 SELECTED 转为 EMPTY
+            updateSelectedCount();
+            draw();
+        });
+
+        // ============================================================
+        //  拖拽选座（画笔滑动）
+        // ============================================================
+        let isDragging = false;
+        let lastDraggedSeat = null;
+
+        canvas.addEventListener('mousedown', function (e) {
+            if (e.button !== 0) return;
+            isDragging = true;
+            lastDraggedSeat = null;
+        });
+
+        canvas.addEventListener('mousemove', function (e) {
+            const rect = canvas.getBoundingClientRect();
+            const mx = e.clientX - rect.left;
+            const my = e.clientY - rect.top;
+
+            const seat = getSeatAt(mx, my);
+            if (seat) {
+                const stateText = ['空座', '选中', '已售', '推荐'][seat.state];
+                tooltip.style.display = 'block';
+                tooltip.style.left = (e.clientX + 14) + 'px';
+                tooltip.style.top = (e.clientY - 10) + 'px';
+                tooltip.innerHTML = seat.row + '排 ' + seat.col + '座 — ' + stateText;
+                canvas.style.cursor = (seat.state === SOLD) ? 'not-allowed' : 'pointer';
+            } else {
+                tooltip.style.display = 'none';
+                canvas.style.cursor = 'default';
+            }
+
+            if (isDragging && seat && seat.state !== SOLD) {
+                if (lastDraggedSeat === seat) return;
+                lastDraggedSeat = seat;
+                if (seat.state === EMPTY || seat.state === RECOMMENDED) {
+                    seat.state = SELECTED;
+                } else if (seat.state === SELECTED) {
+                    seat.state = EMPTY;
+                }
+                clearRecommendHighlights();
+                saveSeatsToLocal();
+                updateSelectedCount();
+                draw();
+            }
+        });
+
+        window.addEventListener('mouseup', function () {
+            if (isDragging) {
+                isDragging = false;
+                lastDraggedSeat = null;
+            }
+        });
+
+        canvas.addEventListener('mouseleave', function () {
+            hoverSeat = null;
+            tooltip.style.display = 'none';
+            draw();
+        });
+
+        // ============================================================
+        //  影厅切换
+        // ============================================================
+        document.querySelectorAll('.hall-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.hall-btn').forEach(function (b) {
+                    b.classList.remove('active');
+                });
+                btn.classList.add('active');
+                currentHall = btn.dataset.hall;
+                initSeats(currentHall);
+                calculateLayout();
+                clearRecommendHighlights();
+                updateSelectedCount();
+                draw();
+            });
+        });
+
+        // ============================================================
+        //  登录状态
         // ============================================================
         function getQueryParam(name) {
             const params = new URLSearchParams(window.location.search);
@@ -278,342 +1190,14 @@
         }
 
         // ============================================================
-        //  Canvas 初始化
-        // ============================================================
-        const canvas = document.getElementById('cinema-canvas');
-        const ctx = canvas.getContext('2d');
-        const tooltip = document.getElementById('tooltip');
-        let cssW = 0, cssH = 0;
-
-        function resizeCanvas() {
-            const dpr = window.devicePixelRatio || 1;
-            const containerW = Math.min(canvas.parentElement.clientWidth - 40, 1100);
-            cssW = containerW;
-            cssH = Math.round(containerW * 0.62);  // 16:10 比例
-            canvas.style.width  = cssW + 'px';
-            canvas.style.height = cssH + 'px';
-            canvas.width  = cssW * dpr;
-            canvas.height = cssH * dpr;
-            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-            calculateLayout();
-            draw();
-        }
-
-        // ============================================================
-        //  座位数据初始化
-        // ============================================================
-        function initSeats(hallKey) {
-            const config = HALLS[hallKey];
-            seats = [];
-            for (let r = 0; r < config.rows; r++) {
-                const row = [];
-                for (let c = 0; c < config.seatsPerRow; c++) {
-                    row.push({
-                        row: r + 1,
-                        col: c + 1,
-                        state: Math.random() < 0.18 ? SOLD : EMPTY
-                    });
-                }
-                seats.push(row);
-            }
-        }
-
-        // ============================================================
-        //  布局计算（弧形排列）
-        // ============================================================
-        function calculateLayout() {
-            const config = HALLS[currentHall];
-            const W = cssW;
-            const H = cssH;
-            const seatsPerRow = config.seatsPerRow;
-
-            // 银幕参数
-            const screenH = 14;
-
-            // 弧形圆心在画布顶部（银幕所在位置）
-            // 座位在圆心下方呈扇形展开：离银幕越远半径越大、座位越稀疏
-            const arcCenterX = W / 2;
-            const arcCenterY = 28;  // 银幕位置（画布顶部，即圆心）
-
-            // 半径：第1排最小（靠近银幕/圆心），第10排最大（远离银幕）
-            const bottomPadding = 30;
-            const maxRadius = (H - bottomPadding) - arcCenterY;  // 第10排半径
-            const minRadius = maxRadius * 0.4;                    // 第1排半径
-            const rowSpacing = (maxRadius - minRadius) / (config.rows - 1);
-
-            // 弧形跨度角度：座位越多角度越大
-            let arcSpan;
-            if (seatsPerRow <= 10)      arcSpan = 0.78;  // ~45°
-            else if (seatsPerRow <= 20) arcSpan = 1.05;  // ~60°
-            else                        arcSpan = 1.35;  // ~77°
-
-            // 确保最宽排（第10排，半径最大）不超出画布
-            const halfSpan = arcSpan / 2;
-            const maxReach = maxRadius * Math.sin(halfSpan);
-            const margin = 50;
-            if (maxReach > W / 2 - margin) {
-                arcSpan = 2 * Math.asin((W / 2 - margin) / maxRadius);
-            }
-
-            // 座位尺寸：取第1排（半径最小、最密集）的间距为基准
-            const frontArcLen = minRadius * arcSpan;
-            const seatSpacing = frontArcLen / seatsPerRow;
-            const seatSize = Math.max(10, Math.min(seatSpacing * 0.82, 24));
-
-            // 计算每个座位坐标（座位在圆心下方扇形展开）
-            for (let r = 0; r < config.rows; r++) {
-                const radius = minRadius + r * rowSpacing;  // 第1排小，逐排递增
-                for (let c = 0; c < seatsPerRow; c++) {
-                    const angle = -arcSpan / 2 +
-                        (seatsPerRow === 1 ? 0 : (c / (seatsPerRow - 1)) * arcSpan);
-                    const seat = seats[r][c];
-                    seat.x = arcCenterX + radius * Math.sin(angle);
-                    seat.y = arcCenterY + radius * Math.cos(angle);  // 向下展开
-                    seat.angle = angle;
-                    seat.radius = radius;
-                }
-            }
-
-            layout = { arcCenterX, arcCenterY, maxRadius, minRadius,
-                       rowSpacing, arcSpan, seatSize, halfSpan,
-                       screenH, config };
-        }
-
-        // ============================================================
-        //  绘制：银幕
-        // ============================================================
-        function drawScreen() {
-            const { arcCenterX, arcCenterY, minRadius, arcSpan, screenH } = layout;
-
-            // 银幕弧线：在第1排内侧（更靠近圆心），半径比第1排略小
-            ctx.save();
-            const r = Math.max(18, minRadius - 26);
-            // 角度方向：座位在圆心下方(π/2方向)，银幕也在下方但半径更小
-            const startAngle = Math.PI / 2 - arcSpan * 0.38;
-            const endAngle   = Math.PI / 2 + arcSpan * 0.38;
-
-            // 银幕发光底
-            ctx.shadowColor = 'rgba(100, 180, 255, 0.6)';
-            ctx.shadowBlur = 25;
-            ctx.strokeStyle = 'rgba(120, 190, 255, 0.9)';
-            ctx.lineWidth = screenH;
-            ctx.lineCap = 'round';
-            ctx.beginPath();
-            ctx.arc(arcCenterX, arcCenterY, r, startAngle, endAngle);
-            ctx.stroke();
-
-            // 银幕文字（在银幕弧线上方，紧贴银幕）
-            ctx.shadowBlur = 0;
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
-            ctx.font = '600 13px "Microsoft YaHei", sans-serif';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText('银幕 / SCREEN', arcCenterX, arcCenterY + r - screenH / 2 - 10);
-            ctx.restore();
-        }
-
-        // ============================================================
-        //  绘制：单个座位
-        // ============================================================
-        function drawSeat(seat) {
-            const size = layout.seatSize;
-            const color = COLORS[seat.state];
-            const isHover = hoverSeat === seat;
-
-            ctx.save();
-            ctx.translate(seat.x, seat.y);
-            ctx.rotate(seat.angle);  // 座位朝向银幕
-
-            // 悬浮高亮
-            if (isHover && seat.state !== SOLD) {
-                ctx.shadowColor = 'rgba(255, 255, 255, 0.5)';
-                ctx.shadowBlur = 12;
-            }
-
-            // 座位主体（圆角矩形）
-            const half = size / 2;
-            const r = size * 0.22;
-            ctx.fillStyle = color.fill;
-            ctx.strokeStyle = isHover ? '#ffffff' : color.stroke;
-            ctx.lineWidth = isHover ? 2 : 1;
-
-            ctx.beginPath();
-            ctx.moveTo(-half + r, -half);
-            ctx.lineTo(half - r, -half);
-            ctx.quadraticCurveTo(half, -half, half, -half + r);
-            ctx.lineTo(half, half - r);
-            ctx.quadraticCurveTo(half, half, half - r, half);
-            ctx.lineTo(-half + r, half);
-            ctx.quadraticCurveTo(-half, half, -half, half - r);
-            ctx.lineTo(-half, -half + r);
-            ctx.quadraticCurveTo(-half, -half, -half + r, -half);
-            ctx.closePath();
-            ctx.fill();
-            ctx.stroke();
-
-            ctx.shadowBlur = 0;
-
-            // 座位号
-            if (size >= 12) {
-                ctx.fillStyle = color.text;
-                ctx.font = '600 ' + Math.max(8, Math.round(size * 0.4)) + 'px Arial, sans-serif';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.rotate(-seat.angle); // 文字保持水平
-                ctx.fillText(seat.col, 0, 0);
-            }
-
-            ctx.restore();
-        }
-
-        // ============================================================
-        //  绘制：排号
-        // ============================================================
-        function drawRowLabels() {
-            const { config, arcCenterX, arcCenterY, minRadius, rowSpacing, arcSpan, seatSize } = layout;
-            ctx.save();
-            ctx.fillStyle = 'rgba(160, 180, 220, 0.5)';
-            ctx.font = '11px Arial, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-
-            for (let r = 0; r < config.rows; r++) {
-                const radius = minRadius + r * rowSpacing;
-                const labelAngle = arcSpan / 2 + 0.06;
-                // 左侧排号
-                const lx = arcCenterX + radius * Math.sin(-labelAngle);
-                const ly = arcCenterY + radius * Math.cos(-labelAngle);
-                ctx.fillText(r + 1, lx, ly);
-                // 右侧排号
-                const rx = arcCenterX + radius * Math.sin(labelAngle);
-                const ry = arcCenterY + radius * Math.cos(labelAngle);
-                ctx.fillText(r + 1, rx, ry);
-            }
-            ctx.restore();
-        }
-
-        // ============================================================
-        //  绘制：整体
-        // ============================================================
-        function draw() {
-            // 清屏
-            ctx.fillStyle = '#0a0a1a';
-            ctx.fillRect(0, 0, cssW, cssH);
-
-            drawScreen();
-            drawRowLabels();
-
-            // 绘制所有座位
-            for (let r = 0; r < seats.length; r++) {
-                for (let c = 0; c < seats[r].length; c++) {
-                    drawSeat(seats[r][c]);
-                }
-            }
-        }
-
-        // ============================================================
-        //  交互：点击选座
-        // ============================================================
-        function getSeatAt(mx, my) {
-            const size = layout.seatSize;
-            const half = size / 2 + 2;  // 留一点容差
-            for (let r = 0; r < seats.length; r++) {
-                for (let c = 0; c < seats[r].length; c++) {
-                    const s = seats[r][c];
-                    // 简化为矩形命中检测（旋转后的座位近似圆形检测更稳妥）
-                    const dx = mx - s.x;
-                    const dy = my - s.y;
-                    if (dx * dx + dy * dy < (half + 2) * (half + 2)) {
-                        return s;
-                    }
-                }
-            }
-            return null;
-        }
-
-        canvas.addEventListener('click', function (e) {
-            const rect = canvas.getBoundingClientRect();
-            const mx = e.clientX - rect.left;
-            const my = e.clientY - rect.top;
-            const seat = getSeatAt(mx, my);
-            if (seat && seat.state !== SOLD) {
-                seat.state = (seat.state === EMPTY) ? SELECTED : EMPTY;
-                updateSelectedCount();
-                draw();
-            }
-        });
-
-        // ============================================================
-        //  交互：悬浮提示
-        // ============================================================
-        canvas.addEventListener('mousemove', function (e) {
-            const rect = canvas.getBoundingClientRect();
-            const mx = e.clientX - rect.left;
-            const my = e.clientY - rect.top;
-            const seat = getSeatAt(mx, my);
-
-            if (seat) {
-                hoverSeat = seat;
-                canvas.style.cursor = (seat.state === SOLD) ? 'not-allowed' : 'pointer';
-                const stateText = ['空座', '选中', '已售'][seat.state];
-                tooltip.style.display = 'block';
-                tooltip.style.left = (e.clientX + 14) + 'px';
-                tooltip.style.top = (e.clientY - 10) + 'px';
-                tooltip.innerHTML = seat.row + '排 ' + seat.col + '座 — ' + stateText;
-                draw();
-            } else {
-                if (hoverSeat) {
-                    hoverSeat = null;
-                    draw();
-                }
-                canvas.style.cursor = 'default';
-                tooltip.style.display = 'none';
-            }
-        });
-
-        canvas.addEventListener('mouseleave', function () {
-            hoverSeat = null;
-            tooltip.style.display = 'none';
-            draw();
-        });
-
-        // ============================================================
-        //  厅切换
-        // ============================================================
-        document.querySelectorAll('.hall-btn').forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                document.querySelectorAll('.hall-btn').forEach(function (b) {
-                    b.classList.remove('active');
-                });
-                btn.classList.add('active');
-                currentHall = btn.dataset.hall;
-                initSeats(currentHall);
-                calculateLayout();
-                updateSelectedCount();
-                draw();
-            });
-        });
-
-        // ============================================================
-        //  已选数量
-        // ============================================================
-        function updateSelectedCount() {
-            let count = 0;
-            for (let r = 0; r < seats.length; r++) {
-                for (let c = 0; c < seats[r].length; c++) {
-                    if (seats[r][c].state === SELECTED) count++;
-                }
-            }
-            document.getElementById('selected-count').textContent = count;
-        }
-
-        // ============================================================
         //  启动
         // ============================================================
         initUserInfo();
         initSeats(currentHall);
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
+        updateSelectedCount();
+        switchMode('recommend');
     </script>
 </body>
 </html>
