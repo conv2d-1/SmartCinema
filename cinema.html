@@ -145,8 +145,8 @@
 
         /* ===== 侧边栏 ===== */
         #sidebar {
-            width: 300px;
-            min-width: 300px;
+            width: 350px;
+            min-width: 350px;
             background: #12122a;
             border-left: 1px solid rgba(100, 140, 255, 0.15);
             padding: 16px 18px;
@@ -166,27 +166,38 @@
         }
 
         .mode-tabs {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 6px;
             border-bottom: 1px solid rgba(100, 140, 255, 0.15);
             padding-bottom: 8px;
         }
 
         .mode-tab {
-            flex: 1;
             text-align: center;
-            padding: 6px 0;
-            font-size: 14px;
+            padding: 7px 4px;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            background: transparent;
+            font: inherit;
+            font-size: 13px;
             font-weight: 600;
             color: #888;
             cursor: pointer;
-            border-bottom: 2px solid transparent;
             transition: all 0.2s;
+        }
+
+        .mode-tab:hover,
+        .mode-tab:focus-visible {
+            color: #d7e8ff;
+            border-color: rgba(100, 181, 246, 0.3);
+            outline: none;
         }
 
         .mode-tab.active {
             color: #64b5f6;
-            border-bottom-color: #64b5f6;
+            background: rgba(66, 165, 245, 0.13);
+            border-color: rgba(100, 181, 246, 0.45);
         }
 
         .mode-content {
@@ -335,6 +346,234 @@
             min-height: 20px;
         }
 
+        /* ===== 模块3：影院热度地图 ===== */
+        .panel-intro {
+            color: #aaa;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .heat-day-header,
+        .score-section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 13px;
+            color: #999;
+        }
+
+        .heat-day-header strong,
+        .score-section-title strong {
+            color: #e7f2ff;
+            font-size: 14px;
+        }
+
+        .week-slider {
+            width: 100%;
+            accent-color: #42a5f5;
+            cursor: pointer;
+        }
+
+        .week-labels {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            color: #737b97;
+            font-size: 11px;
+            margin-top: -6px;
+        }
+
+        .heat-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .heat-stat {
+            padding: 9px 6px;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.025);
+            text-align: center;
+        }
+
+        .heat-stat strong {
+            display: block;
+            margin-bottom: 2px;
+            font-size: 18px;
+        }
+
+        .heat-stat span {
+            color: #8c93a8;
+            font-size: 11px;
+        }
+
+        .heat-stat.hot strong { color: #ef5350; }
+        .heat-stat.warm strong { color: #fbc02d; }
+        .heat-stat.cool strong { color: #42a5f5; }
+
+        /* ===== 模块4：观影体验评分 ===== */
+        .score-empty {
+            padding: 18px 14px;
+            border: 1px dashed rgba(100, 181, 246, 0.3);
+            border-radius: 10px;
+            color: #9299ad;
+            font-size: 13px;
+            line-height: 1.7;
+            text-align: center;
+        }
+
+        .score-overview {
+            display: grid;
+            grid-template-columns: 86px 1fr;
+            align-items: center;
+            gap: 14px;
+            padding: 12px;
+            border: 1px solid rgba(100, 181, 246, 0.16);
+            border-radius: 10px;
+            background: rgba(66, 165, 245, 0.06);
+        }
+
+        .score-ring {
+            --score: 0;
+            position: relative;
+            width: 78px;
+            height: 78px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: conic-gradient(#42a5f5 calc(var(--score) * 1%), rgba(100, 181, 246, 0.12) 0);
+        }
+
+        .score-ring::before {
+            content: "";
+            position: absolute;
+            inset: 7px;
+            border-radius: 50%;
+            background: #151532;
+        }
+
+        .score-ring span {
+            position: relative;
+            color: #fff;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .score-summary strong {
+            display: block;
+            color: #8bc6ff;
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .score-summary p {
+            color: #9199ae;
+            font-size: 12px;
+            line-height: 1.55;
+        }
+
+        .metric-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .metric-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 5px;
+            color: #b9c0d2;
+            font-size: 12px;
+        }
+
+        .metric-head strong {
+            color: #e3edff;
+        }
+
+        .metric-bar {
+            height: 6px;
+            overflow: hidden;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .metric-bar i {
+            display: block;
+            width: 0;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #1e88e5, #64b5f6);
+            transition: width 0.35s ease;
+        }
+
+        .score-reasons {
+            padding: 9px 11px;
+            border-left: 3px solid #42a5f5;
+            border-radius: 5px;
+            background: rgba(66, 165, 245, 0.07);
+            color: #b5bdd0;
+            font-size: 12px;
+            line-height: 1.65;
+        }
+
+        .star-rating {
+            display: flex;
+            justify-content: center;
+            gap: 7px;
+            padding: 4px 0;
+        }
+
+        .star-btn {
+            border: none;
+            background: transparent;
+            color: #596078;
+            font-size: 28px;
+            line-height: 1;
+            cursor: pointer;
+            transition: transform 0.15s, color 0.15s;
+        }
+
+        .star-btn:hover,
+        .star-btn:focus-visible {
+            color: #ffd45c;
+            transform: translateY(-2px);
+            outline: none;
+        }
+
+        .star-btn.active {
+            color: #ffca28;
+        }
+
+        .rating-status {
+            min-height: 18px;
+            color: #8790a7;
+            font-size: 11px;
+            text-align: center;
+        }
+
+        .combined-result {
+            display: none;
+            padding: 10px 12px;
+            border: 1px solid rgba(102, 187, 106, 0.28);
+            border-radius: 8px;
+            background: rgba(102, 187, 106, 0.08);
+            color: #c7e8c9;
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+        .combined-result.show {
+            display: block;
+        }
+
+        .combined-result strong {
+            color: #81c784;
+            font-size: 16px;
+        }
+
         /* ===== 底部栏 ===== */
         footer {
             display: flex;
@@ -372,6 +611,9 @@
         .legend-dot.selected { background: #ffb300; }
         .legend-dot.sold     { background: #e53935; }
         .legend-dot.recommended { background: #42a5f5; border: 1px solid #90caf9; }
+        .legend-dot.hot { background: #ef5350; }
+        .legend-dot.warm { background: #fbc02d; }
+        .legend-dot.cool { background: #42a5f5; }
 
         .selected-info {
             font-size: 13px;
@@ -416,6 +658,28 @@
             }
         }
 
+        @media (max-width: 480px) {
+            header,
+            footer {
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+
+            .hall-btn {
+                padding: 7px 10px;
+                font-size: 12px;
+            }
+
+            .score-overview {
+                grid-template-columns: 72px 1fr;
+            }
+
+            .score-ring {
+                width: 66px;
+                height: 66px;
+            }
+        }
+
         .hidden { display: none !important; }
         .text-muted { color: #888; font-size: 12px; }
     </style>
@@ -441,13 +705,15 @@
 
         <aside id="sidebar">
             <h2>🎬 选座工具</h2>
-            <div class="mode-tabs">
-                <div class="mode-tab active" data-mode="recommend" onclick="switchMode('recommend')">智能推荐</div>
-                <div class="mode-tab" data-mode="manual" onclick="switchMode('manual')">手动选座</div>
+            <div class="mode-tabs" role="tablist" aria-label="功能模块">
+                <button type="button" class="mode-tab active" data-mode="recommend" onclick="switchMode('recommend')" role="tab" aria-selected="true">智能推荐</button>
+                <button type="button" class="mode-tab" data-mode="manual" onclick="switchMode('manual')" role="tab" aria-selected="false">手动选座</button>
+                <button type="button" class="mode-tab" data-mode="heatmap" onclick="switchMode('heatmap')" role="tab" aria-selected="false">热度地图</button>
+                <button type="button" class="mode-tab" data-mode="experience" onclick="switchMode('experience')" role="tab" aria-selected="false">体验评分</button>
             </div>
 
             <!-- 推荐模式 -->
-            <div id="mode-recommend" class="mode-content active">
+            <div id="mode-recommend" class="mode-content active" role="tabpanel">
                 <div class="form-row">
                     <label>票型</label>
                     <select id="ticket-type" onchange="onTicketTypeChange()">
@@ -479,7 +745,7 @@
             </div>
 
             <!-- 手动模式 -->
-            <div id="mode-manual" class="mode-content">
+            <div id="mode-manual" class="mode-content" role="tabpanel">
                 <div class="info-box">
                     <strong>手动操作</strong><br>
                     • <strong>单击</strong>：切换空座↔选中<br>
@@ -490,15 +756,116 @@
                 <button class="btn-secondary" onclick="clearAllSelected()">清空所有选中</button>
                 <div class="text-muted" style="margin-top:8px;">当前模式：手动选座</div>
             </div>
+
+            <!-- 模块3：影院热度地图 -->
+            <div id="mode-heatmap" class="mode-content" role="tabpanel">
+                <p class="panel-intro">依据排距、中心度与一周观影规律计算热度。画布中的红、黄、蓝区域会随日期动态变化。</p>
+                <div class="heat-day-header">
+                    <span>当前日期</span>
+                    <strong id="heat-day-label">星期一</strong>
+                </div>
+                <input
+                    class="week-slider"
+                    id="heat-day-slider"
+                    type="range"
+                    min="0"
+                    max="6"
+                    step="1"
+                    value="0"
+                    aria-label="选择星期"
+                    oninput="setHeatmapDay(Number(this.value))"
+                >
+                <div class="week-labels" aria-hidden="true">
+                    <span>一</span><span>二</span><span>三</span><span>四</span>
+                    <span>五</span><span>六</span><span>日</span>
+                </div>
+                <button type="button" class="btn-secondary" id="heat-play-btn" onclick="toggleHeatmapPlayback()">▶ 播放一周变化</button>
+                <div class="heat-stats" aria-label="热度区域统计">
+                    <div class="heat-stat hot">
+                        <strong id="heat-hot-count">0</strong>
+                        <span>热门座位</span>
+                    </div>
+                    <div class="heat-stat warm">
+                        <strong id="heat-warm-count">0</strong>
+                        <span>一般座位</span>
+                    </div>
+                    <div class="heat-stat cool">
+                        <strong id="heat-cool-count">0</strong>
+                        <span>冷门座位</span>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <strong>如何使用</strong><br>
+                    ① 拖动星期滑块或播放一周变化<br>
+                    ② 观察热度区域<br>
+                    ③ 切回手动选座完成选择
+                </div>
+            </div>
+
+            <!-- 模块4：观影体验评分 -->
+            <div id="mode-experience" class="mode-content" role="tabpanel">
+                <p class="panel-intro">系统将根据已选座位的视角、距银幕距离和周围空座计算体验分；观影后还可提交个人评分。</p>
+                <div id="score-empty" class="score-empty">
+                    请先在“智能推荐”或“手动选座”中选中座位，系统会立即生成体验评分。
+                </div>
+                <div id="score-panel" class="hidden">
+                    <div class="score-overview">
+                        <div class="score-ring" id="system-score-ring">
+                            <span id="system-score-value">0</span>
+                        </div>
+                        <div class="score-summary">
+                            <strong id="system-score-label">一般</strong>
+                            <p id="score-seat-summary">尚未选择座位</p>
+                        </div>
+                    </div>
+
+                    <div class="metric-list" style="margin-top:12px;">
+                        <div class="metric-item">
+                            <div class="metric-head"><span>视角舒适度</span><strong id="metric-angle-value">0</strong></div>
+                            <div class="metric-bar"><i id="metric-angle-bar"></i></div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-head"><span>银幕距离</span><strong id="metric-distance-value">0</strong></div>
+                            <div class="metric-bar"><i id="metric-distance-bar"></i></div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-head"><span>周围空座</span><strong id="metric-space-value">0</strong></div>
+                            <div class="metric-bar"><i id="metric-space-bar"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="score-reasons" id="score-reasons" style="margin-top:12px;"></div>
+
+                    <div class="score-section-title" style="margin-top:14px;">
+                        <span>观影后手动评分</span>
+                        <strong id="rating-label">未评分</strong>
+                    </div>
+                    <div class="star-rating" id="star-rating" role="radiogroup" aria-label="观众评分">
+                        <button type="button" class="star-btn" data-rating="1" onclick="setUserRating(1)" aria-label="1星" role="radio" aria-checked="false">★</button>
+                        <button type="button" class="star-btn" data-rating="2" onclick="setUserRating(2)" aria-label="2星" role="radio" aria-checked="false">★</button>
+                        <button type="button" class="star-btn" data-rating="3" onclick="setUserRating(3)" aria-label="3星" role="radio" aria-checked="false">★</button>
+                        <button type="button" class="star-btn" data-rating="4" onclick="setUserRating(4)" aria-label="4星" role="radio" aria-checked="false">★</button>
+                        <button type="button" class="star-btn" data-rating="5" onclick="setUserRating(5)" aria-label="5星" role="radio" aria-checked="false">★</button>
+                    </div>
+                    <div class="rating-status" id="rating-status">请选择 1～5 星</div>
+                    <button type="button" class="btn-primary" onclick="submitAudienceRating()">提交观众评分</button>
+                    <div class="combined-result" id="combined-result"></div>
+                </div>
+            </div>
         </aside>
     </main>
 
     <footer>
-        <div class="legend">
+        <div class="legend" id="seat-legend">
             <div class="legend-item"><div class="legend-dot empty"></div>空座</div>
             <div class="legend-item"><div class="legend-dot selected"></div>选中未售</div>
             <div class="legend-item"><div class="legend-dot sold"></div>已售</div>
             <div class="legend-item"><div class="legend-dot recommended"></div>推荐</div>
+        </div>
+        <div class="legend hidden" id="heat-legend">
+            <div class="legend-item"><div class="legend-dot hot"></div>热门（70～100）</div>
+            <div class="legend-item"><div class="legend-dot warm"></div>一般（45～69）</div>
+            <div class="legend-item"><div class="legend-dot cool"></div>冷门（0～44）</div>
         </div>
         <div class="selected-info">
             已选 <span id="selected-count">0</span> 个座位
@@ -529,13 +896,26 @@
             3: { fill: '#42a5f5', stroke: '#1e88e5', text: '#ffffff' }
         };
 
+        const WEEK_DAYS = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'];
+        const HEAT_COLORS = {
+            hot:  { fill: '#ef5350', stroke: '#c62828', text: '#ffffff', rgb: '239,83,80' },
+            warm: { fill: '#fbc02d', stroke: '#f9a825', text: '#28220b', rgb: '251,192,45' },
+            cool: { fill: '#42a5f5', stroke: '#1976d2', text: '#ffffff', rgb: '66,165,245' }
+        };
+        const EXPERIENCE_RATINGS_KEY = 'smartCinemaExperienceRatings';
+
         let currentHall = 'small';
+        let currentMode = 'recommend';
         let seats = [];
         let layout = null;
         let hoverSeat = null;
         let recommendSeats = [];
         let blinkPhase = 0;
         let blinkTimer = null;
+        let heatmapDay = 0;
+        let heatPlayTimer = null;
+        let userRatingValue = 0;
+        let activeScoreSignature = '';
 
         // ============================================================
         //  持久化存储
@@ -620,6 +1000,7 @@
                 }
             }
             document.getElementById('selected-count').textContent = count;
+            updateExperiencePanel();
         }
 
         // ============================================================
@@ -660,11 +1041,29 @@
         //  模式切换
         // ============================================================
         function switchMode(mode) {
-            document.querySelectorAll('.mode-tab').forEach(el => el.classList.remove('active'));
-            document.querySelector(`.mode-tab[data-mode="${mode}"]`).classList.add('active');
-            document.querySelectorAll('.mode-content').forEach(el => el.classList.remove('active'));
+            currentMode = mode;
+            document.querySelectorAll('.mode-tab').forEach(function (element) {
+                const active = element.dataset.mode === mode;
+                element.classList.toggle('active', active);
+                element.setAttribute('aria-selected', active ? 'true' : 'false');
+            });
+            document.querySelectorAll('.mode-content').forEach(function (element) {
+                element.classList.remove('active');
+            });
             document.getElementById(`mode-${mode}`).classList.add('active');
             clearRecommendHighlights();
+
+            document.getElementById('seat-legend').classList.toggle('hidden', mode === 'heatmap');
+            document.getElementById('heat-legend').classList.toggle('hidden', mode !== 'heatmap');
+
+            if (mode === 'heatmap') {
+                updateHeatmapSummary();
+            } else {
+                stopHeatmapPlayback();
+            }
+            if (mode === 'experience') {
+                updateExperiencePanel();
+            }
             draw();
         }
 
@@ -834,6 +1233,362 @@
         }
 
         // ============================================================
+        //  模块3：影院热度地图
+        // ============================================================
+        function clamp(value, min, max) {
+            return Math.min(max, Math.max(min, value));
+        }
+
+        function getHeatValue(seat, day = heatmapDay) {
+            const totalRows = seats.length;
+            const totalCols = seats[0].length;
+            const rowNorm = totalRows === 1 ? 0.5 : (seat.row - 1) / (totalRows - 1);
+            const center = (totalCols + 1) / 2;
+            const centerNorm = totalCols === 1 ? 0 : (seat.col - center) / ((totalCols - 1) / 2);
+
+            // 一周内最佳排位和左右偏好有轻微变化，周末整体热度更高。
+            const idealRows = [0.54, 0.56, 0.58, 0.61, 0.65, 0.62, 0.58];
+            const centerShifts = [-0.05, 0.04, -0.02, 0.06, 0, -0.04, 0.02];
+            const dayBoosts = [-6, -3, 0, 4, 8, 12, 7];
+            const rowScore = Math.exp(-0.5 * Math.pow((rowNorm - idealRows[day]) / 0.22, 2));
+            const centerScore = Math.exp(-0.5 * Math.pow((centerNorm - centerShifts[day]) / 0.42, 2));
+
+            // 固定伪随机扰动让每个座位有稳定差异，同时保证同一星期可复现。
+            const noiseSeed = Math.sin(
+                seat.row * 12.9898 + seat.col * 78.233 + (day + 1) * 37.719
+            ) * 43758.5453;
+            const noise = noiseSeed - Math.floor(noiseSeed);
+            const value = 15 + rowScore * 45 + centerScore * 30 +
+                dayBoosts[day] + (noise - 0.5) * 12;
+            return Math.round(clamp(value, 0, 100));
+        }
+
+        function getHeatLevel(value) {
+            if (value >= 70) return 'hot';
+            if (value >= 45) return 'warm';
+            return 'cool';
+        }
+
+        function setHeatmapDay(day) {
+            heatmapDay = clamp(Math.round(day), 0, 6);
+            document.getElementById('heat-day-slider').value = heatmapDay;
+            document.getElementById('heat-day-label').textContent = WEEK_DAYS[heatmapDay];
+            localStorage.setItem('smartCinemaHeatmapDay', String(heatmapDay));
+            updateHeatmapSummary();
+            draw();
+        }
+
+        function updateHeatmapSummary() {
+            if (!seats.length) return;
+            const counts = { hot: 0, warm: 0, cool: 0 };
+            for (let r = 0; r < seats.length; r++) {
+                for (let c = 0; c < seats[r].length; c++) {
+                    counts[getHeatLevel(getHeatValue(seats[r][c]))]++;
+                }
+            }
+            document.getElementById('heat-day-label').textContent = WEEK_DAYS[heatmapDay];
+            document.getElementById('heat-hot-count').textContent = counts.hot;
+            document.getElementById('heat-warm-count').textContent = counts.warm;
+            document.getElementById('heat-cool-count').textContent = counts.cool;
+        }
+
+        function toggleHeatmapPlayback() {
+            if (heatPlayTimer) {
+                stopHeatmapPlayback();
+                return;
+            }
+            const button = document.getElementById('heat-play-btn');
+            button.textContent = 'Ⅱ 暂停一周变化';
+            heatPlayTimer = setInterval(function () {
+                setHeatmapDay((heatmapDay + 1) % 7);
+            }, 1100);
+        }
+
+        function stopHeatmapPlayback() {
+            if (heatPlayTimer) {
+                clearInterval(heatPlayTimer);
+                heatPlayTimer = null;
+            }
+            const button = document.getElementById('heat-play-btn');
+            if (button) button.textContent = '▶ 播放一周变化';
+        }
+
+        function drawHeatmapLayer() {
+            ctx.save();
+            ctx.globalCompositeOperation = 'screen';
+            for (let r = 0; r < seats.length; r++) {
+                for (let c = 0; c < seats[r].length; c++) {
+                    const seat = seats[r][c];
+                    const value = getHeatValue(seat);
+                    const palette = HEAT_COLORS[getHeatLevel(value)];
+                    const radius = Math.max(11, layout.seatSize * 1.15);
+                    const alpha = 0.09 + value / 100 * 0.12;
+                    const gradient = ctx.createRadialGradient(
+                        seat.x, seat.y, 0,
+                        seat.x, seat.y, radius
+                    );
+                    gradient.addColorStop(0, `rgba(${palette.rgb}, ${alpha})`);
+                    gradient.addColorStop(1, `rgba(${palette.rgb}, 0)`);
+                    ctx.fillStyle = gradient;
+                    ctx.beginPath();
+                    ctx.arc(seat.x, seat.y, radius, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+            ctx.restore();
+        }
+
+        // ============================================================
+        //  模块4：观影体验评分
+        // ============================================================
+        function getSelectedSeats() {
+            const selected = [];
+            for (let r = 0; r < seats.length; r++) {
+                for (let c = 0; c < seats[r].length; c++) {
+                    if (seats[r][c].state === SELECTED) selected.push(seats[r][c]);
+                }
+            }
+            return selected;
+        }
+
+        function getExperienceLabel(score) {
+            if (score >= 85) return '极佳';
+            if (score >= 70) return '优秀';
+            return '一般';
+        }
+
+        function calculateSeatExperience(seat) {
+            const totalRows = seats.length;
+            const totalCols = seats[0].length;
+            const center = (totalCols + 1) / 2;
+            const centerOffset = totalCols === 1
+                ? 0
+                : Math.abs(seat.col - center) / ((totalCols - 1) / 2);
+            const rowNorm = totalRows === 1 ? 0.5 : (seat.row - 1) / (totalRows - 1);
+
+            // 中轴视角越正得分越高；约第6～7排为舒适距离。
+            const angle = Math.round(clamp(100 - centerOffset * 60, 40, 100));
+            const distance = Math.round(clamp(100 - Math.abs(rowNorm - 0.58) * 115, 45, 100));
+
+            let neighbors = 0;
+            let emptyNeighbors = 0;
+            for (let dr = -1; dr <= 1; dr++) {
+                for (let dc = -1; dc <= 1; dc++) {
+                    if (dr === 0 && dc === 0) continue;
+                    const nr = seat.row - 1 + dr;
+                    const nc = seat.col - 1 + dc;
+                    if (nr < 0 || nr >= totalRows || nc < 0 || nc >= totalCols) continue;
+                    neighbors++;
+                    const state = seats[nr][nc].state;
+                    if (state === EMPTY || state === RECOMMENDED) emptyNeighbors++;
+                }
+            }
+            const space = neighbors
+                ? Math.round(45 + (emptyNeighbors / neighbors) * 55)
+                : 100;
+            const total = Math.round(angle * 0.4 + distance * 0.35 + space * 0.25);
+            return { angle, distance, space, total };
+        }
+
+        function calculateExperience() {
+            const selected = getSelectedSeats();
+            if (!selected.length) return null;
+            const totals = selected.reduce(function (acc, seat) {
+                const score = calculateSeatExperience(seat);
+                acc.angle += score.angle;
+                acc.distance += score.distance;
+                acc.space += score.space;
+                acc.total += score.total;
+                return acc;
+            }, { angle: 0, distance: 0, space: 0, total: 0 });
+            const count = selected.length;
+            return {
+                selected,
+                angle: Math.round(totals.angle / count),
+                distance: Math.round(totals.distance / count),
+                space: Math.round(totals.space / count),
+                total: Math.round(totals.total / count)
+            };
+        }
+
+        function buildExperienceReasons(result) {
+            const reasons = [];
+            if (result.angle >= 85) {
+                reasons.push('视线接近银幕中轴，观看时横向偏转较小。');
+            } else if (result.angle >= 70) {
+                reasons.push('视角较为自然，轻微侧向不会明显影响画面。');
+            } else {
+                reasons.push('座位相对靠侧，可能需要更多横向转头。');
+            }
+
+            if (result.distance >= 85) {
+                reasons.push('排距位于舒适区，画面覆盖度与仰角较均衡。');
+            } else if (result.distance >= 70) {
+                reasons.push('与银幕距离尚可，整体观看压力较小。');
+            } else {
+                reasons.push('距离银幕偏近或偏远，沉浸感与舒适度会打折。');
+            }
+
+            if (result.space >= 78) {
+                reasons.push('周围空座较多，进出与个人空间更宽松。');
+            } else if (result.space >= 62) {
+                reasons.push('周围空座适中，环境拥挤度可接受。');
+            } else {
+                reasons.push('相邻座位较满，个人空间和安静度可能受影响。');
+            }
+            return reasons;
+        }
+
+        function getRatingViewer() {
+            const queryUser = getQueryParam('user');
+            if (queryUser) return queryUser;
+            try {
+                const session = JSON.parse(sessionStorage.getItem('smartCinemaCurrentUser') || '{}');
+                return session.username || '访客';
+            } catch (error) {
+                return '访客';
+            }
+        }
+
+        function getScoreSignature(selected) {
+            const seatPart = selected
+                .map(seat => `${seat.row}-${seat.col}`)
+                .sort()
+                .join(',');
+            return `${getRatingViewer()}|${currentHall}|${seatPart}`;
+        }
+
+        function getRatingsStore() {
+            try {
+                return JSON.parse(localStorage.getItem(EXPERIENCE_RATINGS_KEY) || '{}');
+            } catch (error) {
+                return {};
+            }
+        }
+
+        function updateStarButtons() {
+            document.querySelectorAll('.star-btn').forEach(function (button) {
+                const rating = Number(button.dataset.rating);
+                const active = rating <= userRatingValue;
+                button.classList.toggle('active', active);
+                button.setAttribute('aria-checked', rating === userRatingValue ? 'true' : 'false');
+            });
+            document.getElementById('rating-label').textContent =
+                userRatingValue ? `${userRatingValue} 星` : '未评分';
+        }
+
+        function renderCombinedResult(record) {
+            const box = document.getElementById('combined-result');
+            box.innerHTML = `
+                综合结果：<strong>${record.combinedScore} 分 · ${record.label}</strong><br>
+                <span class="text-muted">系统 ${record.systemScore} 分 × 70% + 观众 ${record.userScore} 分 × 30%</span>
+            `;
+            box.classList.add('show');
+        }
+
+        function updateExperiencePanel() {
+            const empty = document.getElementById('score-empty');
+            const panel = document.getElementById('score-panel');
+            if (!empty || !panel) return;
+
+            const result = calculateExperience();
+            if (!result) {
+                empty.classList.remove('hidden');
+                panel.classList.add('hidden');
+                activeScoreSignature = '';
+                userRatingValue = 0;
+                updateStarButtons();
+                document.getElementById('combined-result').classList.remove('show');
+                return;
+            }
+
+            empty.classList.add('hidden');
+            panel.classList.remove('hidden');
+            const signature = getScoreSignature(result.selected);
+            if (signature !== activeScoreSignature) {
+                activeScoreSignature = signature;
+                const saved = getRatingsStore()[signature];
+                userRatingValue = saved ? saved.rating : 0;
+                updateStarButtons();
+                document.getElementById('rating-status').textContent = saved
+                    ? `已保存于 ${new Date(saved.updatedAt).toLocaleString()}`
+                    : '请选择 1～5 星';
+                if (saved) {
+                    renderCombinedResult(saved);
+                } else {
+                    document.getElementById('combined-result').classList.remove('show');
+                }
+            }
+
+            document.getElementById('system-score-ring').style.setProperty('--score', result.total);
+            document.getElementById('system-score-value').textContent = result.total;
+            document.getElementById('system-score-label').textContent =
+                `${getExperienceLabel(result.total)} · 系统评分`;
+
+            const seatNames = result.selected.map(seat => `${seat.row}排${seat.col}座`);
+            const seatSummary = seatNames.length > 4
+                ? `${seatNames.slice(0, 4).join('、')} 等 ${seatNames.length} 个座位`
+                : seatNames.join('、');
+            document.getElementById('score-seat-summary').textContent = seatSummary;
+
+            const metrics = [
+                ['angle', result.angle],
+                ['distance', result.distance],
+                ['space', result.space]
+            ];
+            metrics.forEach(function ([name, value]) {
+                document.getElementById(`metric-${name}-value`).textContent = `${value} 分`;
+                document.getElementById(`metric-${name}-bar`).style.width = `${value}%`;
+            });
+
+            const reasons = buildExperienceReasons(result);
+            document.getElementById('score-reasons').innerHTML =
+                '<strong>系统分析</strong><br>' + reasons.map(reason => `• ${reason}`).join('<br>');
+        }
+
+        function setUserRating(value) {
+            if (!getSelectedSeats().length) {
+                document.getElementById('rating-status').textContent = '请先选择座位';
+                return;
+            }
+            userRatingValue = clamp(Math.round(value), 1, 5);
+            updateStarButtons();
+            document.getElementById('rating-status').textContent = `已选择 ${userRatingValue} 星，点击下方按钮保存`;
+            document.getElementById('combined-result').classList.remove('show');
+        }
+
+        function submitAudienceRating() {
+            const result = calculateExperience();
+            if (!result) {
+                document.getElementById('rating-status').textContent = '请先选择座位';
+                return;
+            }
+            if (!userRatingValue) {
+                document.getElementById('rating-status').textContent = '请先选择 1～5 星';
+                return;
+            }
+
+            const userScore = userRatingValue * 20;
+            const combinedScore = Math.round(result.total * 0.7 + userScore * 0.3);
+            const record = {
+                rating: userRatingValue,
+                userScore,
+                systemScore: result.total,
+                combinedScore,
+                label: getExperienceLabel(combinedScore),
+                hall: currentHall,
+                seats: result.selected.map(seat => `${seat.row}排${seat.col}座`),
+                updatedAt: new Date().toISOString()
+            };
+
+            const store = getRatingsStore();
+            store[activeScoreSignature] = record;
+            localStorage.setItem(EXPERIENCE_RATINGS_KEY, JSON.stringify(store));
+            document.getElementById('rating-status').textContent = '评分已保存到本地';
+            renderCombinedResult(record);
+        }
+
+        // ============================================================
         //  Canvas 相关
         // ============================================================
         const canvas = document.getElementById('cinema-canvas');
@@ -930,9 +1685,12 @@
 
         function drawSeat(seat) {
             const size = layout.seatSize;
-            const color = COLORS[seat.state];
+            const heatValue = currentMode === 'heatmap' ? getHeatValue(seat) : null;
+            const color = currentMode === 'heatmap'
+                ? HEAT_COLORS[getHeatLevel(heatValue)]
+                : COLORS[seat.state];
             const isHover = hoverSeat === seat;
-            const isRecommended = (seat.state === RECOMMENDED);
+            const isRecommended = currentMode !== 'heatmap' && seat.state === RECOMMENDED;
 
             ctx.save();
             ctx.translate(seat.x, seat.y);
@@ -1008,6 +1766,9 @@
             ctx.fillRect(0, 0, cssW, cssH);
 
             drawScreen();
+            if (currentMode === 'heatmap') {
+                drawHeatmapLayer();
+            }
             drawRowLabels();
 
             for (let r = 0; r < seats.length; r++) {
@@ -1059,6 +1820,7 @@
         }
 
         canvas.addEventListener('click', function (e) {
+            if (currentMode === 'heatmap') return;
             const rect = canvas.getBoundingClientRect();
             const mx = e.clientX - rect.left;
             const my = e.clientY - rect.top;
@@ -1093,7 +1855,7 @@
         let lastDraggedSeat = null;
 
         canvas.addEventListener('mousedown', function (e) {
-            if (e.button !== 0) return;
+            if (e.button !== 0 || currentMode === 'heatmap') return;
             isDragging = true;
             lastDraggedSeat = null;
         });
@@ -1105,18 +1867,26 @@
 
             const seat = getSeatAt(mx, my);
             if (seat) {
-                const stateText = ['空座', '选中', '已售', '推荐'][seat.state];
                 tooltip.style.display = 'block';
                 tooltip.style.left = (e.clientX + 14) + 'px';
                 tooltip.style.top = (e.clientY - 10) + 'px';
-                tooltip.innerHTML = seat.row + '排 ' + seat.col + '座 — ' + stateText;
-                canvas.style.cursor = (seat.state === SOLD) ? 'not-allowed' : 'pointer';
+                if (currentMode === 'heatmap') {
+                    const heatValue = getHeatValue(seat);
+                    const heatText = { hot: '热门', warm: '一般', cool: '冷门' }[getHeatLevel(heatValue)];
+                    tooltip.innerHTML = seat.row + '排 ' + seat.col + '座 — 热度 ' +
+                        heatValue + '（' + heatText + '）';
+                    canvas.style.cursor = 'help';
+                } else {
+                    const stateText = ['空座', '选中', '已售', '推荐'][seat.state];
+                    tooltip.innerHTML = seat.row + '排 ' + seat.col + '座 — ' + stateText;
+                    canvas.style.cursor = (seat.state === SOLD) ? 'not-allowed' : 'pointer';
+                }
             } else {
                 tooltip.style.display = 'none';
                 canvas.style.cursor = 'default';
             }
 
-            if (isDragging && seat && seat.state !== SOLD) {
+            if (currentMode !== 'heatmap' && isDragging && seat && seat.state !== SOLD) {
                 if (lastDraggedSeat === seat) return;
                 lastDraggedSeat = seat;
                 if (seat.state === EMPTY || seat.state === RECOMMENDED) {
@@ -1157,7 +1927,10 @@
                 initSeats(currentHall);
                 calculateLayout();
                 clearRecommendHighlights();
+                activeScoreSignature = '';
+                userRatingValue = 0;
                 updateSelectedCount();
+                updateHeatmapSummary();
                 draw();
             });
         });
@@ -1194,9 +1967,15 @@
         // ============================================================
         initUserInfo();
         initSeats(currentHall);
+        const savedHeatmapDay = Number(localStorage.getItem('smartCinemaHeatmapDay'));
+        heatmapDay = Number.isInteger(savedHeatmapDay)
+            ? clamp(savedHeatmapDay, 0, 6)
+            : 0;
+        document.getElementById('heat-day-slider').value = heatmapDay;
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
         updateSelectedCount();
+        updateHeatmapSummary();
         switchMode('recommend');
     </script>
 </body>
