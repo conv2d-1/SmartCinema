@@ -611,6 +611,7 @@
         .legend-dot.selected { background: #ffb300; }
         .legend-dot.sold     { background: #e53935; }
         .legend-dot.recommended { background: #42a5f5; border: 1px solid #90caf9; }
+        .legend-dot.reserved { background: #9c27b0; border: 1px solid #ce93d8; }
         .legend-dot.hot { background: #ef5350; }
         .legend-dot.warm { background: #fbc02d; }
         .legend-dot.cool { background: #42a5f5; }
@@ -682,6 +683,798 @@
 
         .hidden { display: none !important; }
         .text-muted { color: #888; font-size: 12px; }
+
+        /* ===== 订单面板 ===== */
+        .orders-panel {
+            position: fixed;
+            top: 60px;
+            right: 28px;
+            width: 380px;
+            max-height: 75vh;
+            background: #1a1a3e;
+            border: 1px solid rgba(100, 200, 100, 0.3);
+            border-radius: 10px;
+            z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .orders-panel.show {
+            display: flex;
+        }
+
+        .orders-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(100, 200, 100, 0.2);
+            flex-shrink: 0;
+        }
+
+        .orders-header h3 {
+            font-size: 15px;
+            color: #66bb6a;
+            margin: 0;
+        }
+
+        .orders-close {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .orders-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .orders-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        .order-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .order-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .order-id {
+            font-size: 12px;
+            color: #888;
+            font-family: monospace;
+        }
+
+        .order-status {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .order-status-reserved {
+            background: rgba(255, 179, 0, 0.2);
+            color: #ffb300;
+        }
+
+        .order-status-completed {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+        }
+
+        .order-status-cancelled {
+            background: rgba(158, 158, 158, 0.2);
+            color: #9e9e9e;
+        }
+
+        .order-status-refunded {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+        }
+
+        .order-info {
+            font-size: 13px;
+            color: #ccc;
+            line-height: 1.8;
+        }
+
+        .order-label {
+            color: #888;
+        }
+
+        .order-price {
+            color: #ff7043;
+            font-weight: 600;
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .order-btn {
+            flex: 1;
+            padding: 6px 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .order-btn.pay {
+            background: linear-gradient(135deg, #4caf50, #388e3c);
+            color: #fff;
+        }
+
+        .order-btn.pay:hover {
+            box-shadow: 0 2px 8px rgba(76, 175, 80, 0.4);
+        }
+
+        .order-btn.cancel {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ccc;
+        }
+
+        .order-btn.cancel:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .order-btn.refund {
+            background: linear-gradient(135deg, #ef5350, #c62828);
+            color: #fff;
+        }
+
+        .order-btn.refund:hover {
+            box-shadow: 0 2px 8px rgba(239, 83, 80, 0.4);
+        }
+
+        /* ===== 无障碍功能 ===== */
+        .a11y-btn {
+            padding: 6px 12px;
+            border: 1px solid rgba(100, 140, 255, 0.3);
+            border-radius: 6px;
+            background: transparent;
+            color: #aaa;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .a11y-btn:hover {
+            border-color: rgba(100, 140, 255, 0.6);
+            color: #ddd;
+        }
+
+        .a11y-panel {
+            position: fixed;
+            top: 60px;
+            right: 28px;
+            width: 300px;
+            background: #1a1a3e;
+            border: 1px solid rgba(100, 140, 255, 0.3);
+            border-radius: 10px;
+            padding: 16px;
+            z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            display: none;
+        }
+
+        .a11y-panel.show {
+            display: block;
+        }
+
+        .a11y-panel h3 {
+            font-size: 15px;
+            color: #64b5f6;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(100, 140, 255, 0.2);
+        }
+
+        .a11y-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .a11y-item:last-child {
+            border-bottom: none;
+        }
+
+        .a11y-item label {
+            font-size: 13px;
+            color: #ccc;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .a11y-item .a11y-desc {
+            font-size: 11px;
+            color: #777;
+            margin-top: 2px;
+        }
+
+        .a11y-toggle {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            border-radius: 12px;
+            background: #333;
+            cursor: pointer;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+
+        .a11y-toggle::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #fff;
+            transition: transform 0.2s;
+        }
+
+        .a11y-toggle.active {
+            background: #42a5f5;
+        }
+
+        .a11y-toggle.active::after {
+            transform: translateX(20px);
+        }
+
+        /* 大字体模式 */
+        body.large-text {
+            font-size: 18px;
+        }
+
+        body.large-text header h1 {
+            font-size: 28px;
+        }
+
+        body.large-text .hall-btn {
+            font-size: 16px;
+            padding: 10px 22px;
+        }
+
+        body.large-text .user-info {
+            font-size: 15px;
+        }
+
+        body.large-text .logout-btn {
+            font-size: 15px;
+            padding: 8px 20px;
+        }
+
+        body.large-text #sidebar h2 {
+            font-size: 20px;
+        }
+
+        body.large-text .mode-tab {
+            font-size: 15px;
+            padding: 10px 6px;
+        }
+
+        body.large-text .form-row label {
+            font-size: 15px;
+        }
+
+        body.large-text .form-row select,
+        body.large-text .form-row input {
+            font-size: 15px;
+            padding: 10px 14px;
+        }
+
+        body.large-text .btn-primary {
+            font-size: 16px;
+            padding: 12px 20px;
+        }
+
+        body.large-text .btn-secondary {
+            font-size: 15px;
+            padding: 10px 18px;
+        }
+
+        body.large-text .info-box,
+        body.large-text .panel-intro,
+        body.large-text .score-reasons,
+        body.light-text .combined-result {
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        body.large-text .legend-item,
+        body.large-text .selected-info {
+            font-size: 15px;
+        }
+
+        body.large-text .legend-dot {
+            width: 18px;
+            height: 18px;
+        }
+
+        body.large-text .heat-stat strong {
+            font-size: 22px;
+        }
+
+        body.large-text .heat-stat span {
+            font-size: 13px;
+        }
+
+        body.large-text .score-ring {
+            width: 90px;
+            height: 90px;
+        }
+
+        body.large-text .score-ring span {
+            font-size: 28px;
+        }
+
+        body.large-text .score-summary strong {
+            font-size: 22px;
+        }
+
+        body.large-text .star-btn {
+            font-size: 34px;
+        }
+
+        body.large-text .orders-panel {
+            width: 440px;
+        }
+
+        body.large-text .orders-header h3 {
+            font-size: 20px;
+        }
+
+        body.large-text .orders-close {
+            font-size: 22px;
+        }
+
+        body.large-text .order-card {
+            padding: 16px;
+        }
+
+        body.large-text .order-id {
+            font-size: 14px;
+        }
+
+        body.large-text .order-status {
+            font-size: 14px;
+            padding: 4px 12px;
+        }
+
+        body.large-text .order-info {
+            font-size: 16px;
+            line-height: 2;
+        }
+
+        body.large-text .order-btn {
+            font-size: 15px;
+            padding: 10px 14px;
+        }
+
+        /* 高对比度模式 */
+        body.high-contrast {
+            background: #000;
+            color: #fff;
+        }
+
+        body.high-contrast header {
+            background: #000;
+            border-bottom: 2px solid #fff;
+        }
+
+        body.high-contrast header h1 {
+            background: none;
+            -webkit-text-fill-color: #ffff00;
+            color: #ffff00;
+        }
+
+        body.high-contrast #sidebar {
+            background: #000;
+            border-left: 2px solid #fff;
+        }
+
+        body.high-contrast #sidebar h2 {
+            color: #ffff00;
+            border-bottom: 2px solid #fff;
+        }
+
+        body.high-contrast .mode-tab {
+            color: #fff;
+            border-color: #fff;
+        }
+
+        body.high-contrast .mode-tab.active {
+            background: #ffff00;
+            color: #000;
+            border-color: #ffff00;
+        }
+
+        body.high-contrast .mode-tab:hover {
+            border-color: #ffff00;
+            color: #ffff00;
+        }
+
+        body.high-contrast .form-row label {
+            color: #fff;
+        }
+
+        body.high-contrast .form-row select,
+        body.high-contrast .form-row input {
+            background: #000;
+            border: 2px solid #fff;
+            color: #fff;
+        }
+
+        body.high-contrast .form-row select:focus,
+        body.high-contrast .form-row input:focus {
+            border-color: #ffff00;
+        }
+
+        body.high-contrast .btn-primary {
+            background: #ffff00;
+            color: #000;
+            border: 2px solid #fff;
+        }
+
+        body.high-contrast .btn-primary:hover {
+            box-shadow: 0 0 0 2px #ffff00;
+        }
+
+        body.high-contrast .btn-secondary {
+            border: 2px solid #ffff00;
+            color: #ffff00;
+        }
+
+        body.high-contrast .btn-secondary:hover {
+            background: #ffff00;
+            color: #000;
+        }
+
+        body.high-contrast .info-box {
+            background: #000;
+            border-left: 4px solid #ffff00;
+            color: #fff;
+            border: 2px solid #fff;
+        }
+
+        body.high-contrast .info-box strong {
+            color: #ffff00;
+        }
+
+        body.high-contrast .recommend-result {
+            background: #000;
+            border-left: 4px solid #00ff00;
+            color: #fff;
+            border: 2px solid #00ff00;
+        }
+
+        body.high-contrast .error-msg {
+            color: #ff0000;
+            font-weight: bold;
+        }
+
+        body.high-contrast footer {
+            background: #000;
+            border-top: 2px solid #fff;
+        }
+
+        body.high-contrast .legend-item {
+            color: #fff;
+        }
+
+        body.high-contrast .selected-info {
+            color: #fff;
+        }
+
+        body.high-contrast .selected-info span {
+            color: #ffff00;
+        }
+
+        body.high-contrast .hall-btn {
+            border: 2px solid #fff;
+            color: #fff;
+        }
+
+        body.high-contrast .hall-btn:hover {
+            border-color: #ffff00;
+            color: #ffff00;
+        }
+
+        body.high-contrast .hall-btn.active {
+            background: #ffff00;
+            border-color: #ffff00;
+            color: #000;
+        }
+
+        body.high-contrast .user-info {
+            color: #fff;
+        }
+
+        body.high-contrast .user-info .username {
+            color: #ffff00;
+        }
+
+        body.high-contrast .role-tag.member {
+            background: #00ff00;
+            color: #000;
+        }
+
+        body.high-contrast .role-tag.admin {
+            background: #ff0000;
+            color: #fff;
+        }
+
+        body.high-contrast .logout-btn {
+            border: 2px solid #ff0000;
+            color: #ff0000;
+        }
+
+        body.high-contrast .logout-btn:hover {
+            background: #ff0000;
+            color: #fff;
+        }
+
+        body.high-contrast .score-empty {
+            border: 2px dashed #ffff00;
+            color: #fff;
+        }
+
+        body.high-contrast .score-overview {
+            border: 2px solid #fff;
+            background: #000;
+        }
+
+        body.high-contrast .score-ring {
+            background: #000;
+        }
+
+        body.high-contrast .score-ring::before {
+            background: #000;
+        }
+
+        body.high-contrast .score-ring span {
+            color: #ffff00;
+        }
+
+        body.high-contrast .score-summary strong {
+            color: #ffff00;
+        }
+
+        body.high-contrast .score-summary p {
+            color: #fff;
+        }
+
+        body.high-contrast .metric-head {
+            color: #fff;
+        }
+
+        body.high-contrast .metric-bar {
+            background: #333;
+        }
+
+        body.high-contrast .score-reasons {
+            border-left: 4px solid #ffff00;
+            background: #000;
+            color: #fff;
+            border: 2px solid #fff;
+        }
+
+        body.high-contrast .star-btn {
+            color: #666;
+        }
+
+        body.high-contrast .star-btn.active {
+            color: #ffff00;
+        }
+
+        body.high-contrast .star-btn:hover {
+            color: #ffff00;
+        }
+
+        body.high-contrast .combined-result {
+            border: 2px solid #00ff00;
+            background: #000;
+            color: #fff;
+        }
+
+        body.high-contrast .combined-result strong {
+            color: #00ff00;
+        }
+
+        body.high-contrast .a11y-panel {
+            background: #000;
+            border: 2px solid #fff;
+        }
+
+        body.high-contrast .a11y-panel h3 {
+            color: #ffff00;
+            border-bottom: 2px solid #fff;
+        }
+
+        body.high-contrast .a11y-item label {
+            color: #fff;
+        }
+
+        body.high-contrast .a11y-btn {
+            border: 2px solid #fff;
+            color: #fff;
+        }
+
+        body.high-contrast .a11y-btn:hover {
+            border-color: #ffff00;
+            color: #ffff00;
+        }
+
+        body.high-contrast .orders-panel {
+            background: #000;
+            border: 2px solid #fff;
+        }
+
+        body.high-contrast .orders-header {
+            border-bottom: 2px solid #fff;
+        }
+
+        body.high-contrast .orders-header h3 {
+            color: #ffff00;
+        }
+
+        body.high-contrast .orders-close {
+            color: #fff;
+        }
+
+        body.high-contrast .orders-close:hover {
+            background: #ffff00;
+            color: #000;
+        }
+
+        body.high-contrast .order-card {
+            background: #000;
+            border: 2px solid #fff;
+        }
+
+        body.high-contrast .order-id {
+            color: #fff;
+        }
+
+        body.high-contrast .order-status-reserved {
+            background: #ffff00;
+            color: #000;
+        }
+
+        body.high-contrast .order-status-completed {
+            background: #00ff00;
+            color: #000;
+        }
+
+        body.high-contrast .order-status-cancelled {
+            background: #888;
+            color: #000;
+        }
+
+        body.high-contrast .order-status-refunded {
+            background: #ff0000;
+            color: #fff;
+        }
+
+        body.high-contrast .order-info {
+            color: #fff;
+        }
+
+        body.high-contrast .order-label {
+            color: #ffff00;
+        }
+
+        body.high-contrast .order-price {
+            color: #ff0000;
+        }
+
+        body.high-contrast .order-actions {
+            border-top: 2px solid #fff;
+        }
+
+        body.high-contrast .order-btn.pay {
+            background: #00ff00;
+            color: #000;
+        }
+
+        body.high-contrast .order-btn.cancel {
+            background: #000;
+            border: 2px solid #fff;
+            color: #fff;
+        }
+
+        body.high-contrast .order-btn.refund {
+            background: #ff0000;
+            color: #fff;
+        }
+
+        body.high-contrast .heat-stat {
+            border: 2px solid #fff;
+            background: #000;
+        }
+
+        body.high-contrast .heat-stat strong {
+            color: #fff !important;
+        }
+
+        body.high-contrast .heat-stat.hot strong { color: #ff0000 !important; }
+        body.high-contrast .heat-stat.warm strong { color: #ffff00 !important; }
+        body.high-contrast .heat-stat.cool strong { color: #00ffff !important; }
+
+        body.high-contrast .heat-stat span {
+            color: #fff;
+        }
+
+        body.high-contrast .panel-intro {
+            color: #fff;
+        }
+
+        body.high-contrast .heat-day-header,
+        body.high-contrast .score-section-title {
+            color: #fff;
+        }
+
+        body.high-contrast .heat-day-header strong,
+        body.high-contrast .score-section-title strong {
+            color: #ffff00;
+        }
+
+        body.high-contrast .week-labels {
+            color: #fff;
+        }
+
+        body.high-contrast #tooltip {
+            background: #000;
+            border: 2px solid #fff;
+            color: #fff;
+        }
+
+        body.high-contrast .member-entry {
+            background: #000;
+            border: 1px solid #fff;
+        }
+
+        body.high-contrast .member-entry input {
+            background: #000;
+            border: 1px solid #fff;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -694,9 +1487,59 @@
                 <button class="hall-btn" data-hall="medium">中厅 (200座)</button>
                 <button class="hall-btn" data-hall="large">大厅 (300座)</button>
             </div>
+            <button class="a11y-btn" id="a11y-toggle-btn" onclick="toggleA11yPanel()" aria-label="无障碍设置">
+                ♿ 无障碍
+            </button>
+            <button class="a11y-btn" id="orders-btn" onclick="showOrdersPanel()" aria-label="我的订单" style="border-color: rgba(100,200,100,0.4); color: #90c490;">
+                📋 我的订单
+            </button>
             <button class="logout-btn" id="logout-btn" onclick="logout()">登出</button>
         </div>
     </header>
+
+    <!-- 无障碍设置面板 -->
+    <div class="a11y-panel" id="a11y-panel" role="dialog" aria-label="无障碍设置">
+        <h3>无障碍设置</h3>
+        <div class="a11y-item">
+            <div>
+                <label for="a11y-large-text" onclick="toggleA11yOption('largeText')">大字体模式</label>
+                <div class="a11y-desc">增大所有文字尺寸，便于阅读</div>
+            </div>
+            <div class="a11y-toggle" id="a11y-large-text" onclick="toggleA11yOption('largeText')" role="switch" aria-checked="false" tabindex="0" aria-label="大字体模式开关"></div>
+        </div>
+        <div class="a11y-item">
+            <div>
+                <label for="a11y-high-contrast" onclick="toggleA11yOption('highContrast')">高对比度模式</label>
+                <div class="a11y-desc">增强文字与背景对比度</div>
+            </div>
+            <div class="a11y-toggle" id="a11y-high-contrast" onclick="toggleA11yOption('highContrast')" role="switch" aria-checked="false" tabindex="0" aria-label="高对比度模式开关"></div>
+        </div>
+        <div class="a11y-item">
+            <div>
+                <label for="a11y-colorblind" onclick="toggleA11yOption('colorblind')">色盲友好模式</label>
+                <div class="a11y-desc">使用形状和图案区分座位状态</div>
+            </div>
+            <div class="a11y-toggle" id="a11y-colorblind" onclick="toggleA11yOption('colorblind')" role="switch" aria-checked="false" tabindex="0" aria-label="色盲友好模式开关"></div>
+        </div>
+        <div class="a11y-item">
+            <div>
+                <label for="a11y-voice" onclick="toggleA11yOption('voice')">语音提示</label>
+                <div class="a11y-desc">操作时语音播报提示信息</div>
+            </div>
+            <div class="a11y-toggle" id="a11y-voice" onclick="toggleA11yOption('voice')" role="switch" aria-checked="false" tabindex="0" aria-label="语音提示开关"></div>
+        </div>
+    </div>
+
+    <!-- 我的订单面板 -->
+    <div class="orders-panel" id="orders-panel" role="dialog" aria-label="我的订单">
+        <div class="orders-header">
+            <h3>📋 我的订单</h3>
+            <button class="orders-close" onclick="hideOrdersPanel()" aria-label="关闭">✕</button>
+        </div>
+        <div class="orders-list" id="orders-list">
+            <div style="text-align:center;padding:20px;color:#888;">暂无订单</div>
+        </div>
+    </div>
 
     <main>
         <div class="canvas-wrapper">
@@ -751,8 +1594,9 @@
                     • <strong>单击</strong>：切换空座↔选中<br>
                     • <strong>Ctrl+单击</strong>：多选切换<br>
                     • <strong>拖拽滑动</strong>：连续切换座位<br>
-                    • 已售（红色）不可操作
+                    • 已售（红色）、已预订（紫色）不可操作
                 </div>
+                <button class="btn-primary" onclick="reserveSeats()">🎫 预订座位</button>
                 <button class="btn-secondary" onclick="clearAllSelected()">清空所有选中</button>
                 <div class="text-muted" style="margin-top:8px;">当前模式：手动选座</div>
             </div>
@@ -861,6 +1705,7 @@
             <div class="legend-item"><div class="legend-dot selected"></div>选中未售</div>
             <div class="legend-item"><div class="legend-dot sold"></div>已售</div>
             <div class="legend-item"><div class="legend-dot recommended"></div>推荐</div>
+            <div class="legend-item"><div class="legend-dot reserved"></div>已预订</div>
         </div>
         <div class="legend hidden" id="heat-legend">
             <div class="legend-item"><div class="legend-dot hot"></div>热门（70～100）</div>
@@ -888,12 +1733,14 @@
         const SELECTED = 1;
         const SOLD     = 2;
         const RECOMMENDED = 3;
+        const RESERVED = 4;
 
         const COLORS = {
             0: { fill: '#43a047', stroke: '#2e7d32', text: '#ffffff' },
             1: { fill: '#ffb300', stroke: '#ff8f00', text: '#333333' },
             2: { fill: '#e53935', stroke: '#c62828', text: '#ffffff' },
-            3: { fill: '#42a5f5', stroke: '#1e88e5', text: '#ffffff' }
+            3: { fill: '#42a5f5', stroke: '#1e88e5', text: '#ffffff' },
+            4: { fill: '#9c27b0', stroke: '#7b1fa2', text: '#ffffff' }
         };
 
         const WEEK_DAYS = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'];
@@ -949,12 +1796,12 @@
         function saveSeatsToLocal() {
             const key = 'smartCinemaSeats';
             const data = JSON.parse(localStorage.getItem(key) || '{}');
-            // 只保存 EMPTY 和 SOLD，将 SELECTED 和 RECOMMENDED 映射为 EMPTY
+            // 只保存 EMPTY、SOLD、RESERVED，将 SELECTED 和 RECOMMENDED 映射为 EMPTY
             const storageData = seats.map(row => row.map(s => {
                 if (s.state === SELECTED || s.state === RECOMMENDED) {
                     return EMPTY;
                 }
-                return s.state; // 0 或 2
+                return s.state;
             }));
             data[currentHall] = {
                 rows: seats.length,
@@ -1598,7 +2445,9 @@
 
         function resizeCanvas() {
             const dpr = window.devicePixelRatio || 1;
-            const containerW = Math.min(canvas.parentElement.clientWidth - 40, 1100);
+            const scale = a11ySettings.largeText ? 1.25 : 1.0;
+            const baseContainerW = Math.min(canvas.parentElement.clientWidth - 40, 1100);
+            const containerW = baseContainerW * scale;
             cssW = containerW;
             cssH = Math.round(containerW * 0.62);
             canvas.style.width  = cssW + 'px';
@@ -1687,16 +2536,15 @@
             const size = layout.seatSize;
             const heatValue = currentMode === 'heatmap' ? getHeatValue(seat) : null;
             const color = currentMode === 'heatmap'
-                ? HEAT_COLORS[getHeatLevel(heatValue)]
-                : COLORS[seat.state];
+                ? getCurrentHeatColors()[getHeatLevel(heatValue)]
+                : getCurrentColors()[seat.state];
             const isHover = hoverSeat === seat;
             const isRecommended = currentMode !== 'heatmap' && seat.state === RECOMMENDED;
 
             ctx.save();
             ctx.translate(seat.x, seat.y);
-            ctx.rotate(seat.angle);
 
-            if (isHover && seat.state !== SOLD) {
+            if (isHover && seat.state !== SOLD && seat.state !== RESERVED) {
                 ctx.shadowColor = 'rgba(255, 255, 255, 0.5)';
                 ctx.shadowBlur = 12;
             }
@@ -1728,12 +2576,15 @@
 
             ctx.shadowBlur = 0;
 
-            if (size >= 12) {
+            if (a11ySettings.colorblind && color.pattern && size >= 8) {
+                drawColorblindPattern(seat, size, color);
+            }
+
+            if (size >= 12 && currentHall !== 'small') {
                 ctx.fillStyle = color.text;
                 ctx.font = '600 ' + Math.max(8, Math.round(size * 0.4)) + 'px Arial, sans-serif';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.rotate(-seat.angle);
                 ctx.fillText(seat.col, 0, 0);
             }
 
@@ -1762,7 +2613,7 @@
         }
 
         function draw() {
-            ctx.fillStyle = '#0a0a1a';
+            ctx.fillStyle = a11ySettings.highContrast ? '#000000' : '#0a0a1a';
             ctx.fillRect(0, 0, cssW, cssH);
 
             drawScreen();
@@ -1825,27 +2676,35 @@
             const mx = e.clientX - rect.left;
             const my = e.clientY - rect.top;
             const seat = getSeatAt(mx, my);
-            if (!seat || seat.state === SOLD) return;
+            if (!seat || seat.state === SOLD || seat.state === RESERVED) return;
 
+            let actionText = '';
             if (e.ctrlKey) {
-                // 空座或推荐 → 选中；选中 → 空座
                 if (seat.state === EMPTY || seat.state === RECOMMENDED) {
                     seat.state = SELECTED;
+                    actionText = '已选中';
                 } else if (seat.state === SELECTED) {
                     seat.state = EMPTY;
+                    actionText = '已取消选中';
                 }
             } else {
                 if (seat.state === EMPTY || seat.state === RECOMMENDED) {
                     seat.state = SELECTED;
+                    actionText = '已选中';
                 } else if (seat.state === SELECTED) {
                     seat.state = EMPTY;
+                    actionText = '已取消选中';
                 }
             }
 
             clearRecommendHighlights();
-            saveSeatsToLocal();   // 保存时自动将 SELECTED 转为 EMPTY
+            saveSeatsToLocal();
             updateSelectedCount();
             draw();
+
+            if (a11ySettings.voice && actionText) {
+                speak(seat.row + '排' + seat.col + '座' + actionText);
+            }
         });
 
         // ============================================================
@@ -1877,16 +2736,16 @@
                         heatValue + '（' + heatText + '）';
                     canvas.style.cursor = 'help';
                 } else {
-                    const stateText = ['空座', '选中', '已售', '推荐'][seat.state];
+                    const stateText = ['空座', '选中', '已售', '推荐', '已预订'][seat.state];
                     tooltip.innerHTML = seat.row + '排 ' + seat.col + '座 — ' + stateText;
-                    canvas.style.cursor = (seat.state === SOLD) ? 'not-allowed' : 'pointer';
+                    canvas.style.cursor = (seat.state === SOLD || seat.state === RESERVED) ? 'not-allowed' : 'pointer';
                 }
             } else {
                 tooltip.style.display = 'none';
                 canvas.style.cursor = 'default';
             }
 
-            if (currentMode !== 'heatmap' && isDragging && seat && seat.state !== SOLD) {
+            if (currentMode !== 'heatmap' && isDragging && seat && seat.state !== SOLD && seat.state !== RESERVED) {
                 if (lastDraggedSeat === seat) return;
                 lastDraggedSeat = seat;
                 if (seat.state === EMPTY || seat.state === RECOMMENDED) {
@@ -1963,8 +2822,626 @@
         }
 
         // ============================================================
+        //  无障碍功能
+        // ============================================================
+        const A11Y_KEY = 'smartCinemaA11ySettings';
+        const COLORBLIND_COLORS = {
+            0: { fill: '#0072B2', stroke: '#005a8c', text: '#ffffff', pattern: 'dots' },
+            1: { fill: '#E69F00', stroke: '#b87f00', text: '#000000', pattern: 'stripes' },
+            2: { fill: '#D55E00', stroke: '#aa4a00', text: '#ffffff', pattern: 'cross' },
+            3: { fill: '#56B4E9', stroke: '#3a8db8', text: '#000000', pattern: 'circle' },
+            4: { fill: '#CC79A7', stroke: '#a85c8a', text: '#ffffff', pattern: 'diamond' }
+        };
+        const COLORBLIND_HEAT_COLORS = {
+            hot:  { fill: '#D55E00', stroke: '#aa4a00', text: '#ffffff', rgb: '213,94,0', pattern: 'triangleUp' },
+            warm: { fill: '#F0E442', stroke: '#c4b835', text: '#000000', rgb: '240,228,66', pattern: 'diamond' },
+            cool: { fill: '#0072B2', stroke: '#005a8c', text: '#ffffff', rgb: '0,114,178', pattern: 'triangleDown' }
+        };
+
+        let a11ySettings = {
+            largeText: false,
+            highContrast: false,
+            colorblind: false,
+            voice: false
+        };
+
+        function loadA11ySettings() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(A11Y_KEY) || '{}');
+                a11ySettings = Object.assign(a11ySettings, saved);
+            } catch (e) {}
+            applyA11ySettings();
+            updateA11yToggles();
+        }
+
+        function saveA11ySettings() {
+            localStorage.setItem(A11Y_KEY, JSON.stringify(a11ySettings));
+        }
+
+        function applyA11ySettings() {
+            const body = document.body;
+            body.classList.toggle('large-text', a11ySettings.largeText);
+            body.classList.toggle('high-contrast', a11ySettings.highContrast);
+            body.classList.toggle('colorblind-mode', a11ySettings.colorblind);
+            updateLegendColors();
+            if (typeof resizeCanvas === 'function' && layout) {
+                resizeCanvas();
+            } else if (typeof draw === 'function' && layout) {
+                draw();
+            }
+        }
+
+        function updateA11yToggles() {
+            const toggles = {
+                largeText: 'a11y-large-text',
+                highContrast: 'a11y-high-contrast',
+                colorblind: 'a11y-colorblind',
+                voice: 'a11y-voice'
+            };
+            for (const key in toggles) {
+                const el = document.getElementById(toggles[key]);
+                if (el) {
+                    el.classList.toggle('active', a11ySettings[key]);
+                    el.setAttribute('aria-checked', a11ySettings[key] ? 'true' : 'false');
+                }
+            }
+        }
+
+        function toggleA11yPanel() {
+            const panel = document.getElementById('a11y-panel');
+            panel.classList.toggle('show');
+            if (a11ySettings.voice) {
+                speak(panel.classList.contains('show') ? '无障碍设置面板已打开' : '无障碍设置面板已关闭');
+            }
+        }
+
+        function toggleA11yOption(option) {
+            a11ySettings[option] = !a11ySettings[option];
+            saveA11ySettings();
+            applyA11ySettings();
+            updateA11yToggles();
+
+            const labels = {
+                largeText: '大字体模式',
+                highContrast: '高对比度模式',
+                colorblind: '色盲友好模式',
+                voice: '语音提示'
+            };
+            const status = a11ySettings[option] ? '已开启' : '已关闭';
+            if (a11ySettings.voice || option === 'voice') {
+                speak(labels[option] + status);
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            const toggles = ['a11y-large-text', 'a11y-high-contrast', 'a11y-colorblind', 'a11y-voice'];
+            const options = ['largeText', 'highContrast', 'colorblind', 'voice'];
+            const target = e.target;
+            if (toggles.includes(target.id) && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault();
+                const idx = toggles.indexOf(target.id);
+                toggleA11yOption(options[idx]);
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            const panel = document.getElementById('a11y-panel');
+            const btn = document.getElementById('a11y-toggle-btn');
+            if (panel.classList.contains('show') &&
+                !panel.contains(e.target) &&
+                !btn.contains(e.target)) {
+                panel.classList.remove('show');
+            }
+        });
+
+        function updateLegendColors() {
+            const legendDots = document.querySelectorAll('.legend-dot');
+            if (a11ySettings.colorblind) {
+                legendDots.forEach(dot => {
+                    if (dot.classList.contains('empty')) {
+                        dot.style.background = COLORBLIND_COLORS[0].fill;
+                    } else if (dot.classList.contains('selected')) {
+                        dot.style.background = COLORBLIND_COLORS[1].fill;
+                    } else if (dot.classList.contains('sold')) {
+                        dot.style.background = COLORBLIND_COLORS[2].fill;
+                    } else if (dot.classList.contains('recommended')) {
+                        dot.style.background = COLORBLIND_COLORS[3].fill;
+                        dot.style.borderColor = '#88ccee';
+                    } else if (dot.classList.contains('reserved')) {
+                        dot.style.background = COLORBLIND_COLORS[4].fill;
+                        dot.style.borderColor = '#ddb8cc';
+                    } else if (dot.classList.contains('hot')) {
+                        dot.style.background = COLORBLIND_HEAT_COLORS.hot.fill;
+                    } else if (dot.classList.contains('warm')) {
+                        dot.style.background = COLORBLIND_HEAT_COLORS.warm.fill;
+                    } else if (dot.classList.contains('cool')) {
+                        dot.style.background = COLORBLIND_HEAT_COLORS.cool.fill;
+                    }
+                });
+            } else {
+                legendDots.forEach(dot => {
+                    dot.style.background = '';
+                    dot.style.borderColor = '';
+                });
+            }
+        }
+
+        function getCurrentColors() {
+            return a11ySettings.colorblind ? COLORBLIND_COLORS : COLORS;
+        }
+
+        function getCurrentHeatColors() {
+            return a11ySettings.colorblind ? COLORBLIND_HEAT_COLORS : HEAT_COLORS;
+        }
+
+        function drawColorblindPattern(seat, size, color) {
+            const half = size / 2;
+            const pattern = color.pattern;
+            ctx.save();
+            ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+            ctx.lineWidth = Math.max(1, size * 0.12);
+            ctx.fillStyle = 'rgba(255,255,255,0.9)';
+
+            if (pattern === 'dots') {
+                const dotR = Math.max(2, size * 0.15);
+                ctx.beginPath();
+                ctx.arc(-half * 0.45, -half * 0.35, dotR, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(half * 0.45, -half * 0.35, dotR, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(0, half * 0.35, dotR, 0, Math.PI * 2);
+                ctx.fill();
+            } else if (pattern === 'stripes') {
+                ctx.lineWidth = Math.max(1.5, size * 0.15);
+                ctx.beginPath();
+                const step = Math.max(3, size * 0.25);
+                for (let i = -half + step / 2; i < half; i += step) {
+                    ctx.moveTo(i, -half + 2);
+                    ctx.lineTo(i, half - 2);
+                }
+                ctx.stroke();
+            } else if (pattern === 'cross') {
+                ctx.lineWidth = Math.max(1.5, size * 0.15);
+                ctx.beginPath();
+                ctx.moveTo(-half * 0.55, -half * 0.55);
+                ctx.lineTo(half * 0.55, half * 0.55);
+                ctx.moveTo(half * 0.55, -half * 0.55);
+                ctx.lineTo(-half * 0.55, half * 0.55);
+                ctx.stroke();
+            } else if (pattern === 'circle') {
+                ctx.lineWidth = Math.max(1.5, size * 0.15);
+                ctx.beginPath();
+                ctx.arc(0, 0, size * 0.32, 0, Math.PI * 2);
+                ctx.stroke();
+            } else if (pattern === 'diamond') {
+                ctx.lineWidth = Math.max(1.5, size * 0.15);
+                ctx.beginPath();
+                const d = size * 0.38;
+                ctx.moveTo(0, -d);
+                ctx.lineTo(d, 0);
+                ctx.lineTo(0, d);
+                ctx.lineTo(-d, 0);
+                ctx.closePath();
+                ctx.stroke();
+            } else if (pattern === 'triangleUp') {
+                ctx.lineWidth = Math.max(1.5, size * 0.15);
+                ctx.beginPath();
+                const t = size * 0.4;
+                ctx.moveTo(0, -t);
+                ctx.lineTo(t, t * 0.7);
+                ctx.lineTo(-t, t * 0.7);
+                ctx.closePath();
+                ctx.stroke();
+            } else if (pattern === 'triangleDown') {
+                ctx.lineWidth = Math.max(1.5, size * 0.15);
+                ctx.beginPath();
+                const t = size * 0.4;
+                ctx.moveTo(0, t);
+                ctx.lineTo(t, -t * 0.7);
+                ctx.lineTo(-t, -t * 0.7);
+                ctx.closePath();
+                ctx.stroke();
+            }
+            ctx.restore();
+        }
+
+        let speechSynth = null;
+        let speechSupported = false;
+
+        function initSpeech() {
+            if ('speechSynthesis' in window) {
+                speechSupported = true;
+                speechSynth = window.speechSynthesis;
+            }
+        }
+
+        function speak(text, priority) {
+            if (!a11ySettings.voice || !speechSupported) return;
+            try {
+                speechSynth.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'zh-CN';
+                utterance.rate = 1.0;
+                utterance.pitch = 1.0;
+                utterance.volume = 1.0;
+                speechSynth.speak(utterance);
+            } catch (e) {}
+        }
+
+        const originalDoRecommend = doRecommend;
+        doRecommend = function() {
+            const result = originalDoRecommend.apply(this, arguments);
+            if (a11ySettings.voice) {
+                const resultEl = document.getElementById('recommend-result');
+                const errorEl = document.getElementById('recommend-error');
+                if (resultEl.classList.contains('show')) {
+                    const seatInfo = resultEl.textContent.replace(/\s+/g, ' ').trim();
+                    speak('推荐成功，' + seatInfo);
+                } else if (errorEl.textContent) {
+                    speak('推荐失败，' + errorEl.textContent);
+                }
+            }
+            return result;
+        };
+
+        const originalClearAllSelected = clearAllSelected;
+        clearAllSelected = function() {
+            originalClearAllSelected.apply(this, arguments);
+            if (a11ySettings.voice) {
+                speak('已清空所有选中座位');
+            }
+        };
+
+        const originalSwitchMode = switchMode;
+        switchMode = function(mode) {
+            originalSwitchMode.apply(this, arguments);
+            if (a11ySettings.voice) {
+                const modeNames = {
+                    recommend: '智能推荐',
+                    manual: '手动选座',
+                    heatmap: '热度地图',
+                    experience: '体验评分'
+                };
+                speak('已切换到' + modeNames[mode] + '模式');
+            }
+        };
+
+        const originalSwitchHall = function() {};
+        document.querySelectorAll('.hall-btn').forEach(function(btn) {
+            const originalHandler = btn.onclick;
+            btn.addEventListener('click', function() {
+                if (a11ySettings.voice) {
+                    const hallNames = { small: '小厅', medium: '中厅', large: '大厅' };
+                    setTimeout(function() {
+                        speak('已切换到' + hallNames[btn.dataset.hall]);
+                    }, 100);
+                }
+            }, true);
+        });
+
+        // ============================================================
+        //  订单与预订系统
+        // ============================================================
+        const ORDERS_KEY = 'smartCinemaOrders';
+        const SESSION_KEY = 'smartCinemaCurrentUser';
+        const SEAT_PRICE = 50;
+
+        let currentUser = null;
+
+        function getCurrentUser() {
+            try {
+                const session = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null');
+                if (session) return session;
+            } catch (e) {}
+            const user = getQueryParam('user');
+            const role = getQueryParam('role') || 'member';
+            if (user) {
+                return { username: user, role: role, loginTime: new Date().toISOString() };
+            }
+            return null;
+        }
+
+        function getOrders() {
+            try {
+                return JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]');
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function saveOrders(orders) {
+            localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
+        }
+
+        function generateOrderId() {
+            return 'ORD' + Date.now() + Math.floor(Math.random() * 1000);
+        }
+
+        function getSelectedSeats() {
+            const selected = [];
+            for (let r = 0; r < seats.length; r++) {
+                for (let c = 0; c < seats[r].length; c++) {
+                    if (seats[r][c].state === SELECTED) {
+                        selected.push(seats[r][c]);
+                    }
+                }
+            }
+            return selected;
+        }
+
+        function getSelectedSeatCount() {
+            return getSelectedSeats().length;
+        }
+
+        function reserveSeats() {
+            const user = getCurrentUser();
+            if (!user) {
+                alert('请先登录后再预订座位');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const selected = getSelectedSeats();
+            if (selected.length === 0) {
+                alert('请先选择座位');
+                return;
+            }
+
+            const orderId = generateOrderId();
+            const seatInfo = selected.map(s => ({
+                row: s.row,
+                col: s.col
+            }));
+
+            const order = {
+                id: orderId,
+                username: user.username,
+                hall: currentHall,
+                hallName: HALLS[currentHall].name,
+                seats: seatInfo,
+                status: 'reserved',
+                price: selected.length * SEAT_PRICE,
+                createTime: new Date().toISOString(),
+                payTime: null,
+                cancelTime: null
+            };
+
+            const orders = getOrders();
+            orders.push(order);
+            saveOrders(orders);
+
+            for (let r = 0; r < seats.length; r++) {
+                for (let c = 0; c < seats[r].length; c++) {
+                    if (seats[r][c].state === SELECTED) {
+                        seats[r][c].state = RESERVED;
+                    }
+                }
+            }
+
+            saveSeatsToLocal();
+            updateSelectedCount();
+            draw();
+
+            if (a11ySettings.voice) {
+                speak('预订成功，共' + selected.length + '个座位，订单号' + orderId);
+            }
+
+            alert('预订成功！\n订单号：' + orderId + '\n座位数：' + selected.length + '\n金额：¥' + (selected.length * SEAT_PRICE) + '\n\n请在"我的订单"中完成支付');
+            showOrdersPanel();
+        }
+
+        function cancelReservation(orderId) {
+            const orders = getOrders();
+            const orderIdx = orders.findIndex(o => o.id === orderId);
+            if (orderIdx === -1) return;
+
+            const order = orders[orderIdx];
+            if (order.status !== 'reserved') {
+                alert('该订单无法取消');
+                return;
+            }
+
+            const user = getCurrentUser();
+            if (!user || order.username !== user.username) {
+                alert('只能取消自己的预订');
+                return;
+            }
+
+            order.status = 'cancelled';
+            order.cancelTime = new Date().toISOString();
+            orders[orderIdx] = order;
+            saveOrders(orders);
+
+            if (order.hall === currentHall) {
+                for (let i = 0; i < order.seats.length; i++) {
+                    const s = order.seats[i];
+                    if (seats[s.row - 1] && seats[s.row - 1][s.col - 1]) {
+                        seats[s.row - 1][s.col - 1].state = EMPTY;
+                    }
+                }
+                saveSeatsToLocal();
+                draw();
+            }
+
+            if (a11ySettings.voice) {
+                speak('预订已取消，订单号' + orderId);
+            }
+
+            alert('预订已取消！');
+            renderOrders();
+        }
+
+        function payOrder(orderId) {
+            const orders = getOrders();
+            const orderIdx = orders.findIndex(o => o.id === orderId);
+            if (orderIdx === -1) return;
+
+            const order = orders[orderIdx];
+            if (order.status !== 'reserved') {
+                alert('该订单无法支付');
+                return;
+            }
+
+            const user = getCurrentUser();
+            if (!user || order.username !== user.username) {
+                alert('只能支付自己的订单');
+                return;
+            }
+
+            if (!confirm('确认支付 ¥' + order.price + ' ？')) {
+                return;
+            }
+
+            order.status = 'completed';
+            order.payTime = new Date().toISOString();
+            orders[orderIdx] = order;
+            saveOrders(orders);
+
+            if (order.hall === currentHall) {
+                for (let i = 0; i < order.seats.length; i++) {
+                    const s = order.seats[i];
+                    if (seats[s.row - 1] && seats[s.row - 1][s.col - 1]) {
+                        seats[s.row - 1][s.col - 1].state = SOLD;
+                    }
+                }
+                saveSeatsToLocal();
+                draw();
+            }
+
+            if (a11ySettings.voice) {
+                speak('购票成功，订单号' + orderId);
+            }
+
+            alert('购票成功！\n订单号：' + orderId + '\n座位：' + order.seats.map(s => s.row + '排' + s.col + '座').join('、'));
+            renderOrders();
+        }
+
+        function refundOrder(orderId) {
+            const orders = getOrders();
+            const orderIdx = orders.findIndex(o => o.id === orderId);
+            if (orderIdx === -1) return;
+
+            const order = orders[orderIdx];
+            if (order.status !== 'completed') {
+                alert('该订单无法退票');
+                return;
+            }
+
+            const user = getCurrentUser();
+            if (!user || order.username !== user.username) {
+                alert('只能退自己的票');
+                return;
+            }
+
+            if (!confirm('确认退票？将退还 ¥' + order.price + ' 元')) {
+                return;
+            }
+
+            order.status = 'refunded';
+            order.refundTime = new Date().toISOString();
+            orders[orderIdx] = order;
+            saveOrders(orders);
+
+            if (order.hall === currentHall) {
+                for (let i = 0; i < order.seats.length; i++) {
+                    const s = order.seats[i];
+                    if (seats[s.row - 1] && seats[s.row - 1][s.col - 1]) {
+                        seats[s.row - 1][s.col - 1].state = EMPTY;
+                    }
+                }
+                saveSeatsToLocal();
+                draw();
+            }
+
+            if (a11ySettings.voice) {
+                speak('退票成功，订单号' + orderId);
+            }
+
+            alert('退票成功！\n订单号：' + orderId + '\n退款金额：¥' + order.price);
+            renderOrders();
+        }
+
+        function showOrdersPanel() {
+            const panel = document.getElementById('orders-panel');
+            if (panel) {
+                panel.classList.add('show');
+                renderOrders();
+            }
+        }
+
+        function hideOrdersPanel() {
+            const panel = document.getElementById('orders-panel');
+            if (panel) {
+                panel.classList.remove('show');
+            }
+        }
+
+        function renderOrders() {
+            const user = getCurrentUser();
+            const ordersList = document.getElementById('orders-list');
+            if (!ordersList) return;
+
+            if (!user) {
+                ordersList.innerHTML = '<div style="text-align:center;padding:20px;color:#888;">请先登录查看订单</div>';
+                return;
+            }
+
+            const orders = getOrders().filter(o => o.username === user.username).reverse();
+
+            if (orders.length === 0) {
+                ordersList.innerHTML = '<div style="text-align:center;padding:20px;color:#888;">暂无订单</div>';
+                return;
+            }
+
+            let html = '';
+            for (let i = 0; i < orders.length; i++) {
+                const order = orders[i];
+                const statusText = {
+                    reserved: '待支付',
+                    completed: '已完成',
+                    cancelled: '已取消',
+                    refunded: '已退票'
+                }[order.status] || order.status;
+
+                const statusClass = 'order-status-' + order.status;
+
+                let actionBtns = '';
+                if (order.status === 'reserved') {
+                    actionBtns = '<button class="order-btn pay" onclick="payOrder(\'' + order.id + '\')">立即支付</button>' +
+                                 '<button class="order-btn cancel" onclick="cancelReservation(\'' + order.id + '\')">取消预订</button>';
+                } else if (order.status === 'completed') {
+                    actionBtns = '<button class="order-btn refund" onclick="refundOrder(\'' + order.id + '\')">申请退票</button>';
+                }
+
+                const seatStr = order.seats.map(s => s.row + '排' + s.col + '座').join('、');
+                const createDate = new Date(order.createTime).toLocaleString();
+
+                html += '<div class="order-card">' +
+                    '<div class="order-header">' +
+                        '<span class="order-id">订单号：' + order.id + '</span>' +
+                        '<span class="order-status ' + statusClass + '">' + statusText + '</span>' +
+                    '</div>' +
+                    '<div class="order-info">' +
+                        '<div><span class="order-label">影厅：</span>' + order.hallName + '</div>' +
+                        '<div><span class="order-label">座位：</span>' + seatStr + '</div>' +
+                        '<div><span class="order-label">金额：</span><span class="order-price">¥' + order.price + '</span></div>' +
+                        '<div><span class="order-label">时间：</span>' + createDate + '</div>' +
+                    '</div>' +
+                    '<div class="order-actions">' + actionBtns + '</div>' +
+                '</div>';
+            }
+
+            ordersList.innerHTML = html;
+        }
+
+        // ============================================================
         //  启动
         // ============================================================
+        initSpeech();
+        loadA11ySettings();
+        currentUser = getCurrentUser();
         initUserInfo();
         initSeats(currentHall);
         const savedHeatmapDay = Number(localStorage.getItem('smartCinemaHeatmapDay'));

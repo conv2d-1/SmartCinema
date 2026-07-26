@@ -160,6 +160,254 @@
         /* 隐藏控制 */
         .hidden { display: none !important; }
 
+        /* ===== 无障碍功能 ===== */
+        .a11y-btn {
+            padding: 6px 12px;
+            border: 1px solid rgba(100, 140, 255, 0.3);
+            border-radius: 6px;
+            background: transparent;
+            color: #aaa;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .a11y-btn:hover {
+            border-color: rgba(100, 140, 255, 0.6);
+            color: #ddd;
+        }
+
+        .a11y-panel {
+            position: fixed;
+            top: 60px;
+            right: 28px;
+            width: 300px;
+            background: #1a1a3e;
+            border: 1px solid rgba(100, 140, 255, 0.3);
+            border-radius: 10px;
+            padding: 16px;
+            z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            display: none;
+        }
+
+        .a11y-panel.show {
+            display: block;
+        }
+
+        .a11y-panel h3 {
+            font-size: 15px;
+            color: #64b5f6;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(100, 140, 255, 0.2);
+        }
+
+        .a11y-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .a11y-item:last-child {
+            border-bottom: none;
+        }
+
+        .a11y-item label {
+            font-size: 13px;
+            color: #ccc;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .a11y-item .a11y-desc {
+            font-size: 11px;
+            color: #777;
+            margin-top: 2px;
+        }
+
+        .a11y-toggle {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            border-radius: 12px;
+            background: #333;
+            cursor: pointer;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+
+        .a11y-toggle::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #fff;
+            transition: transform 0.2s;
+        }
+
+        .a11y-toggle.active {
+            background: #42a5f5;
+        }
+
+        .a11y-toggle.active::after {
+            transform: translateX(20px);
+        }
+
+        /* 大字体模式 */
+        body.large-text {
+            font-size: 18px;
+        }
+
+        body.large-text header h1 {
+            font-size: 28px;
+        }
+
+        body.large-text .header-tip {
+            font-size: 15px;
+        }
+
+        body.large-text .card {
+            width: 420px;
+            padding: 40px 40px;
+        }
+
+        body.large-text .card-tab {
+            font-size: 17px;
+            padding: 14px 0;
+        }
+
+        body.large-text .form-group label {
+            font-size: 15px;
+        }
+
+        body.large-text .form-group input {
+            font-size: 16px;
+            padding: 14px 18px;
+        }
+
+        body.large-text .submit-btn {
+            font-size: 17px;
+            padding: 16px;
+        }
+
+        body.large-text .error-msg {
+            font-size: 14px;
+        }
+
+        body.large-text footer {
+            font-size: 14px;
+        }
+
+        /* 高对比度模式 */
+        body.high-contrast {
+            background: #000;
+            color: #fff;
+        }
+
+        body.high-contrast header {
+            background: #000;
+            border-bottom: 2px solid #fff;
+        }
+
+        body.high-contrast header h1 {
+            background: none;
+            -webkit-text-fill-color: #ffff00;
+            color: #ffff00;
+        }
+
+        body.high-contrast .header-tip {
+            color: #fff;
+        }
+
+        body.high-contrast .card {
+            background: #000;
+            border: 3px solid #fff;
+            box-shadow: none;
+        }
+
+        body.high-contrast .card-tabs {
+            border-bottom: 2px solid #fff;
+        }
+
+        body.high-contrast .card-tab {
+            color: #fff;
+        }
+
+        body.high-contrast .card-tab.active {
+            color: #ffff00;
+            border-bottom-color: #ffff00;
+        }
+
+        body.high-contrast .form-group label {
+            color: #fff;
+        }
+
+        body.high-contrast .form-group input {
+            background: #000;
+            border: 2px solid #fff;
+            color: #fff;
+        }
+
+        body.high-contrast .form-group input:focus {
+            border-color: #ffff00;
+        }
+
+        body.high-contrast .submit-btn.login {
+            background: #00ff00;
+            color: #000;
+            border: 2px solid #fff;
+        }
+
+        body.high-contrast .submit-btn.register {
+            background: #00ffff;
+            color: #000;
+            border: 2px solid #fff;
+        }
+
+        body.high-contrast .error-msg {
+            color: #ff0000;
+            font-weight: bold;
+        }
+
+        body.high-contrast footer {
+            background: #000;
+            border-top: 2px solid #fff;
+            color: #fff;
+        }
+
+        body.high-contrast .a11y-panel {
+            background: #000;
+            border: 2px solid #fff;
+        }
+
+        body.high-contrast .a11y-panel h3 {
+            color: #ffff00;
+            border-bottom: 2px solid #fff;
+        }
+
+        body.high-contrast .a11y-item label {
+            color: #fff;
+        }
+
+        body.high-contrast .a11y-btn {
+            border: 2px solid #fff;
+            color: #fff;
+        }
+
+        body.high-contrast .a11y-btn:hover {
+            border-color: #ffff00;
+            color: #ffff00;
+        }
+
         /* 响应式 */
         @media (max-width: 860px) {
             main { flex-direction: column; }
@@ -170,8 +418,46 @@
 <body>
     <header>
         <h1>SmartCinema 智能影院选座系统</h1>
-        <span class="header-tip">登录注册</span>
+        <div style="display:flex;align-items:center;gap:12px;">
+            <span class="header-tip">登录注册</span>
+            <button class="a11y-btn" id="a11y-toggle-btn" onclick="toggleA11yPanel()" aria-label="无障碍设置">
+                ♿ 无障碍
+            </button>
+        </div>
     </header>
+
+    <!-- 无障碍设置面板 -->
+    <div class="a11y-panel" id="a11y-panel" role="dialog" aria-label="无障碍设置">
+        <h3>无障碍设置</h3>
+        <div class="a11y-item">
+            <div>
+                <label for="a11y-large-text" onclick="toggleA11yOption('largeText')">大字体模式</label>
+                <div class="a11y-desc">增大所有文字尺寸，便于阅读</div>
+            </div>
+            <div class="a11y-toggle" id="a11y-large-text" onclick="toggleA11yOption('largeText')" role="switch" aria-checked="false" tabindex="0" aria-label="大字体模式开关"></div>
+        </div>
+        <div class="a11y-item">
+            <div>
+                <label for="a11y-high-contrast" onclick="toggleA11yOption('highContrast')">高对比度模式</label>
+                <div class="a11y-desc">增强文字与背景对比度</div>
+            </div>
+            <div class="a11y-toggle" id="a11y-high-contrast" onclick="toggleA11yOption('highContrast')" role="switch" aria-checked="false" tabindex="0" aria-label="高对比度模式开关"></div>
+        </div>
+        <div class="a11y-item">
+            <div>
+                <label for="a11y-colorblind" onclick="toggleA11yOption('colorblind')">色盲友好模式</label>
+                <div class="a11y-desc">优化配色，色盲用户更易区分</div>
+            </div>
+            <div class="a11y-toggle" id="a11y-colorblind" onclick="toggleA11yOption('colorblind')" role="switch" aria-checked="false" tabindex="0" aria-label="色盲友好模式开关"></div>
+        </div>
+        <div class="a11y-item">
+            <div>
+                <label for="a11y-voice" onclick="toggleA11yOption('voice')">语音提示</label>
+                <div class="a11y-desc">操作时语音播报提示信息</div>
+            </div>
+            <div class="a11y-toggle" id="a11y-voice" onclick="toggleA11yOption('voice')" role="switch" aria-checked="false" tabindex="0" aria-label="语音提示开关"></div>
+        </div>
+    </div>
 
     <main>
         <!-- 登录注册卡片 -->
@@ -375,6 +661,157 @@
         document.getElementById('reg-confirm').addEventListener('keydown', function (e) {
             if (e.key === 'Enter') doRegister();
         });
+
+        // ============================================================
+        //  无障碍功能
+        // ============================================================
+        const A11Y_KEY = 'smartCinemaA11ySettings';
+        let a11ySettings = {
+            largeText: false,
+            highContrast: false,
+            colorblind: false,
+            voice: false
+        };
+
+        let speechSynth = null;
+        let speechSupported = false;
+
+        function initSpeech() {
+            if ('speechSynthesis' in window) {
+                speechSupported = true;
+                speechSynth = window.speechSynthesis;
+            }
+        }
+
+        function speak(text) {
+            if (!a11ySettings.voice || !speechSupported) return;
+            try {
+                speechSynth.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'zh-CN';
+                utterance.rate = 1.0;
+                utterance.pitch = 1.0;
+                utterance.volume = 1.0;
+                speechSynth.speak(utterance);
+            } catch (e) {}
+        }
+
+        function loadA11ySettings() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(A11Y_KEY) || '{}');
+                a11ySettings = Object.assign(a11ySettings, saved);
+            } catch (e) {}
+            applyA11ySettings();
+            updateA11yToggles();
+        }
+
+        function saveA11ySettings() {
+            localStorage.setItem(A11Y_KEY, JSON.stringify(a11ySettings));
+        }
+
+        function applyA11ySettings() {
+            const body = document.body;
+            body.classList.toggle('large-text', a11ySettings.largeText);
+            body.classList.toggle('high-contrast', a11ySettings.highContrast);
+        }
+
+        function updateA11yToggles() {
+            const toggles = {
+                largeText: 'a11y-large-text',
+                highContrast: 'a11y-high-contrast',
+                colorblind: 'a11y-colorblind',
+                voice: 'a11y-voice'
+            };
+            for (const key in toggles) {
+                const el = document.getElementById(toggles[key]);
+                if (el) {
+                    el.classList.toggle('active', a11ySettings[key]);
+                    el.setAttribute('aria-checked', a11ySettings[key] ? 'true' : 'false');
+                }
+            }
+        }
+
+        function toggleA11yPanel() {
+            const panel = document.getElementById('a11y-panel');
+            panel.classList.toggle('show');
+            if (a11ySettings.voice) {
+                speak(panel.classList.contains('show') ? '无障碍设置面板已打开' : '无障碍设置面板已关闭');
+            }
+        }
+
+        function toggleA11yOption(option) {
+            a11ySettings[option] = !a11ySettings[option];
+            saveA11ySettings();
+            applyA11ySettings();
+            updateA11yToggles();
+
+            const labels = {
+                largeText: '大字体模式',
+                highContrast: '高对比度模式',
+                colorblind: '色盲友好模式',
+                voice: '语音提示'
+            };
+            const status = a11ySettings[option] ? '已开启' : '已关闭';
+            if (a11ySettings.voice || option === 'voice') {
+                speak(labels[option] + status);
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            const toggles = ['a11y-large-text', 'a11y-high-contrast', 'a11y-colorblind', 'a11y-voice'];
+            const options = ['largeText', 'highContrast', 'colorblind', 'voice'];
+            const target = e.target;
+            if (toggles.includes(target.id) && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault();
+                const idx = toggles.indexOf(target.id);
+                toggleA11yOption(options[idx]);
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            const panel = document.getElementById('a11y-panel');
+            const btn = document.getElementById('a11y-toggle-btn');
+            if (panel.classList.contains('show') &&
+                !panel.contains(e.target) &&
+                !btn.contains(e.target)) {
+                panel.classList.remove('show');
+            }
+        });
+
+        const originalSwitchTab = switchTab;
+        switchTab = function(tab) {
+            originalSwitchTab.apply(this, arguments);
+            if (a11ySettings.voice) {
+                speak(tab === 'login' ? '已切换到登录' : '已切换到注册');
+            }
+        };
+
+        const originalDoLogin = doLogin;
+        doLogin = function() {
+            const usernameBefore = document.getElementById('login-username').value.trim();
+            originalDoLogin.apply(this, arguments);
+            if (a11ySettings.voice) {
+                const errorEl = document.getElementById('login-error');
+                if (errorEl.textContent) {
+                    speak('登录失败，' + errorEl.textContent);
+                }
+            }
+        };
+
+        const originalDoRegister = doRegister;
+        doRegister = function() {
+            originalDoRegister.apply(this, arguments);
+            if (a11ySettings.voice) {
+                const errorEl = document.getElementById('reg-error');
+                if (errorEl.textContent) {
+                    speak('注册失败，' + errorEl.textContent);
+                }
+            }
+        };
+
+        // 启动
+        initSpeech();
+        loadA11ySettings();
     </script>
 </body>
 </html>
