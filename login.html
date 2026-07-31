@@ -7,10 +7,68 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        /* ===== 主题 CSS 变量 ===== */
         body {
+            --bg-body: #0a0a1a;
+            --bg-surface: #12122a;
+            --bg-card: #1a1a3e;
+            --text-primary: #e0e0e0;
+            --text-secondary: #aaa;
+            --text-muted: #888;
+            --text-heading: #64b5f6;
+            --accent: #64b5f6;
+            --accent-dark: #42a5f5;
+            --border-subtle: rgba(100, 140, 255, 0.15);
+            --border-medium: rgba(100, 140, 255, 0.3);
+            --gradient-header: linear-gradient(135deg, #12122a, #1a1a3e);
+            --a11y-toggle-bg: #333;
+            --a11y-item-border: rgba(255, 255, 255, 0.05);
+            --a11y-desc: #777;
+            --a11y-label: #ccc;
+            --form-label: #666;
+            --input-border: #e0e0e0;
+            --input-text: #333;
+            --input-focus: #e53935;
+            --card-bg: #ffffff;
+            --card-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            --tab-inactive: #999;
+            --tab-active: #e53935;
+            --tab-border: #f0f0f0;
+
             font-family: "Microsoft YaHei", "PingFang SC", -apple-system, sans-serif;
-            background: #0a0a1a;
-            color: #e0e0e0;
+        }
+
+        body[data-theme="light"] {
+            --bg-body: #f0f2f5;
+            --bg-surface: #ffffff;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555;
+            --text-muted: #999;
+            --text-heading: #1565c0;
+            --accent: #1565c0;
+            --accent-dark: #1e88e5;
+            --border-subtle: rgba(0, 0, 0, 0.08);
+            --border-medium: rgba(0, 0, 0, 0.12);
+            --gradient-header: linear-gradient(135deg, #ffffff, #e3f2fd);
+            --a11y-toggle-bg: #ccc;
+            --a11y-item-border: rgba(0, 0, 0, 0.05);
+            --a11y-desc: #888;
+            --a11y-label: #444;
+            --form-label: #666;
+            --input-border: #ddd;
+            --input-text: #333;
+            --input-focus: #e53935;
+            --card-bg: #ffffff;
+            --card-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+            --tab-inactive: #999;
+            --tab-active: #e53935;
+            --tab-border: #e0e0e0;
+        }
+
+        body {
+            background: var(--bg-body);
+            color: var(--text-primary);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -22,22 +80,22 @@
             justify-content: space-between;
             align-items: center;
             padding: 14px 28px;
-            background: linear-gradient(135deg, #12122a, #1a1a3e);
-            border-bottom: 1px solid rgba(100, 140, 255, 0.15);
+            background: var(--gradient-header);
+            border-bottom: 1px solid var(--border-subtle);
         }
 
         header h1 {
             font-size: 22px;
             font-weight: 700;
             letter-spacing: 1px;
-            background: linear-gradient(90deg, #64b5f6, #42a5f5);
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .header-tip {
             font-size: 13px;
-            color: #888;
+            color: var(--text-muted);
         }
 
         /* ===== 主区域 ===== */
@@ -53,18 +111,18 @@
 
         /* ===== 登录卡片 ===== */
         .card {
-            background: #ffffff;
+            background: var(--card-bg);
             border-radius: 16px;
             padding: 32px 34px;
             width: 360px;
             max-width: 100%;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            box-shadow: var(--card-shadow);
         }
 
         .card-tabs {
             display: flex;
             margin-bottom: 24px;
-            border-bottom: 2px solid #f0f0f0;
+            border-bottom: 2px solid var(--tab-border);
         }
 
         .card-tab {
@@ -73,7 +131,7 @@
             padding: 10px 0;
             font-size: 15px;
             font-weight: 600;
-            color: #999;
+            color: var(--tab-inactive);
             cursor: pointer;
             border-bottom: 2px solid transparent;
             margin-bottom: -2px;
@@ -81,8 +139,8 @@
         }
 
         .card-tab.active {
-            color: #e53935;
-            border-bottom-color: #e53935;
+            color: var(--tab-active);
+            border-bottom-color: var(--tab-active);
         }
 
         .form-group {
@@ -92,7 +150,7 @@
         .form-group label {
             display: block;
             font-size: 13px;
-            color: #666;
+            color: var(--form-label);
             margin-bottom: 6px;
             font-weight: 600;
         }
@@ -100,16 +158,16 @@
         .form-group input {
             width: 100%;
             padding: 10px 14px;
-            border: 1.5px solid #e0e0e0;
+            border: 1.5px solid var(--input-border);
             border-radius: 8px;
             font-size: 14px;
-            color: #333;
+            color: var(--input-text);
             transition: border-color 0.2s;
             outline: none;
         }
 
         .form-group input:focus {
-            border-color: #e53935;
+            border-color: var(--input-focus);
         }
 
         .submit-btn {
@@ -153,8 +211,8 @@
             text-align: center;
             padding: 14px;
             font-size: 12px;
-            color: #555;
-            background: #12122a;
+            color: var(--text-secondary);
+            background: var(--bg-surface);
         }
 
         /* 隐藏控制 */
@@ -163,10 +221,10 @@
         /* ===== 无障碍功能 ===== */
         .a11y-btn {
             padding: 6px 12px;
-            border: 1px solid rgba(100, 140, 255, 0.3);
+            border: 1px solid var(--border-medium);
             border-radius: 6px;
             background: transparent;
-            color: #aaa;
+            color: var(--text-secondary);
             font-size: 13px;
             cursor: pointer;
             transition: all 0.2s;
@@ -176,8 +234,8 @@
         }
 
         .a11y-btn:hover {
-            border-color: rgba(100, 140, 255, 0.6);
-            color: #ddd;
+            border-color: var(--accent);
+            color: var(--text-primary);
         }
 
         .a11y-panel {
@@ -185,8 +243,8 @@
             top: 60px;
             right: 28px;
             width: 300px;
-            background: #1a1a3e;
-            border: 1px solid rgba(100, 140, 255, 0.3);
+            background: var(--bg-card);
+            border: 1px solid var(--border-medium);
             border-radius: 10px;
             padding: 16px;
             z-index: 1000;
@@ -200,10 +258,10 @@
 
         .a11y-panel h3 {
             font-size: 15px;
-            color: #64b5f6;
+            color: var(--text-heading);
             margin-bottom: 12px;
             padding-bottom: 8px;
-            border-bottom: 1px solid rgba(100, 140, 255, 0.2);
+            border-bottom: 1px solid var(--border-subtle);
         }
 
         .a11y-item {
@@ -211,7 +269,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 8px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--a11y-item-border);
         }
 
         .a11y-item:last-child {
@@ -220,14 +278,14 @@
 
         .a11y-item label {
             font-size: 13px;
-            color: #ccc;
+            color: var(--a11y-label);
             cursor: pointer;
             flex: 1;
         }
 
         .a11y-item .a11y-desc {
             font-size: 11px;
-            color: #777;
+            color: var(--a11y-desc);
             margin-top: 2px;
         }
 
@@ -236,7 +294,7 @@
             width: 44px;
             height: 24px;
             border-radius: 12px;
-            background: #333;
+            background: var(--a11y-toggle-bg);
             cursor: pointer;
             transition: background 0.2s;
             flex-shrink: 0;
@@ -420,6 +478,9 @@
         <h1>SmartCinema 智能影院选座系统</h1>
         <div style="display:flex;align-items:center;gap:12px;">
             <span class="header-tip">登录注册</span>
+            <button class="a11y-btn" id="theme-toggle-btn" onclick="toggleTheme()" aria-label="切换界面风格" title="切换界面风格">
+                🌓 风格
+            </button>
             <button class="a11y-btn" id="a11y-toggle-btn" onclick="toggleA11yPanel()" aria-label="无障碍设置">
                 ♿ 无障碍
             </button>
@@ -663,6 +724,42 @@
         });
 
         // ============================================================
+        //  主题切换
+        // ============================================================
+        const THEME_KEY = 'smartCinemaTheme';
+
+        function getSavedTheme() {
+            return localStorage.getItem(THEME_KEY) || 'dark';
+        }
+
+        function applyTheme(theme) {
+            if (theme === 'light') {
+                document.body.setAttribute('data-theme', 'light');
+            } else {
+                document.body.removeAttribute('data-theme');
+            }
+            localStorage.setItem(THEME_KEY, theme);
+            const btn = document.getElementById('theme-toggle-btn');
+            if (btn) {
+                btn.innerHTML = theme === 'light' ? '☀️ 日间' : '🌙 暗夜';
+            }
+        }
+
+        function toggleTheme() {
+            const current = document.body.hasAttribute('data-theme') && document.body.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+            const next = current === 'dark' ? 'light' : 'dark';
+            applyTheme(next);
+            if (typeof a11ySettings !== 'undefined' && a11ySettings.voice) {
+                speak(next === 'light' ? '已切换到日间风格' : '已切换到暗夜风格');
+            }
+        }
+
+        function loadTheme() {
+            const theme = getSavedTheme();
+            applyTheme(theme);
+        }
+
+        // ============================================================
         //  无障碍功能
         // ============================================================
         const A11Y_KEY = 'smartCinemaA11ySettings';
@@ -811,6 +908,7 @@
 
         // 启动
         initSpeech();
+        loadTheme();
         loadA11ySettings();
     </script>
 </body>

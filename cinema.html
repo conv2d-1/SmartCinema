@@ -7,10 +7,196 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        /* ===== 主题 CSS 变量 ===== */
         body {
+            /* 暗夜主题（默认） */
+            --bg-body: #0a0a1a;
+            --bg-surface: #12122a;
+            --bg-card: #1a1a3e;
+            --bg-input: #1a1a3e;
+            --bg-deeper: #0f0f2a;
+            --text-primary: #e0e0e0;
+            --text-secondary: #aaa;
+            --text-muted: #888;
+            --text-heading: #64b5f6;
+            --text-bright: #ddd;
+            --text-soft: #bbb;
+            --text-label: #ccc;
+            --border-subtle: rgba(100, 140, 255, 0.15);
+            --border-medium: rgba(100, 140, 255, 0.3);
+            --border-strong: rgba(100, 140, 255, 0.2);
+            --accent: #64b5f6;
+            --accent-dark: #42a5f5;
+            --accent-glow: rgba(66, 165, 245, 0.4);
+            --gradient-header: linear-gradient(135deg, #12122a, #1a1a3e);
+            --btn-primary-bg: linear-gradient(135deg, #42a5f5, #1e88e5);
+            --btn-primary-text: #fff;
+            --btn-secondary-border: rgba(100, 140, 255, 0.3);
+            --btn-secondary-text: #64b5f6;
+            --btn-secondary-hover-bg: rgba(66, 165, 245, 0.1);
+            --info-box-bg: rgba(66, 165, 245, 0.08);
+            --info-box-border: #64b5f6;
+            --input-border: rgba(100, 140, 255, 0.2);
+            --panel-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --score-bg: rgba(66, 165, 245, 0.06);
+            --score-ring-center: #151532;
+            --score-border: rgba(100, 181, 246, 0.16);
+            --score-empty-text: #9299ad;
+            --hall-btn-hover-color: #ddd;
+            --tab-hover-color: #d7e8ff;
+            --tab-hover-border: rgba(100, 181, 246, 0.3);
+            --tab-active-bg: rgba(66, 165, 245, 0.13);
+            --tab-active-border: rgba(100, 181, 246, 0.45);
+            --member-entry-bg: #1a1a3e;
+            --order-card-bg: rgba(255, 255, 255, 0.04);
+            --order-card-border: rgba(255, 255, 255, 0.08);
+            --order-divider: rgba(255, 255, 255, 0.08);
+            --heat-stat-bg: rgba(255, 255, 255, 0.025);
+            --heat-stat-border: rgba(255, 255, 255, 0.07);
+            --heat-stat-label: #8c93a8;
+            --metric-empty-bg: rgba(255, 255, 255, 0.08);
+            --metric-head-text: #b9c0d2;
+            --metric-head-strong: #e3edff;
+            --star-btn-color: #596078;
+            --star-active: #ffca28;
+            --star-hover: #ffd45c;
+            --rating-status: #8790a7;
+            --week-label: #737b97;
+            --tooltip-bg: rgba(20, 20, 45, 0.95);
+            --form-label: #aaa;
+            --a11y-desc: #777;
+            --panel-intro: #aaa;
+            --recommend-text: #ddd;
+            --recommend-bg: rgba(255, 193, 7, 0.08);
+            --recommend-border: #ffb300;
+            --error-color: #ef5350;
+            --score-summary-strong: #8bc6ff;
+            --score-summary-p: #9199ae;
+            --score-reasons-text: #b5bdd0;
+            --score-reasons-bg: rgba(66, 165, 245, 0.07);
+            --score-empty-border: rgba(100, 181, 246, 0.3);
+            --combined-bg: rgba(102, 187, 106, 0.08);
+            --combined-border: rgba(102, 187, 106, 0.28);
+            --combined-text: #c7e8c9;
+            --combined-strong: #81c784;
+            --orders-header-text: #66bb6a;
+            --orders-header-border: rgba(100, 200, 100, 0.2);
+            --orders-panel-border: rgba(100, 200, 100, 0.3);
+            --order-close-hover-bg: rgba(255, 255, 255, 0.1);
+            --order-cancel-bg: rgba(255, 255, 255, 0.1);
+            --order-cancel-text: #ccc;
+            --order-cancel-hover: rgba(255, 255, 255, 0.15);
+            --order-info-text: #ccc;
+            --legend-text: #bbb;
+            --selected-info-text: #888;
+            --hall-inactive-text: #aaa;
+            --heat-day-strong: #e7f2ff;
+            --heat-day-text: #999;
+            --metric-bar-bg: rgba(255, 255, 255, 0.08);
+            --a11y-item-border: rgba(255, 255, 255, 0.05);
+            --a11y-toggle-bg: #333;
+            --selected-seat-color: #ffb300;
+            --recommend-dot-border: #90caf9;
+            --reserved-dot-border: #ce93d8;
+
             font-family: "Microsoft YaHei", "PingFang SC", -apple-system, sans-serif;
-            background: #0a0a1a;
-            color: #e0e0e0;
+        }
+
+        /* 日间主题 */
+        body[data-theme="light"] {
+            --bg-body: #f0f2f5;
+            --bg-surface: #ffffff;
+            --bg-card: #ffffff;
+            --bg-input: #f5f5f7;
+            --bg-deeper: #e8e8ec;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555;
+            --text-muted: #999;
+            --text-heading: #1565c0;
+            --text-bright: #333;
+            --text-soft: #555;
+            --text-label: #444;
+            --border-subtle: rgba(0, 0, 0, 0.08);
+            --border-medium: rgba(0, 0, 0, 0.12);
+            --border-strong: rgba(0, 0, 0, 0.15);
+            --accent: #1565c0;
+            --accent-dark: #1e88e5;
+            --accent-glow: rgba(30, 136, 229, 0.25);
+            --gradient-header: linear-gradient(135deg, #ffffff, #e3f2fd);
+            --btn-primary-bg: linear-gradient(135deg, #1e88e5, #1565c0);
+            --btn-primary-text: #fff;
+            --btn-secondary-border: rgba(30, 136, 229, 0.3);
+            --btn-secondary-text: #1565c0;
+            --btn-secondary-hover-bg: rgba(30, 136, 229, 0.08);
+            --info-box-bg: rgba(30, 136, 229, 0.06);
+            --info-box-border: #1565c0;
+            --input-border: rgba(0, 0, 0, 0.15);
+            --panel-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            --score-bg: rgba(30, 136, 229, 0.04);
+            --score-ring-center: #f0f2f5;
+            --score-border: rgba(30, 136, 229, 0.12);
+            --score-empty-text: #888;
+            --hall-btn-hover-color: #333;
+            --tab-hover-color: #1565c0;
+            --tab-hover-border: rgba(30, 136, 229, 0.3);
+            --tab-active-bg: rgba(30, 136, 229, 0.08);
+            --tab-active-border: rgba(30, 136, 229, 0.4);
+            --member-entry-bg: #f5f5f5;
+            --order-card-bg: rgba(0, 0, 0, 0.02);
+            --order-card-border: rgba(0, 0, 0, 0.06);
+            --order-divider: rgba(0, 0, 0, 0.08);
+            --heat-stat-bg: rgba(0, 0, 0, 0.02);
+            --heat-stat-border: rgba(0, 0, 0, 0.06);
+            --heat-stat-label: #777;
+            --metric-empty-bg: rgba(0, 0, 0, 0.06);
+            --metric-head-text: #666;
+            --metric-head-strong: #333;
+            --star-btn-color: #999;
+            --star-active: #f9a825;
+            --star-hover: #fbc02d;
+            --rating-status: #999;
+            --week-label: #888;
+            --tooltip-bg: rgba(255, 255, 255, 0.97);
+            --form-label: #555;
+            --a11y-desc: #888;
+            --panel-intro: #555;
+            --recommend-text: #333;
+            --recommend-bg: rgba(251, 192, 45, 0.08);
+            --recommend-border: #f9a825;
+            --error-color: #d32f2f;
+            --score-summary-strong: #1565c0;
+            --score-summary-p: #777;
+            --score-reasons-text: #777;
+            --score-reasons-bg: rgba(30, 136, 229, 0.05);
+            --score-empty-border: rgba(30, 136, 229, 0.25);
+            --combined-bg: rgba(76, 175, 80, 0.08);
+            --combined-border: rgba(76, 175, 80, 0.25);
+            --combined-text: #2e7d32;
+            --combined-strong: #388e3c;
+            --orders-header-text: #43a047;
+            --orders-header-border: rgba(76, 175, 80, 0.2);
+            --orders-panel-border: rgba(76, 175, 80, 0.3);
+            --order-close-hover-bg: rgba(0, 0, 0, 0.06);
+            --order-cancel-bg: rgba(0, 0, 0, 0.05);
+            --order-cancel-text: #666;
+            --order-cancel-hover: rgba(0, 0, 0, 0.1);
+            --order-info-text: #444;
+            --legend-text: #555;
+            --selected-info-text: #777;
+            --hall-inactive-text: #666;
+            --heat-day-strong: #333;
+            --heat-day-text: #777;
+            --metric-bar-bg: rgba(0, 0, 0, 0.08);
+            --a11y-item-border: rgba(0, 0, 0, 0.05);
+            --a11y-toggle-bg: #ccc;
+            --selected-seat-color: #f57c00;
+            --recommend-dot-border: #42a5f5;
+            --reserved-dot-border: #ab47bc;
+        }
+
+        body {
+            background: var(--bg-body);
+            color: var(--text-primary);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -21,8 +207,8 @@
             justify-content: space-between;
             align-items: center;
             padding: 14px 28px;
-            background: linear-gradient(135deg, #12122a, #1a1a3e);
-            border-bottom: 1px solid rgba(100, 140, 255, 0.15);
+            background: var(--gradient-header);
+            border-bottom: 1px solid var(--border-subtle);
             flex-wrap: wrap;
             gap: 10px;
         }
@@ -31,7 +217,7 @@
             font-size: 22px;
             font-weight: 700;
             letter-spacing: 1px;
-            background: linear-gradient(90deg, #64b5f6, #42a5f5);
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -45,14 +231,14 @@
 
         .user-info {
             font-size: 13px;
-            color: #aaa;
+            color: var(--text-secondary);
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
         .user-info .username {
-            color: #64b5f6;
+            color: var(--accent);
             font-weight: 600;
         }
 
@@ -96,24 +282,24 @@
 
         .hall-btn {
             padding: 8px 18px;
-            border: 1px solid rgba(100, 140, 255, 0.3);
+            border: 1px solid var(--border-medium);
             border-radius: 6px;
             background: transparent;
-            color: #aaa;
+            color: var(--hall-inactive-text);
             font-size: 14px;
             cursor: pointer;
             transition: all 0.2s;
         }
 
         .hall-btn:hover {
-            border-color: rgba(100, 140, 255, 0.6);
-            color: #ddd;
+            border-color: var(--accent);
+            color: var(--hall-btn-hover-color);
         }
 
         .hall-btn.active {
-            background: rgba(66, 165, 245, 0.15);
-            border-color: #42a5f5;
-            color: #64b5f6;
+            background: var(--tab-active-bg);
+            border-color: var(--accent-dark);
+            color: var(--accent);
         }
 
         /* ===== 主区域 ===== */
@@ -147,8 +333,8 @@
         #sidebar {
             width: 350px;
             min-width: 350px;
-            background: #12122a;
-            border-left: 1px solid rgba(100, 140, 255, 0.15);
+            background: var(--bg-surface);
+            border-left: 1px solid var(--border-subtle);
             padding: 16px 18px;
             overflow-y: auto;
             display: flex;
@@ -159,8 +345,8 @@
 
         #sidebar h2 {
             font-size: 16px;
-            color: #64b5f6;
-            border-bottom: 1px solid rgba(100, 140, 255, 0.2);
+            color: var(--text-heading);
+            border-bottom: 1px solid var(--border-strong);
             padding-bottom: 8px;
             margin-bottom: 4px;
         }
@@ -169,7 +355,7 @@
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 6px;
-            border-bottom: 1px solid rgba(100, 140, 255, 0.15);
+            border-bottom: 1px solid var(--border-subtle);
             padding-bottom: 8px;
         }
 
@@ -182,22 +368,22 @@
             font: inherit;
             font-size: 13px;
             font-weight: 600;
-            color: #888;
+            color: var(--text-muted);
             cursor: pointer;
             transition: all 0.2s;
         }
 
         .mode-tab:hover,
         .mode-tab:focus-visible {
-            color: #d7e8ff;
-            border-color: rgba(100, 181, 246, 0.3);
+            color: var(--tab-hover-color);
+            border-color: var(--tab-hover-border);
             outline: none;
         }
 
         .mode-tab.active {
-            color: #64b5f6;
-            background: rgba(66, 165, 245, 0.13);
-            border-color: rgba(100, 181, 246, 0.45);
+            color: var(--accent);
+            background: var(--tab-active-bg);
+            border-color: var(--tab-active-border);
         }
 
         .mode-content {
@@ -218,7 +404,7 @@
 
         .form-row label {
             font-size: 13px;
-            color: #aaa;
+            color: var(--form-label);
             font-weight: 500;
         }
 
@@ -226,9 +412,9 @@
         .form-row input {
             padding: 6px 10px;
             border-radius: 6px;
-            border: 1px solid rgba(100, 140, 255, 0.2);
-            background: #1a1a3e;
-            color: #e0e0e0;
+            border: 1px solid var(--input-border);
+            background: var(--bg-input);
+            color: var(--text-primary);
             font-size: 13px;
             outline: none;
             transition: border 0.2s;
@@ -236,7 +422,7 @@
 
         .form-row select:focus,
         .form-row input:focus {
-            border-color: #64b5f6;
+            border-color: var(--accent);
         }
 
         .form-row input[type="number"] {
@@ -256,7 +442,7 @@
             display: flex;
             gap: 8px;
             align-items: center;
-            background: #1a1a3e;
+            background: var(--member-entry-bg);
             padding: 4px 8px;
             border-radius: 4px;
         }
@@ -264,10 +450,10 @@
         .member-entry input {
             flex: 1;
             padding: 4px 8px;
-            border: 1px solid rgba(100, 140, 255, 0.15);
+            border: 1px solid var(--border-subtle);
             border-radius: 4px;
-            background: #0f0f2a;
-            color: #e0e0e0;
+            background: var(--bg-deeper);
+            color: var(--text-primary);
             font-size: 12px;
         }
 
@@ -279,8 +465,8 @@
             padding: 8px 16px;
             border: none;
             border-radius: 6px;
-            background: linear-gradient(135deg, #42a5f5, #1e88e5);
-            color: #fff;
+            background: var(--btn-primary-bg);
+            color: var(--btn-primary-text);
             font-weight: 600;
             font-size: 14px;
             cursor: pointer;
@@ -289,7 +475,7 @@
         }
 
         .btn-primary:hover {
-            box-shadow: 0 4px 12px rgba(66, 165, 245, 0.4);
+            box-shadow: 0 4px 12px var(--accent-glow);
         }
 
         .btn-primary:disabled {
@@ -299,40 +485,40 @@
 
         .btn-secondary {
             padding: 6px 14px;
-            border: 1px solid rgba(100, 140, 255, 0.3);
+            border: 1px solid var(--btn-secondary-border);
             border-radius: 6px;
             background: transparent;
-            color: #64b5f6;
+            color: var(--btn-secondary-text);
             font-size: 13px;
             cursor: pointer;
             transition: all 0.2s;
         }
 
         .btn-secondary:hover {
-            background: rgba(66, 165, 245, 0.1);
+            background: var(--btn-secondary-hover-bg);
         }
 
         .info-box {
-            background: rgba(66, 165, 245, 0.08);
-            border-left: 3px solid #64b5f6;
+            background: var(--info-box-bg);
+            border-left: 3px solid var(--info-box-border);
             padding: 8px 12px;
             border-radius: 4px;
             font-size: 13px;
-            color: #bbb;
+            color: var(--text-soft);
             line-height: 1.6;
         }
 
         .info-box strong {
-            color: #64b5f6;
+            color: var(--accent);
         }
 
         .recommend-result {
-            background: rgba(255, 193, 7, 0.08);
-            border-left: 3px solid #ffb300;
+            background: var(--recommend-bg);
+            border-left: 3px solid var(--recommend-border);
             padding: 8px 12px;
             border-radius: 4px;
             font-size: 13px;
-            color: #ddd;
+            color: var(--recommend-text);
             display: none;
         }
 
@@ -341,14 +527,14 @@
         }
 
         .error-msg {
-            color: #ef5350;
+            color: var(--error-color);
             font-size: 12px;
             min-height: 20px;
         }
 
         /* ===== 模块3：影院热度地图 ===== */
         .panel-intro {
-            color: #aaa;
+            color: var(--panel-intro);
             font-size: 13px;
             line-height: 1.6;
         }
@@ -360,12 +546,12 @@
             justify-content: space-between;
             gap: 12px;
             font-size: 13px;
-            color: #999;
+            color: var(--heat-day-text);
         }
 
         .heat-day-header strong,
         .score-section-title strong {
-            color: #e7f2ff;
+            color: var(--heat-day-strong);
             font-size: 14px;
         }
 
@@ -379,7 +565,7 @@
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             text-align: center;
-            color: #737b97;
+            color: var(--week-label);
             font-size: 11px;
             margin-top: -6px;
         }
@@ -392,9 +578,9 @@
 
         .heat-stat {
             padding: 9px 6px;
-            border: 1px solid rgba(255, 255, 255, 0.07);
+            border: 1px solid var(--heat-stat-border);
             border-radius: 8px;
-            background: rgba(255, 255, 255, 0.025);
+            background: var(--heat-stat-bg);
             text-align: center;
         }
 
@@ -405,7 +591,7 @@
         }
 
         .heat-stat span {
-            color: #8c93a8;
+            color: var(--heat-stat-label);
             font-size: 11px;
         }
 
@@ -416,9 +602,9 @@
         /* ===== 模块4：观影体验评分 ===== */
         .score-empty {
             padding: 18px 14px;
-            border: 1px dashed rgba(100, 181, 246, 0.3);
+            border: 1px dashed var(--score-empty-border);
             border-radius: 10px;
-            color: #9299ad;
+            color: var(--score-empty-text);
             font-size: 13px;
             line-height: 1.7;
             text-align: center;
@@ -430,9 +616,9 @@
             align-items: center;
             gap: 14px;
             padding: 12px;
-            border: 1px solid rgba(100, 181, 246, 0.16);
+            border: 1px solid var(--score-border);
             border-radius: 10px;
-            background: rgba(66, 165, 245, 0.06);
+            background: var(--score-bg);
         }
 
         .score-ring {
@@ -451,7 +637,7 @@
             position: absolute;
             inset: 7px;
             border-radius: 50%;
-            background: #151532;
+            background: var(--score-ring-center);
         }
 
         .score-ring span {
@@ -463,13 +649,13 @@
 
         .score-summary strong {
             display: block;
-            color: #8bc6ff;
+            color: var(--score-summary-strong);
             font-size: 18px;
             margin-bottom: 4px;
         }
 
         .score-summary p {
-            color: #9199ae;
+            color: var(--score-summary-p);
             font-size: 12px;
             line-height: 1.55;
         }
@@ -485,19 +671,19 @@
             justify-content: space-between;
             gap: 12px;
             margin-bottom: 5px;
-            color: #b9c0d2;
+            color: var(--metric-head-text);
             font-size: 12px;
         }
 
         .metric-head strong {
-            color: #e3edff;
+            color: var(--metric-head-strong);
         }
 
         .metric-bar {
             height: 6px;
             overflow: hidden;
             border-radius: 999px;
-            background: rgba(255, 255, 255, 0.08);
+            background: var(--metric-bar-bg);
         }
 
         .metric-bar i {
@@ -511,10 +697,10 @@
 
         .score-reasons {
             padding: 9px 11px;
-            border-left: 3px solid #42a5f5;
+            border-left: 3px solid var(--accent-dark);
             border-radius: 5px;
-            background: rgba(66, 165, 245, 0.07);
-            color: #b5bdd0;
+            background: var(--score-reasons-bg);
+            color: var(--score-reasons-text);
             font-size: 12px;
             line-height: 1.65;
         }
@@ -529,7 +715,7 @@
         .star-btn {
             border: none;
             background: transparent;
-            color: #596078;
+            color: var(--star-btn-color);
             font-size: 28px;
             line-height: 1;
             cursor: pointer;
@@ -538,18 +724,18 @@
 
         .star-btn:hover,
         .star-btn:focus-visible {
-            color: #ffd45c;
+            color: var(--star-hover);
             transform: translateY(-2px);
             outline: none;
         }
 
         .star-btn.active {
-            color: #ffca28;
+            color: var(--star-active);
         }
 
         .rating-status {
             min-height: 18px;
-            color: #8790a7;
+            color: var(--rating-status);
             font-size: 11px;
             text-align: center;
         }
@@ -557,10 +743,10 @@
         .combined-result {
             display: none;
             padding: 10px 12px;
-            border: 1px solid rgba(102, 187, 106, 0.28);
+            border: 1px solid var(--combined-border);
             border-radius: 8px;
-            background: rgba(102, 187, 106, 0.08);
-            color: #c7e8c9;
+            background: var(--combined-bg);
+            color: var(--combined-text);
             font-size: 13px;
             line-height: 1.55;
         }
@@ -570,7 +756,7 @@
         }
 
         .combined-result strong {
-            color: #81c784;
+            color: var(--combined-strong);
             font-size: 16px;
         }
 
@@ -580,8 +766,8 @@
             justify-content: space-between;
             align-items: center;
             padding: 12px 28px;
-            background: #12122a;
-            border-top: 1px solid rgba(100, 140, 255, 0.15);
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-subtle);
             flex-wrap: wrap;
             gap: 12px;
         }
@@ -608,21 +794,21 @@
         }
 
         .legend-dot.empty    { background: #43a047; }
-        .legend-dot.selected { background: #ffb300; }
+        .legend-dot.selected { background: var(--selected-seat-color); }
         .legend-dot.sold     { background: #e53935; }
-        .legend-dot.recommended { background: #42a5f5; border: 1px solid #90caf9; }
-        .legend-dot.reserved { background: #9c27b0; border: 1px solid #ce93d8; }
+        .legend-dot.recommended { background: var(--accent-dark); border: 1px solid var(--recommend-dot-border); }
+        .legend-dot.reserved { background: #9c27b0; border: 1px solid var(--reserved-dot-border); }
         .legend-dot.hot { background: #ef5350; }
         .legend-dot.warm { background: #fbc02d; }
         .legend-dot.cool { background: #42a5f5; }
 
         .selected-info {
             font-size: 13px;
-            color: #888;
+            color: var(--selected-info-text);
         }
 
         .selected-info span {
-            color: #ffb300;
+            color: var(--selected-seat-color);
             font-weight: 600;
         }
 
@@ -630,15 +816,90 @@
         #tooltip {
             position: fixed;
             display: none;
-            background: rgba(20, 20, 45, 0.95);
-            border: 1px solid rgba(100, 140, 255, 0.3);
+            background: var(--tooltip-bg);
+            border: 1px solid var(--border-medium);
             border-radius: 6px;
             padding: 6px 12px;
             font-size: 13px;
-            color: #ddd;
+            color: var(--text-bright);
             pointer-events: none;
             z-index: 100;
             white-space: nowrap;
+        }
+
+        /* ===== 实时通知Toast ===== */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 8px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: var(--bg-card);
+            border: 1px solid var(--border-medium);
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-size: 13px;
+            color: var(--text-primary);
+            box-shadow: var(--panel-shadow);
+            min-width: 240px;
+            max-width: 360px;
+            animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
+            pointer-events: auto;
+        }
+
+        .toast.seat-update {
+            border-left: 3px solid var(--accent-dark);
+        }
+
+        .toast.seat-conflict {
+            border-left: 3px solid #ef5350;
+        }
+
+        .toast .toast-icon {
+            margin-right: 6px;
+        }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(40px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes toastOut {
+            from { opacity: 1; transform: translateX(0); }
+            to   { opacity: 0; transform: translateX(40px); }
+        }
+
+        /* ===== 在线用户徽章 ===== */
+        .online-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            background: rgba(76, 175, 80, 0.15);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            color: #66bb6a;
+        }
+
+        .online-badge .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #4caf50;
+            animation: pulse-dot 1.5s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50%      { opacity: 0.4; }
         }
 
         /* ===== 响应式 ===== */
@@ -651,7 +912,7 @@
                 min-width: unset;
                 max-height: 50vh;
                 border-left: none;
-                border-top: 1px solid rgba(100, 140, 255, 0.15);
+                border-top: 1px solid var(--border-subtle);
                 overflow-y: auto;
             }
             .canvas-wrapper {
@@ -682,7 +943,7 @@
         }
 
         .hidden { display: none !important; }
-        .text-muted { color: #888; font-size: 12px; }
+        .text-muted { color: var(--text-muted); font-size: 12px; }
 
         /* ===== 订单面板 ===== */
         .orders-panel {
@@ -691,11 +952,11 @@
             right: 28px;
             width: 380px;
             max-height: 75vh;
-            background: #1a1a3e;
-            border: 1px solid rgba(100, 200, 100, 0.3);
+            background: var(--bg-card);
+            border: 1px solid var(--orders-panel-border);
             border-radius: 10px;
             z-index: 1000;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            box-shadow: var(--panel-shadow);
             display: none;
             flex-direction: column;
             overflow: hidden;
@@ -710,20 +971,20 @@
             justify-content: space-between;
             align-items: center;
             padding: 12px 16px;
-            border-bottom: 1px solid rgba(100, 200, 100, 0.2);
+            border-bottom: 1px solid var(--orders-header-border);
             flex-shrink: 0;
         }
 
         .orders-header h3 {
             font-size: 15px;
-            color: #66bb6a;
+            color: var(--orders-header-text);
             margin: 0;
         }
 
         .orders-close {
             background: none;
             border: none;
-            color: #888;
+            color: var(--text-muted);
             font-size: 18px;
             cursor: pointer;
             padding: 4px 8px;
@@ -732,8 +993,8 @@
         }
 
         .orders-close:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
+            background: var(--order-close-hover-bg);
+            color: var(--text-bright);
         }
 
         .orders-list {
@@ -743,8 +1004,8 @@
         }
 
         .order-card {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--order-card-bg);
+            border: 1px solid var(--order-card-border);
             border-radius: 8px;
             padding: 12px;
             margin-bottom: 10px;
@@ -796,12 +1057,12 @@
 
         .order-info {
             font-size: 13px;
-            color: #ccc;
+            color: var(--order-info-text);
             line-height: 1.8;
         }
 
         .order-label {
-            color: #888;
+            color: var(--text-muted);
         }
 
         .order-price {
@@ -838,12 +1099,12 @@
         }
 
         .order-btn.cancel {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ccc;
+            background: var(--order-cancel-bg);
+            color: var(--order-cancel-text);
         }
 
         .order-btn.cancel:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: var(--order-cancel-hover);
         }
 
         .order-btn.refund {
@@ -858,10 +1119,10 @@
         /* ===== 无障碍功能 ===== */
         .a11y-btn {
             padding: 6px 12px;
-            border: 1px solid rgba(100, 140, 255, 0.3);
+            border: 1px solid var(--border-medium);
             border-radius: 6px;
             background: transparent;
-            color: #aaa;
+            color: var(--text-secondary);
             font-size: 13px;
             cursor: pointer;
             transition: all 0.2s;
@@ -871,8 +1132,8 @@
         }
 
         .a11y-btn:hover {
-            border-color: rgba(100, 140, 255, 0.6);
-            color: #ddd;
+            border-color: var(--accent);
+            color: var(--hall-btn-hover-color);
         }
 
         .a11y-panel {
@@ -880,12 +1141,12 @@
             top: 60px;
             right: 28px;
             width: 300px;
-            background: #1a1a3e;
-            border: 1px solid rgba(100, 140, 255, 0.3);
+            background: var(--bg-card);
+            border: 1px solid var(--border-medium);
             border-radius: 10px;
             padding: 16px;
             z-index: 1000;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            box-shadow: var(--panel-shadow);
             display: none;
         }
 
@@ -895,10 +1156,10 @@
 
         .a11y-panel h3 {
             font-size: 15px;
-            color: #64b5f6;
+            color: var(--text-heading);
             margin-bottom: 12px;
             padding-bottom: 8px;
-            border-bottom: 1px solid rgba(100, 140, 255, 0.2);
+            border-bottom: 1px solid var(--border-strong);
         }
 
         .a11y-item {
@@ -906,7 +1167,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 8px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--a11y-item-border);
         }
 
         .a11y-item:last-child {
@@ -915,14 +1176,14 @@
 
         .a11y-item label {
             font-size: 13px;
-            color: #ccc;
+            color: var(--text-label);
             cursor: pointer;
             flex: 1;
         }
 
         .a11y-item .a11y-desc {
             font-size: 11px;
-            color: #777;
+            color: var(--a11y-desc);
             margin-top: 2px;
         }
 
@@ -1487,10 +1748,16 @@
                 <button class="hall-btn" data-hall="medium">中厅 (200座)</button>
                 <button class="hall-btn" data-hall="large">大厅 (300座)</button>
             </div>
+            <button class="a11y-btn" id="theme-toggle-btn" onclick="toggleTheme()" aria-label="切换界面风格" title="切换界面风格">
+                🌓 风格
+            </button>
+            <span class="online-badge" id="online-badge" title="当前在线用户数">
+                <span class="dot"></span> <span id="online-count">1</span> 在线
+            </span>
             <button class="a11y-btn" id="a11y-toggle-btn" onclick="toggleA11yPanel()" aria-label="无障碍设置">
                 ♿ 无障碍
             </button>
-            <button class="a11y-btn" id="orders-btn" onclick="showOrdersPanel()" aria-label="我的订单" style="border-color: rgba(100,200,100,0.4); color: #90c490;">
+            <button class="a11y-btn" id="orders-btn" onclick="showOrdersPanel()" aria-label="我的订单">
                 📋 我的订单
             </button>
             <button class="logout-btn" id="logout-btn" onclick="logout()">登出</button>
@@ -1549,8 +1816,8 @@
         <aside id="sidebar">
             <h2>🎬 选座工具</h2>
             <div class="mode-tabs" role="tablist" aria-label="功能模块">
-                <button type="button" class="mode-tab active" data-mode="recommend" onclick="switchMode('recommend')" role="tab" aria-selected="true">智能推荐</button>
-                <button type="button" class="mode-tab" data-mode="manual" onclick="switchMode('manual')" role="tab" aria-selected="false">手动选座</button>
+                <button type="button" class="mode-tab active" data-mode="manual" onclick="switchMode('manual')" role="tab" aria-selected="true">手动选座</button>
+                <button type="button" class="mode-tab" data-mode="recommend" onclick="switchMode('recommend')" role="tab" aria-selected="false">智能推荐</button>
                 <button type="button" class="mode-tab" data-mode="heatmap" onclick="switchMode('heatmap')" role="tab" aria-selected="false">热度地图</button>
                 <button type="button" class="mode-tab" data-mode="experience" onclick="switchMode('experience')" role="tab" aria-selected="false">体验评分</button>
             </div>
@@ -1718,6 +1985,9 @@
     </footer>
 
     <div id="tooltip"></div>
+
+    <!-- 实时通知Toast容器 -->
+    <div class="toast-container" id="toast-container" aria-live="polite" aria-label="实时通知"></div>
 
     <script>
         // ============================================================
@@ -2524,7 +2794,8 @@
             ctx.stroke();
 
             ctx.shadowBlur = 0;
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+            const isLightTheme = document.body.getAttribute('data-theme') === 'light';
+            ctx.fillStyle = isLightTheme ? 'rgba(40, 40, 40, 0.9)' : 'rgba(255, 255, 255, 0.85)';
             ctx.font = '600 13px "Microsoft YaHei", sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -2594,7 +2865,8 @@
         function drawRowLabels() {
             const { config, arcCenterX, arcCenterY, minRadius, rowSpacing, arcSpan } = layout;
             ctx.save();
-            ctx.fillStyle = 'rgba(160, 180, 220, 0.5)';
+            const isLightTheme = document.body.getAttribute('data-theme') === 'light';
+            ctx.fillStyle = isLightTheme ? 'rgba(80, 80, 100, 0.6)' : 'rgba(160, 180, 220, 0.5)';
             ctx.font = '11px Arial, sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -2613,7 +2885,7 @@
         }
 
         function draw() {
-            ctx.fillStyle = a11ySettings.highContrast ? '#000000' : '#0a0a1a';
+            ctx.fillStyle = a11ySettings.highContrast ? '#000000' : getComputedStyle(document.body).getPropertyValue('--bg-body').trim();
             ctx.fillRect(0, 0, cssW, cssH);
 
             drawScreen();
@@ -2819,6 +3091,45 @@
         function logout() {
             sessionStorage.removeItem('smartCinemaCurrentUser');
             window.location.href = 'login.html';
+        }
+
+        // ============================================================
+        //  主题切换
+        // ============================================================
+        const THEME_KEY = 'smartCinemaTheme';
+
+        function getSavedTheme() {
+            return localStorage.getItem(THEME_KEY) || 'dark';
+        }
+
+        function applyTheme(theme) {
+            if (theme === 'light') {
+                document.body.setAttribute('data-theme', 'light');
+            } else {
+                document.body.removeAttribute('data-theme');
+            }
+            localStorage.setItem(THEME_KEY, theme);
+            // 更新按钮文字
+            const btn = document.getElementById('theme-toggle-btn');
+            if (btn) {
+                btn.innerHTML = theme === 'light' ? '☀️ 日间' : '🌙 暗夜';
+            }
+        }
+
+        function toggleTheme() {
+            const current = document.body.hasAttribute('data-theme') && document.body.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+            const next = current === 'dark' ? 'light' : 'dark';
+            applyTheme(next);
+            // 重绘Canvas以匹配新主题底色
+            if (typeof resizeCanvas === 'function') resizeCanvas();
+            if (typeof a11ySettings !== 'undefined' && a11ySettings.voice) {
+                speak(next === 'light' ? '已切换到日间风格' : '已切换到暗夜风格');
+            }
+        }
+
+        function loadTheme() {
+            const theme = getSavedTheme();
+            applyTheme(theme);
         }
 
         // ============================================================
@@ -3221,6 +3532,7 @@
             }
 
             saveSeatsToLocal();
+            broadcastBatchChange(selected.map(function(s) { return { row: s.row, col: s.col, state: RESERVED }; }));
             updateSelectedCount();
             draw();
 
@@ -3262,6 +3574,7 @@
                     }
                 }
                 saveSeatsToLocal();
+                broadcastBatchChange(order.seats.map(function(s) { return { row: s.row, col: s.col, state: EMPTY }; }));
                 draw();
             }
 
@@ -3307,6 +3620,7 @@
                     }
                 }
                 saveSeatsToLocal();
+                broadcastBatchChange(order.seats.map(function(s) { return { row: s.row, col: s.col, state: SOLD }; }));
                 draw();
             }
 
@@ -3352,6 +3666,7 @@
                     }
                 }
                 saveSeatsToLocal();
+                broadcastBatchChange(order.seats.map(function(s) { return { row: s.row, col: s.col, state: EMPTY }; }));
                 draw();
             }
 
@@ -3437,9 +3752,236 @@
         }
 
         // ============================================================
+        //  WebSocket 实时座位同步（多人在线模拟）
+        //  基于 BroadcastChannel API 实现跨标签页通信
+        // ============================================================
+        const WS_CHANNEL_NAME = 'smartCinemaRealtime';
+        const PRESENCE_KEY = 'smartCinemaPresence';
+        const PRESENCE_TTL = 8000; // 8秒未心跳视为离线
+        const MY_CLIENT_ID = (function () {
+            let id = sessionStorage.getItem('smartCinemaClientId');
+            if (!id) {
+                id = 'client_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+                sessionStorage.setItem('smartCinemaClientId', id);
+            }
+            return id;
+        })();
+
+        let wsChannel = null;
+        let presenceTimer = null;
+
+        // 消息类型
+        const WS_MSG = {
+            SEAT_BATCH: 'seat_batch_change',   // 批量状态变更（预订/购票/退票/取消预订）
+            PRESENCE_PING: 'presence_ping',    // 心跳
+            PRESENCE_JOIN: 'presence_join',    // 新用户加入
+            PRESENCE_LEAVE: 'presence_leave'   // 用户离开
+        };
+
+        // ============================================================
+        //  Toast 通知
+        // ============================================================
+        function showToast(msg, type) {
+            type = type || 'seat-update';
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast ' + type;
+            const icons = { 'seat-update': '🔄', 'seat-conflict': '⚠️' };
+            const icon = icons[type] || '📢';
+            toast.innerHTML = '<span class="toast-icon">' + icon + '</span>' + msg;
+            container.appendChild(toast);
+            setTimeout(function () {
+                if (toast.parentNode) toast.parentNode.removeChild(toast);
+            }, 3200);
+        }
+
+        // ============================================================
+        //  在线用户感知
+        // ============================================================
+        function updatePresence() {
+            const data = JSON.parse(localStorage.getItem(PRESENCE_KEY) || '{}');
+            const now = Date.now();
+            // 更新自己的时间戳
+            data[MY_CLIENT_ID] = {
+                lastSeen: now,
+                user: (function () { try { return JSON.parse(sessionStorage.getItem('smartCinemaCurrentUser') || '{}').username || '访客'; } catch (e) { return '访客'; } })()
+            };
+            // 清理过期客户端
+            var changed = false;
+            for (var cid in data) {
+                if (now - data[cid].lastSeen > PRESENCE_TTL) {
+                    delete data[cid];
+                    changed = true;
+                }
+            }
+            localStorage.setItem(PRESENCE_KEY, JSON.stringify(data));
+            // 更新 UI
+            var count = Object.keys(data).length;
+            document.getElementById('online-count').textContent = count;
+            if (count > 1 && changed) {
+                // 有变化时广播
+            }
+        }
+
+        function heartbeat() {
+            updatePresence();
+            if (wsChannel) {
+                wsChannel.postMessage({ type: WS_MSG.PRESENCE_PING, clientId: MY_CLIENT_ID });
+            }
+            presenceTimer = setTimeout(heartbeat, 3000);
+        }
+
+        // ============================================================
+        //  BroadcastChannel 通信
+        // ============================================================
+        function initRealtimeSync() {
+            if (!('BroadcastChannel' in window)) {
+                // 降级：仅使用 localStorage 事件
+                initLocalStorageFallback();
+                return;
+            }
+
+            wsChannel = new BroadcastChannel(WS_CHANNEL_NAME);
+
+            wsChannel.onmessage = function (e) {
+                var msg = e.data;
+                if (!msg || !msg.type) return;
+                if (msg.clientId === MY_CLIENT_ID) return; // 忽略自己的消息
+
+                switch (msg.type) {
+                    case WS_MSG.SEAT_BATCH:
+                        handleRemoteBatchChange(msg);
+                        break;
+                    case WS_MSG.PRESENCE_PING:
+                        // 收到其他客户端心跳，刷新在线列表
+                        updatePresence();
+                        break;
+                    case WS_MSG.PRESENCE_JOIN:
+                        updatePresence();
+                        showToast(msg.username + ' 加入了选座大厅', 'seat-update');
+                        if (typeof a11ySettings !== 'undefined' && a11ySettings.voice) {
+                            speak(msg.username + '加入了选座大厅');
+                        }
+                        break;
+                    case WS_MSG.PRESENCE_LEAVE:
+                        updatePresence();
+                        break;
+                }
+            };
+
+            // 发送加入消息
+            var user = null;
+            try { user = JSON.parse(sessionStorage.getItem('smartCinemaCurrentUser') || '{}'); } catch (e) {}
+            var username = (user && user.username) || '访客';
+            wsChannel.postMessage({ type: WS_MSG.PRESENCE_JOIN, clientId: MY_CLIENT_ID, username: username });
+        }
+
+        function initLocalStorageFallback() {
+            window.addEventListener('storage', function (e) {
+                if (e.key === 'smartCinemaSeats' && e.newValue) {
+                    handleStorageSeatChange(e.newValue);
+                }
+                if (e.key === PRESENCE_KEY) {
+                    updatePresence();
+                }
+            });
+        }
+
+        function handleStorageSeatChange(newValue) {
+            try {
+                var data = JSON.parse(newValue);
+                var hallData = data[currentHall];
+                if (!hallData) return;
+
+                var changedSeats = [];
+                for (var r = 0; r < hallData.data.length; r++) {
+                    for (var c = 0; c < hallData.data[r].length; c++) {
+                        if (seats[r] && seats[r][c]) {
+                            var newState = hallData.data[r][c];
+                            if (seats[r][c].state !== newState) {
+                                changedSeats.push({ row: r + 1, col: c + 1, oldState: seats[r][c].state, newState: newState });
+                                seats[r][c].state = newState;
+                            }
+                        }
+                    }
+                }
+                if (changedSeats.length > 0) {
+                    buildToastForChanges(changedSeats);
+                    draw();
+                    updateSelectedCount();
+                }
+            } catch (err) {}
+        }
+
+        function handleRemoteBatchChange(msg) {
+            if (msg.hall !== currentHall) return;
+            var changedSeats = [];
+            for (var i = 0; i < msg.seats.length; i++) {
+                var s = msg.seats[i];
+                var row = s.row - 1;
+                var col = s.col - 1;
+                if (seats[row] && seats[row][col]) {
+                    // 冲突检测：如果你选中的座位被他人预订/购买
+                    if (seats[row][col].state === SELECTED && (s.state === SOLD || s.state === RESERVED)) {
+                        showToast('你选中的 ' + s.row + '排' + s.col + '座 已被其他用户购买', 'seat-conflict');
+                        if (typeof a11ySettings !== 'undefined' && a11ySettings.voice) {
+                            speak('注意，你选中的' + s.row + '排' + s.col + '座已被其他用户购买');
+                        }
+                    }
+                    if (seats[row][col].state !== s.state) {
+                        changedSeats.push({ row: s.row, col: s.col, oldState: seats[row][col].state, newState: s.state });
+                        seats[row][col].state = s.state;
+                    }
+                }
+            }
+            if (changedSeats.length > 0) {
+                buildToastForChanges(changedSeats);
+                draw();
+                updateSelectedCount();
+            }
+        }
+
+        function buildToastForChanges(changedSeats) {
+            var stateNames = ['空座', '选中', '已售', '推荐', '已预订'];
+            var actionNames = { 0: '释放', 1: '选中', 2: '购买', 3: '推荐', 4: '预订' };
+            var maxShow = 3;
+            var seatsText = changedSeats.slice(0, maxShow).map(function (s) {
+                return s.row + '排' + s.col + '座→' + actionNames[s.newState] || stateNames[s.newState];
+            }).join('、');
+            if (changedSeats.length > maxShow) {
+                seatsText += ' 等' + changedSeats.length + '个座位';
+            }
+            showToast(seatsText, 'seat-update');
+        }
+
+        function broadcastBatchChange(seatList) {
+            if (!wsChannel) return;
+            wsChannel.postMessage({
+                type: WS_MSG.SEAT_BATCH,
+                clientId: MY_CLIENT_ID,
+                hall: currentHall,
+                seats: seatList
+            });
+        }
+
+        function teardownRealtimeSync() {
+            if (presenceTimer) clearTimeout(presenceTimer);
+            if (wsChannel) {
+                wsChannel.postMessage({ type: WS_MSG.PRESENCE_LEAVE, clientId: MY_CLIENT_ID });
+                wsChannel.close();
+                wsChannel = null;
+            }
+            // 清理自己的 presence
+            var data = JSON.parse(localStorage.getItem(PRESENCE_KEY) || '{}');
+            delete data[MY_CLIENT_ID];
+            localStorage.setItem(PRESENCE_KEY, JSON.stringify(data));
+        }
+
+        // ============================================================
         //  启动
         // ============================================================
         initSpeech();
+        loadTheme();
         loadA11ySettings();
         currentUser = getCurrentUser();
         initUserInfo();
@@ -3453,7 +3995,12 @@
         resizeCanvas();
         updateSelectedCount();
         updateHeatmapSummary();
-        switchMode('recommend');
+        switchMode('manual');
+
+        // 启动实时同步
+        initRealtimeSync();
+        heartbeat();
+        window.addEventListener('beforeunload', teardownRealtimeSync);
     </script>
 </body>
 </html>
