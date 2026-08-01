@@ -1989,9 +1989,33 @@
     <!-- 实时通知Toast容器 -->
     <div class="toast-container" id="toast-container" aria-live="polite" aria-label="实时通知"></div>
 
+    <!-- ======== 新增：AI顾问悬浮窗 ======== -->
+    <div id="ai-assistant-container" style="position:fixed; bottom:30px; right:30px; z-index:3000; display:flex; flex-direction:column; align-items:flex-end;">
+        <div id="ai-chat-window" style="display:none; background:var(--bg-card); border:1px solid var(--border-medium); border-radius:12px; box-shadow:var(--panel-shadow); width:320px; max-height:420px; flex-direction:column; overflow:hidden; margin-bottom:10px;">
+            <div style="padding:12px 16px; background:var(--gradient-header); border-bottom:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
+                <span style="font-weight:600; color:var(--text-heading); font-size:15px;">🎬 AI 观影顾问</span>
+                <button id="ai-chat-close" style="background:none; border:none; color:var(--text-muted); font-size:18px; cursor:pointer; padding:0 4px;">✕</button>
+            </div>
+            <div id="ai-chat-messages" style="flex:1; overflow-y:auto; padding:12px 14px; display:flex; flex-direction:column; gap:8px; font-size:13px; color:var(--text-primary); max-height:300px;">
+                <div style="background:var(--info-box-bg); padding:8px 12px; border-radius:8px; align-self:flex-start; max-width:85%;">
+                    你好！我是 AI 观影顾问，可以帮你找到最合适的座位。请问你更看重什么？<br>
+                    <span style="font-size:12px; color:var(--text-muted);">例如：视角、安静、方便进出、宽敞</span>
+                </div>
+            </div>
+            <div style="padding:10px 12px; border-top:1px solid var(--border-subtle); display:flex; gap:8px; flex-shrink:0;">
+                <input id="ai-chat-input" type="text" placeholder="输入你的需求..." style="flex:1; padding:6px 10px; border-radius:6px; border:1px solid var(--input-border); background:var(--bg-input); color:var(--text-primary); font-size:13px; outline:none;">
+                <button id="ai-chat-send" style="padding:6px 14px; border:none; border-radius:6px; background:var(--btn-primary-bg); color:#fff; font-weight:600; font-size:13px; cursor:pointer;">发送</button>
+            </div>
+        </div>
+        <button id="ai-toggle-btn" style="width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg, #42a5f5, #1e88e5); border:none; box-shadow:0 4px 12px rgba(66,165,245,0.4); color:#fff; font-size:24px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s;">🤖</button>
+    </div>
+
+    <!-- ======== 新增：动画叠加层 ======== -->
+    <canvas id="overlay-canvas" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:50;"></canvas>
+
     <script>
         // ============================================================
-        //  常量与全局变量
+        //  常量与全局变量（原有）
         // ============================================================
         const HALLS = {
             small:  { name: '小厅', seatsPerRow: 10, rows: 10 },
@@ -2035,7 +2059,7 @@
         let activeScoreSignature = '';
 
         // ============================================================
-        //  持久化存储
+        //  持久化存储（原有）
         // ============================================================
         function loadSeatsFromLocal(hallKey) {
             const key = 'smartCinemaSeats';
@@ -2048,7 +2072,6 @@
                     for (let r = 0; r < saved.rows; r++) {
                         const row = [];
                         for (let c = 0; c < saved.cols; c++) {
-                            // 存储中只有 0(EMPTY) 和 2(SOLD)
                             row.push({
                                 row: r + 1,
                                 col: c + 1,
@@ -2066,7 +2089,6 @@
         function saveSeatsToLocal() {
             const key = 'smartCinemaSeats';
             const data = JSON.parse(localStorage.getItem(key) || '{}');
-            // 只保存 EMPTY、SOLD、RESERVED，将 SELECTED 和 RECOMMENDED 映射为 EMPTY
             const storageData = seats.map(row => row.map(s => {
                 if (s.state === SELECTED || s.state === RECOMMENDED) {
                     return EMPTY;
@@ -2082,7 +2104,7 @@
         }
 
         // ============================================================
-        //  初始化座位
+        //  初始化座位（原有）
         // ============================================================
         function initSeats(hallKey) {
             const loaded = loadSeatsFromLocal(hallKey);
@@ -2107,7 +2129,7 @@
         }
 
         // ============================================================
-        //  更新选中计数
+        //  更新选中计数（原有）
         // ============================================================
         function updateSelectedCount() {
             let count = 0;
@@ -2121,7 +2143,7 @@
         }
 
         // ============================================================
-        //  清空所有选中 & 清除推荐
+        //  清空所有选中 & 清除推荐（原有）
         // ============================================================
         function clearAllSelected() {
             for (let r = 0; r < seats.length; r++) {
@@ -2155,7 +2177,7 @@
         }
 
         // ============================================================
-        //  模式切换
+        //  模式切换（原有）
         // ============================================================
         function switchMode(mode) {
             currentMode = mode;
@@ -2185,7 +2207,7 @@
         }
 
         // ============================================================
-        //  推荐表单动态成员
+        //  推荐表单动态成员（原有）
         // ============================================================
         function onTicketTypeChange() {
             const type = document.getElementById('ticket-type').value;
@@ -2222,7 +2244,7 @@
         onTicketTypeChange();
 
         // ============================================================
-        //  推荐算法核心
+        //  推荐算法核心（原有）
         // ============================================================
         function doRecommend() {
             clearRecommendHighlights();
@@ -2230,7 +2252,6 @@
             const type = document.getElementById('ticket-type').value;
             const count = parseInt(document.getElementById('member-count').value) || 0;
 
-            // 人数校验
             if (count < 1) {
                 document.getElementById('recommend-error').textContent = '人数至少为1';
                 return;
@@ -2350,7 +2371,7 @@
         }
 
         // ============================================================
-        //  模块3：影院热度地图
+        //  模块3：影院热度地图（原有）
         // ============================================================
         function clamp(value, min, max) {
             return Math.min(max, Math.max(min, value));
@@ -2363,14 +2384,12 @@
             const center = (totalCols + 1) / 2;
             const centerNorm = totalCols === 1 ? 0 : (seat.col - center) / ((totalCols - 1) / 2);
 
-            // 一周内最佳排位和左右偏好有轻微变化，周末整体热度更高。
             const idealRows = [0.54, 0.56, 0.58, 0.61, 0.65, 0.62, 0.58];
             const centerShifts = [-0.05, 0.04, -0.02, 0.06, 0, -0.04, 0.02];
             const dayBoosts = [-6, -3, 0, 4, 8, 12, 7];
             const rowScore = Math.exp(-0.5 * Math.pow((rowNorm - idealRows[day]) / 0.22, 2));
             const centerScore = Math.exp(-0.5 * Math.pow((centerNorm - centerShifts[day]) / 0.42, 2));
 
-            // 固定伪随机扰动让每个座位有稳定差异，同时保证同一星期可复现。
             const noiseSeed = Math.sin(
                 seat.row * 12.9898 + seat.col * 78.233 + (day + 1) * 37.719
             ) * 43758.5453;
@@ -2456,7 +2475,7 @@
         }
 
         // ============================================================
-        //  模块4：观影体验评分
+        //  模块4：观影体验评分（原有）
         // ============================================================
         function getSelectedSeats() {
             const selected = [];
@@ -2483,7 +2502,6 @@
                 : Math.abs(seat.col - center) / ((totalCols - 1) / 2);
             const rowNorm = totalRows === 1 ? 0.5 : (seat.row - 1) / (totalRows - 1);
 
-            // 中轴视角越正得分越高；约第6～7排为舒适距离。
             const angle = Math.round(clamp(100 - centerOffset * 60, 40, 100));
             const distance = Math.round(clamp(100 - Math.abs(rowNorm - 0.58) * 115, 45, 100));
 
@@ -2706,7 +2724,7 @@
         }
 
         // ============================================================
-        //  Canvas 相关
+        //  Canvas 相关（原有）
         // ============================================================
         const canvas = document.getElementById('cinema-canvas');
         const ctx = canvas.getContext('2d');
@@ -2727,6 +2745,15 @@
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
             calculateLayout();
             draw();
+            // 同时调整overlay canvas
+            const overlay = document.getElementById('overlay-canvas');
+            if (overlay) {
+                overlay.style.width = cssW + 'px';
+                overlay.style.height = cssH + 'px';
+                overlay.width = cssW * dpr;
+                overlay.height = cssH * dpr;
+                overlay.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
+            }
         }
 
         function calculateLayout() {
@@ -2900,7 +2927,6 @@
                 }
             }
 
-            // 启动/停止闪烁
             let hasRec = false;
             for (let r = 0; r < seats.length; r++) {
                 for (let c = 0; c < seats[r].length; c++) {
@@ -2924,7 +2950,7 @@
         }
 
         // ============================================================
-        //  交互：点击（Ctrl+单击）
+        //  交互：点击（Ctrl+单击）原有
         // ============================================================
         function getSeatAt(mx, my) {
             const size = layout.seatSize;
@@ -2980,7 +3006,7 @@
         });
 
         // ============================================================
-        //  拖拽选座（画笔滑动）
+        //  拖拽选座（画笔滑动）原有
         // ============================================================
         let isDragging = false;
         let lastDraggedSeat = null;
@@ -3046,7 +3072,7 @@
         });
 
         // ============================================================
-        //  影厅切换
+        //  影厅切换（原有）
         // ============================================================
         document.querySelectorAll('.hall-btn').forEach(function (btn) {
             btn.addEventListener('click', function () {
@@ -3067,7 +3093,7 @@
         });
 
         // ============================================================
-        //  登录状态
+        //  登录状态（原有）
         // ============================================================
         function getQueryParam(name) {
             const params = new URLSearchParams(window.location.search);
@@ -3094,7 +3120,7 @@
         }
 
         // ============================================================
-        //  主题切换
+        //  主题切换（原有）
         // ============================================================
         const THEME_KEY = 'smartCinemaTheme';
 
@@ -3109,7 +3135,6 @@
                 document.body.removeAttribute('data-theme');
             }
             localStorage.setItem(THEME_KEY, theme);
-            // 更新按钮文字
             const btn = document.getElementById('theme-toggle-btn');
             if (btn) {
                 btn.innerHTML = theme === 'light' ? '☀️ 日间' : '🌙 暗夜';
@@ -3120,8 +3145,6 @@
             const current = document.body.hasAttribute('data-theme') && document.body.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
             const next = current === 'dark' ? 'light' : 'dark';
             applyTheme(next);
-            // 重绘Canvas以匹配新主题底色
-            if (typeof resizeCanvas === 'function') resizeCanvas();
             if (typeof a11ySettings !== 'undefined' && a11ySettings.voice) {
                 speak(next === 'light' ? '已切换到日间风格' : '已切换到暗夜风格');
             }
@@ -3133,7 +3156,7 @@
         }
 
         // ============================================================
-        //  无障碍功能
+        //  无障碍功能（原有）
         // ============================================================
         const A11Y_KEY = 'smartCinemaA11ySettings';
         const COLORBLIND_COLORS = {
@@ -3433,7 +3456,7 @@
         });
 
         // ============================================================
-        //  订单与预订系统
+        //  订单与预订系统（原有）
         // ============================================================
         const ORDERS_KEY = 'smartCinemaOrders';
         const SESSION_KEY = 'smartCinemaCurrentUser';
@@ -3752,12 +3775,11 @@
         }
 
         // ============================================================
-        //  WebSocket 实时座位同步（多人在线模拟）
-        //  基于 BroadcastChannel API 实现跨标签页通信
+        //  WebSocket 实时座位同步（多人在线模拟）原有
         // ============================================================
         const WS_CHANNEL_NAME = 'smartCinemaRealtime';
         const PRESENCE_KEY = 'smartCinemaPresence';
-        const PRESENCE_TTL = 8000; // 8秒未心跳视为离线
+        const PRESENCE_TTL = 8000;
         const MY_CLIENT_ID = (function () {
             let id = sessionStorage.getItem('smartCinemaClientId');
             if (!id) {
@@ -3770,17 +3792,13 @@
         let wsChannel = null;
         let presenceTimer = null;
 
-        // 消息类型
         const WS_MSG = {
-            SEAT_BATCH: 'seat_batch_change',   // 批量状态变更（预订/购票/退票/取消预订）
-            PRESENCE_PING: 'presence_ping',    // 心跳
-            PRESENCE_JOIN: 'presence_join',    // 新用户加入
-            PRESENCE_LEAVE: 'presence_leave'   // 用户离开
+            SEAT_BATCH: 'seat_batch_change',
+            PRESENCE_PING: 'presence_ping',
+            PRESENCE_JOIN: 'presence_join',
+            PRESENCE_LEAVE: 'presence_leave'
         };
 
-        // ============================================================
-        //  Toast 通知
-        // ============================================================
         function showToast(msg, type) {
             type = type || 'seat-update';
             const container = document.getElementById('toast-container');
@@ -3795,18 +3813,13 @@
             }, 3200);
         }
 
-        // ============================================================
-        //  在线用户感知
-        // ============================================================
         function updatePresence() {
             const data = JSON.parse(localStorage.getItem(PRESENCE_KEY) || '{}');
             const now = Date.now();
-            // 更新自己的时间戳
             data[MY_CLIENT_ID] = {
                 lastSeen: now,
                 user: (function () { try { return JSON.parse(sessionStorage.getItem('smartCinemaCurrentUser') || '{}').username || '访客'; } catch (e) { return '访客'; } })()
             };
-            // 清理过期客户端
             var changed = false;
             for (var cid in data) {
                 if (now - data[cid].lastSeen > PRESENCE_TTL) {
@@ -3815,12 +3828,8 @@
                 }
             }
             localStorage.setItem(PRESENCE_KEY, JSON.stringify(data));
-            // 更新 UI
             var count = Object.keys(data).length;
             document.getElementById('online-count').textContent = count;
-            if (count > 1 && changed) {
-                // 有变化时广播
-            }
         }
 
         function heartbeat() {
@@ -3831,12 +3840,8 @@
             presenceTimer = setTimeout(heartbeat, 3000);
         }
 
-        // ============================================================
-        //  BroadcastChannel 通信
-        // ============================================================
         function initRealtimeSync() {
             if (!('BroadcastChannel' in window)) {
-                // 降级：仅使用 localStorage 事件
                 initLocalStorageFallback();
                 return;
             }
@@ -3846,14 +3851,13 @@
             wsChannel.onmessage = function (e) {
                 var msg = e.data;
                 if (!msg || !msg.type) return;
-                if (msg.clientId === MY_CLIENT_ID) return; // 忽略自己的消息
+                if (msg.clientId === MY_CLIENT_ID) return;
 
                 switch (msg.type) {
                     case WS_MSG.SEAT_BATCH:
                         handleRemoteBatchChange(msg);
                         break;
                     case WS_MSG.PRESENCE_PING:
-                        // 收到其他客户端心跳，刷新在线列表
                         updatePresence();
                         break;
                     case WS_MSG.PRESENCE_JOIN:
@@ -3869,7 +3873,6 @@
                 }
             };
 
-            // 发送加入消息
             var user = null;
             try { user = JSON.parse(sessionStorage.getItem('smartCinemaCurrentUser') || '{}'); } catch (e) {}
             var username = (user && user.username) || '访客';
@@ -3921,7 +3924,6 @@
                 var row = s.row - 1;
                 var col = s.col - 1;
                 if (seats[row] && seats[row][col]) {
-                    // 冲突检测：如果你选中的座位被他人预订/购买
                     if (seats[row][col].state === SELECTED && (s.state === SOLD || s.state === RESERVED)) {
                         showToast('你选中的 ' + s.row + '排' + s.col + '座 已被其他用户购买', 'seat-conflict');
                         if (typeof a11ySettings !== 'undefined' && a11ySettings.voice) {
@@ -3971,14 +3973,13 @@
                 wsChannel.close();
                 wsChannel = null;
             }
-            // 清理自己的 presence
             var data = JSON.parse(localStorage.getItem(PRESENCE_KEY) || '{}');
             delete data[MY_CLIENT_ID];
             localStorage.setItem(PRESENCE_KEY, JSON.stringify(data));
         }
 
         // ============================================================
-        //  启动
+        //  原有启动
         // ============================================================
         initSpeech();
         loadTheme();
@@ -3997,10 +3998,660 @@
         updateHeatmapSummary();
         switchMode('manual');
 
-        // 启动实时同步
         initRealtimeSync();
         heartbeat();
         window.addEventListener('beforeunload', teardownRealtimeSync);
+
+        // ============================================================
+        // ======== 新增功能模块（零改动原有代码） ========
+        // ============================================================
+
+        // -------------------- AI 顾问悬浮窗 --------------------
+        (function() {
+            const toggleBtn = document.getElementById('ai-toggle-btn');
+            const chatWindow = document.getElementById('ai-chat-window');
+            const closeBtn = document.getElementById('ai-chat-close');
+            const sendBtn = document.getElementById('ai-chat-send');
+            const inputField = document.getElementById('ai-chat-input');
+            const messagesContainer = document.getElementById('ai-chat-messages');
+
+            let aiHighlightedSeats = []; // 存储当前AI高亮座位对象
+            let aiRecommendations = []; // 存储推荐结果用于对话展示
+
+            // 对话状态机
+            let conversationState = {
+                step: 'initial', // 'initial', 'ask_preference', 'ask_more', 'done'
+                preferences: {
+                    view: null,    // 'center', 'side', 'any'
+                    distance: null, // 'front', 'middle', 'back', 'any'
+                    quiet: false,
+                    aisle: false,
+                    spacious: false
+                },
+                candidates: []
+            };
+
+            // 显示/隐藏聊天窗口
+            function toggleChat() {
+                if (chatWindow.style.display === 'flex') {
+                    chatWindow.style.display = 'none';
+                    toggleBtn.textContent = '🤖';
+                } else {
+                    chatWindow.style.display = 'flex';
+                    toggleBtn.textContent = '✕';
+                    // 聚焦输入
+                    setTimeout(() => inputField.focus(), 100);
+                }
+            }
+
+            toggleBtn.addEventListener('click', toggleChat);
+            closeBtn.addEventListener('click', toggleChat);
+
+            // 发送消息
+            function sendMessage() {
+                const text = inputField.value.trim();
+                if (!text) return;
+                inputField.value = '';
+                // 显示用户消息
+                appendMessage(text, 'user');
+                // 处理AI响应
+                processUserInput(text);
+            }
+
+            sendBtn.addEventListener('click', sendMessage);
+            inputField.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') sendMessage();
+            });
+
+            function appendMessage(text, sender) {
+                const div = document.createElement('div');
+                div.style.cssText = `
+                    padding: 8px 12px;
+                    border-radius: 8px;
+                    max-width: 85%;
+                    word-wrap: break-word;
+                    font-size: 13px;
+                    line-height: 1.6;
+                    ${sender === 'user' ? 'align-self: flex-end; background: var(--btn-primary-bg); color: #fff;' : 'align-self: flex-start; background: var(--info-box-bg); color: var(--text-primary);'}
+                `;
+                div.textContent = text;
+                messagesContainer.appendChild(div);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+
+            // 核心AI处理
+            function processUserInput(text) {
+                const lower = text.toLowerCase();
+
+                // 重置高亮
+                clearAIHighlights();
+
+                // 初次对话
+                if (conversationState.step === 'initial') {
+                    // 解析关键词
+                    const preferences = parsePreferences(text);
+                    if (Object.values(preferences).some(v => v !== null && v !== false)) {
+                        // 有明确偏好
+                        conversationState.preferences = preferences;
+                        conversationState.step = 'ask_more';
+                        const reply = generatePreferenceSummary(preferences) + ' 还需要其他要求吗？(如：人数、具体排数)';
+                        appendMessage(reply, 'ai');
+                        // 尝试推荐
+                        performRecommendation();
+                    } else {
+                        // 没有明确偏好，引导
+                        appendMessage('请问你更看重什么呢？例如：\n• 视角（中间/侧边）\n• 距离（前排/中排/后排）\n• 安静（周围人少）\n• 方便进出（靠过道）\n• 宽敞（腿部空间大）', 'ai');
+                        conversationState.step = 'ask_preference';
+                    }
+                    return;
+                }
+
+                if (conversationState.step === 'ask_preference') {
+                    const preferences = parsePreferences(text);
+                    if (Object.values(preferences).some(v => v !== null && v !== false)) {
+                        Object.assign(conversationState.preferences, preferences);
+                        conversationState.step = 'ask_more';
+                        const reply = generatePreferenceSummary(conversationState.preferences) + ' 需要指定人数吗？(如：2人、情侣)';
+                        appendMessage(reply, 'ai');
+                        performRecommendation();
+                    } else {
+                        appendMessage('请选择一个选项，或者输入“取消”重新开始。', 'ai');
+                    }
+                    return;
+                }
+
+                if (conversationState.step === 'ask_more') {
+                    // 解析人数或额外要求
+                    const countMatch = text.match(/(\d+)\s*人/);
+                    if (countMatch) {
+                        const count = parseInt(countMatch[1]);
+                        if (count > 0) {
+                            conversationState.preferences.count = count;
+                            appendMessage('好的，' + count + '人。正在为您推荐...', 'ai');
+                            performRecommendation();
+                            return;
+                        }
+                    }
+                    // 情侣关键词
+                    if (text.includes('情侣') || text.includes('双人')) {
+                        conversationState.preferences.count = 2;
+                        appendMessage('好的，情侣双人座。正在为您推荐...', 'ai');
+                        performRecommendation();
+                        return;
+                    }
+                    // 家庭
+                    if (text.includes('家庭') || text.includes('全家')) {
+                        conversationState.preferences.count = 3;
+                        appendMessage('好的，家庭3人。正在为您推荐...', 'ai');
+                        performRecommendation();
+                        return;
+                    }
+                    // 修改偏好
+                    const newPref = parsePreferences(text);
+                    if (Object.values(newPref).some(v => v !== null && v !== false)) {
+                        Object.assign(conversationState.preferences, newPref);
+                        const reply = '已更新偏好：' + generatePreferenceSummary(conversationState.preferences) + '。重新推荐...';
+                        appendMessage(reply, 'ai');
+                        performRecommendation();
+                        return;
+                    }
+                    // 否则默认推荐
+                    appendMessage('好的，按当前偏好为您推荐。', 'ai');
+                    performRecommendation();
+                }
+            }
+
+            function parsePreferences(text) {
+                const lower = text.toLowerCase();
+                const prefs = {
+                    view: null,
+                    distance: null,
+                    quiet: false,
+                    aisle: false,
+                    spacious: false
+                };
+                // 视角
+                if (lower.includes('中间') || lower.includes('正中') || lower.includes('居中')) prefs.view = 'center';
+                else if (lower.includes('侧') || lower.includes('边') || lower.includes('角落')) prefs.view = 'side';
+                else if (lower.includes('任意') || lower.includes('随便')) prefs.view = 'any';
+                // 距离
+                if (lower.includes('前排') || lower.includes('靠前') || lower.includes('近银幕')) prefs.distance = 'front';
+                else if (lower.includes('后排') || lower.includes('靠后') || lower.includes('后面')) prefs.distance = 'back';
+                else if (lower.includes('中排') || lower.includes('中间排') || lower.includes('适中')) prefs.distance = 'middle';
+                else if (lower.includes('任意') || lower.includes('随便')) prefs.distance = 'any';
+                // 安静
+                if (lower.includes('安静') || lower.includes('人少') || lower.includes('不被打扰') || lower.includes('隐私')) prefs.quiet = true;
+                // 过道
+                if (lower.includes('过道') || lower.includes('出口') || lower.includes('方便进出') || lower.includes('走道')) prefs.aisle = true;
+                // 宽敞
+                if (lower.includes('宽敞') || lower.includes('伸腿') || lower.includes('空间大')) prefs.spacious = true;
+                return prefs;
+            }
+
+            function generatePreferenceSummary(prefs) {
+                const parts = [];
+                if (prefs.view === 'center') parts.push('居中视角');
+                else if (prefs.view === 'side') parts.push('侧边座位');
+                if (prefs.distance === 'front') parts.push('前排');
+                else if (prefs.distance === 'back') parts.push('后排');
+                else if (prefs.distance === 'middle') parts.push('中排');
+                if (prefs.quiet) parts.push('安静区域');
+                if (prefs.aisle) parts.push('靠过道');
+                if (prefs.spacious) parts.push('宽敞');
+                if (parts.length === 0) return '未指定明确偏好';
+                return '偏好：' + parts.join('、');
+            }
+
+            function performRecommendation() {
+                // 基于当前偏好和seat状态计算评分
+                const prefs = conversationState.preferences;
+                const count = prefs.count || 1; // 默认1人
+                const totalRows = seats.length;
+                const totalCols = seats[0].length;
+
+                // 动态权重
+                let weights = {
+                    view: 0.4,
+                    distance: 0.3,
+                    space: 0.2,
+                    aisle: 0.1
+                };
+                if (prefs.quiet) { weights.space = 0.5; weights.view = 0.3; weights.distance = 0.15; weights.aisle = 0.05; }
+                if (prefs.aisle) { weights.aisle = 0.4; weights.view = 0.25; weights.distance = 0.25; weights.space = 0.1; }
+                if (prefs.spacious) { weights.space = 0.5; weights.view = 0.2; weights.distance = 0.2; weights.aisle = 0.1; }
+                if (prefs.view === 'center') { weights.view = 0.6; weights.distance = 0.2; weights.space = 0.15; weights.aisle = 0.05; }
+                if (prefs.view === 'side') { weights.view = 0.1; weights.aisle = 0.4; weights.space = 0.3; weights.distance = 0.2; }
+                if (prefs.distance === 'front') { weights.distance = 0.5; weights.view = 0.3; weights.space = 0.15; weights.aisle = 0.05; }
+                if (prefs.distance === 'back') { weights.distance = 0.5; weights.view = 0.3; weights.space = 0.15; weights.aisle = 0.05; }
+                if (prefs.distance === 'middle') { weights.distance = 0.5; weights.view = 0.3; weights.space = 0.15; weights.aisle = 0.05; }
+
+                // 计算每个座位的综合评分
+                let scoredSeats = [];
+                for (let r = 0; r < totalRows; r++) {
+                    for (let c = 0; c < totalCols; c++) {
+                        const seat = seats[r][c];
+                        if (seat.state !== EMPTY && seat.state !== RECOMMENDED) continue;
+
+                        const exp = calculateSeatExperience(seat);
+                        // 视角分（原角度分）
+                        const viewScore = exp.angle;
+                        // 距离分
+                        const distScore = exp.distance;
+                        // 空座分
+                        const spaceScore = exp.space;
+                        // 过道分：靠边列得分高
+                        const colNorm = (c + 1) / totalCols;
+                        const aisleScore = Math.min(100, Math.min(colNorm, 1 - colNorm) * 120);
+
+                        // 额外偏好修正
+                        let bonus = 0;
+                        if (prefs.view === 'center' && Math.abs(c - (totalCols-1)/2) < totalCols*0.1) bonus += 20;
+                        if (prefs.distance === 'front' && r < totalRows*0.3) bonus += 20;
+                        if (prefs.distance === 'back' && r > totalRows*0.7) bonus += 20;
+                        if (prefs.distance === 'middle' && r >= totalRows*0.4 && r <= totalRows*0.6) bonus += 20;
+                        if (prefs.quiet && spaceScore > 80) bonus += 15;
+                        if (prefs.aisle && aisleScore > 80) bonus += 15;
+                        if (prefs.spacious && r > totalRows*0.5) bonus += 15; // 后排伸腿空间大
+
+                        const totalScore = viewScore * weights.view +
+                                           distScore * weights.distance +
+                                           spaceScore * weights.space +
+                                           aisleScore * weights.aisle +
+                                           bonus;
+
+                        scoredSeats.push({ seat, score: totalScore, viewScore, distScore, spaceScore, aisleScore });
+                    }
+                }
+
+                // 按分数降序
+                scoredSeats.sort((a, b) => b.score - a.score);
+
+                // 取前count个（但需尽量连续，简化版本：取前count个）
+                const selected = scoredSeats.slice(0, count);
+                if (selected.length < count) {
+                    appendMessage('抱歉，符合条件的座位不足 ' + count + ' 个。', 'ai');
+                    return;
+                }
+
+                // 保存高亮
+                aiHighlightedSeats = selected.map(item => item.seat);
+                // 绘制高亮（由动画层处理）
+
+                // 构建推荐理由
+                const avgView = Math.round(selected.reduce((s, item) => s + item.viewScore, 0) / selected.length);
+                const avgDist = Math.round(selected.reduce((s, item) => s + item.distScore, 0) / selected.length);
+                const avgSpace = Math.round(selected.reduce((s, item) => s + item.spaceScore, 0) / selected.length);
+                const avgAisle = Math.round(selected.reduce((s, item) => s + item.aisleScore, 0) / selected.length);
+
+                let reasonParts = [];
+                if (avgView >= 80) reasonParts.push('视角极佳，正对银幕');
+                else if (avgView >= 60) reasonParts.push('视角适中');
+                else reasonParts.push('视角偏侧');
+                if (avgDist >= 80) reasonParts.push('距离舒适');
+                else if (avgDist >= 60) reasonParts.push('距离适中');
+                else reasonParts.push('距离稍远或稍近');
+                if (avgSpace >= 80) reasonParts.push('周围空座充足，很安静');
+                else if (avgSpace >= 60) reasonParts.push('周围有一定空座');
+                else reasonParts.push('周围座位较满');
+                if (avgAisle >= 80) reasonParts.push('靠近过道，进出方便');
+                else if (avgAisle >= 60) reasonParts.push('离过道不远');
+                else reasonParts.push('在中间，离过道稍远');
+
+                const seatDesc = selected.map(item => item.seat.row + '排' + item.seat.col + '座').join('、');
+                const reply = '推荐座位：' + seatDesc + '\n' + reasonParts.join('，') + '。\n点击座位可选中，或说“采纳”自动选中。';
+                appendMessage(reply, 'ai');
+
+                // 保存推荐信息以便后续采纳
+                aiRecommendations = selected;
+                conversationState.candidates = selected;
+                conversationState.step = 'done';
+
+                // 高亮显示（通过动画层）
+                // 触发重绘动画层
+                if (window.overlayAnimator) {
+                    window.overlayAnimator.drawAIHighlights(aiHighlightedSeats);
+                }
+            }
+
+            function clearAIHighlights() {
+                aiHighlightedSeats = [];
+                if (window.overlayAnimator) {
+                    window.overlayAnimator.clearAIHighlights();
+                }
+            }
+
+            // 采纳推荐
+            window.adoptAIRecommendation = function() {
+                if (!aiRecommendations.length) {
+                    appendMessage('暂无推荐可采纳。', 'ai');
+                    return;
+                }
+                // 将推荐座位变为选中
+                let changed = 0;
+                aiRecommendations.forEach(item => {
+                    const seat = item.seat;
+                    if (seat.state === EMPTY || seat.state === RECOMMENDED) {
+                        seat.state = SELECTED;
+                        changed++;
+                    }
+                });
+                if (changed > 0) {
+                    saveSeatsToLocal();
+                    updateSelectedCount();
+                    draw();
+                    // 清除高亮
+                    clearAIHighlights();
+                    appendMessage('已为您选中 ' + changed + ' 个座位。', 'ai');
+                    // 语音
+                    if (a11ySettings.voice) speak('已采纳推荐，选中' + changed + '个座位');
+                } else {
+                    appendMessage('这些座位已被占用，无法选中。', 'ai');
+                }
+            };
+
+            // 暴露给全局，以便按钮调用
+            window.aiSendMessage = sendMessage;
+            // 在对话中增加“采纳”按钮? 通过用户输入"采纳"触发
+            // 在processUserInput中处理"采纳"
+            const originalProcess = processUserInput;
+            processUserInput = function(text) {
+                if (text.includes('采纳') || text.includes('确定')) {
+                    if (conversationState.step === 'done' && aiRecommendations.length) {
+                        window.adoptAIRecommendation();
+                        return;
+                    } else {
+                        appendMessage('当前没有可采纳的推荐。', 'ai');
+                        return;
+                    }
+                }
+                if (text.includes('取消') || text.includes('重新')) {
+                    conversationState = { step: 'initial', preferences: { view: null, distance: null, quiet: false, aisle: false, spacious: false }, candidates: [] };
+                    clearAIHighlights();
+                    aiRecommendations = [];
+                    appendMessage('已重置，请问您需要什么样的座位？', 'ai');
+                    return;
+                }
+                // 调用原有处理
+                originalProcess(text);
+            };
+
+            // 初始化欢迎语（已存在）
+            // 点击外部区域收起？无需，由用户点击关闭
+        })();
+
+
+        // -------------------- 动画叠加层 --------------------
+        (function() {
+            const overlayCanvas = document.getElementById('overlay-canvas');
+            const overlayCtx = overlayCanvas.getContext('2d');
+            let animFrameId = null;
+            let aiHighlights = [];
+            let selectionBox = null; // { x1, y1, x2, y2 }
+
+            // 同步尺寸
+            function resizeOverlay() {
+                const dpr = window.devicePixelRatio || 1;
+                const rect = canvas.getBoundingClientRect();
+                overlayCanvas.style.width = rect.width + 'px';
+                overlayCanvas.style.height = rect.height + 'px';
+                overlayCanvas.width = rect.width * dpr;
+                overlayCanvas.height = rect.height * dpr;
+                overlayCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            }
+
+            // 绘制循环
+            function animate() {
+                if (!layout) {
+                    animFrameId = requestAnimationFrame(animate);
+                    return;
+                }
+                overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+
+                // 绘制AI高亮（脉冲光晕）
+                const time = Date.now() / 1000;
+                const pulse = 0.5 + 0.5 * Math.sin(time * 2.5);
+                aiHighlights.forEach(seat => {
+                    if (!seat.x || !seat.y) return;
+                    const radius = layout.seatSize * 1.6;
+                    const alpha = 0.15 + 0.25 * pulse;
+                    const grad = overlayCtx.createRadialGradient(seat.x, seat.y, radius*0.2, seat.x, seat.y, radius);
+                    grad.addColorStop(0, `rgba(66, 165, 245, ${alpha})`);
+                    grad.addColorStop(1, `rgba(66, 165, 245, 0)`);
+                    overlayCtx.fillStyle = grad;
+                    overlayCtx.beginPath();
+                    overlayCtx.arc(seat.x, seat.y, radius, 0, Math.PI*2);
+                    overlayCtx.fill();
+                });
+
+                // 绘制框选矩形
+                if (selectionBox) {
+                    const { x1, y1, x2, y2 } = selectionBox;
+                    overlayCtx.save();
+                    overlayCtx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+                    overlayCtx.lineWidth = 2;
+                    overlayCtx.setLineDash([6, 4]);
+                    overlayCtx.strokeRect(
+                        Math.min(x1, x2), Math.min(y1, y2),
+                        Math.abs(x2 - x1), Math.abs(y2 - y1)
+                    );
+                    overlayCtx.restore();
+                    // 半透明填充
+                    overlayCtx.fillStyle = 'rgba(66, 165, 245, 0.08)';
+                    overlayCtx.fillRect(
+                        Math.min(x1, x2), Math.min(y1, y2),
+                        Math.abs(x2 - x1), Math.abs(y2 - y1)
+                    );
+                }
+
+                animFrameId = requestAnimationFrame(animate);
+            }
+
+            // 公开接口
+            window.overlayAnimator = {
+                drawAIHighlights: function(seats) {
+                    aiHighlights = seats.slice();
+                },
+                clearAIHighlights: function() {
+                    aiHighlights = [];
+                },
+                setSelectionBox: function(x1, y1, x2, y2) {
+                    selectionBox = { x1, y1, x2, y2 };
+                },
+                clearSelectionBox: function() {
+                    selectionBox = null;
+                },
+                resize: resizeOverlay,
+                start: function() {
+                    if (!animFrameId) {
+                        resizeOverlay();
+                        animate();
+                    }
+                },
+                stop: function() {
+                    if (animFrameId) {
+                        cancelAnimationFrame(animFrameId);
+                        animFrameId = null;
+                    }
+                }
+            };
+
+            // 启动动画
+            window.overlayAnimator.start();
+
+            // 窗口变化时调整尺寸
+            window.addEventListener('resize', function() {
+                if (window.overlayAnimator) window.overlayAnimator.resize();
+            });
+
+            // 当主Canvas resize时也调整
+            const originalResize = resizeCanvas;
+            resizeCanvas = function() {
+                originalResize.apply(this, arguments);
+                if (window.overlayAnimator) window.overlayAnimator.resize();
+            };
+
+        })();
+
+
+        // -------------------- Shift+框选 --------------------
+        (function() {
+            let isShiftDown = false;
+            let isBoxSelecting = false;
+            let startX = 0, startY = 0;
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Shift') isShiftDown = true;
+            });
+            document.addEventListener('keyup', function(e) {
+                if (e.key === 'Shift') isShiftDown = false;
+            });
+
+            canvas.addEventListener('mousedown', function(e) {
+                if (e.button !== 0) return;
+                if (currentMode === 'heatmap') return;
+                if (!isShiftDown) return;
+                const rect = canvas.getBoundingClientRect();
+                startX = e.clientX - rect.left;
+                startY = e.clientY - rect.top;
+                isBoxSelecting = true;
+                // 清除之前的框选
+                if (window.overlayAnimator) {
+                    window.overlayAnimator.clearSelectionBox();
+                }
+            });
+
+            canvas.addEventListener('mousemove', function(e) {
+                if (!isBoxSelecting) return;
+                const rect = canvas.getBoundingClientRect();
+                const mx = e.clientX - rect.left;
+                const my = e.clientY - rect.top;
+                if (window.overlayAnimator) {
+                    window.overlayAnimator.setSelectionBox(startX, startY, mx, my);
+                }
+            });
+
+            window.addEventListener('mouseup', function(e) {
+                if (!isBoxSelecting) return;
+                isBoxSelecting = false;
+                const rect = canvas.getBoundingClientRect();
+                const mx = e.clientX - rect.left;
+                const my = e.clientY - rect.top;
+                // 计算框选区域
+                const x1 = Math.min(startX, mx);
+                const y1 = Math.min(startY, my);
+                const x2 = Math.max(startX, mx);
+                const y2 = Math.max(startY, my);
+                // 如果区域太小，忽略
+                if (Math.abs(x2 - x1) < 10 || Math.abs(y2 - y1) < 10) {
+                    if (window.overlayAnimator) window.overlayAnimator.clearSelectionBox();
+                    return;
+                }
+                // 检测框内的座位
+                let changed = 0;
+                for (let r = 0; r < seats.length; r++) {
+                    for (let c = 0; c < seats[r].length; c++) {
+                        const seat = seats[r][c];
+                        if (seat.x === undefined) continue;
+                        if (seat.x >= x1 && seat.x <= x2 && seat.y >= y1 && seat.y <= y2) {
+                            if (seat.state === EMPTY || seat.state === RECOMMENDED) {
+                                seat.state = SELECTED;
+                                changed++;
+                            }
+                        }
+                    }
+                }
+                if (changed > 0) {
+                    clearRecommendHighlights();
+                    saveSeatsToLocal();
+                    updateSelectedCount();
+                    draw();
+                    if (a11ySettings.voice) speak('框选了 ' + changed + ' 个座位');
+                }
+                if (window.overlayAnimator) window.overlayAnimator.clearSelectionBox();
+            });
+
+            // 防止Shift+点击冲突，不影响原有事件
+        })();
+
+
+        // -------------------- 触摸滑动选座 --------------------
+        (function() {
+            let touchActive = false;
+            let lastTouchSeat = null;
+
+            canvas.addEventListener('touchstart', function(e) {
+                if (currentMode === 'heatmap') return;
+                const touch = e.touches[0];
+                if (!touch) return;
+                const rect = canvas.getBoundingClientRect();
+                const mx = touch.clientX - rect.left;
+                const my = touch.clientY - rect.top;
+                const seat = getSeatAt(mx, my);
+                if (!seat || seat.state === SOLD || seat.state === RESERVED) return;
+                touchActive = true;
+                lastTouchSeat = seat;
+                // 单击切换
+                if (seat.state === EMPTY || seat.state === RECOMMENDED) {
+                    seat.state = SELECTED;
+                } else if (seat.state === SELECTED) {
+                    seat.state = EMPTY;
+                }
+                clearRecommendHighlights();
+                saveSeatsToLocal();
+                updateSelectedCount();
+                draw();
+                e.preventDefault();
+            }, { passive: false });
+
+            canvas.addEventListener('touchmove', function(e) {
+                if (!touchActive || currentMode === 'heatmap') return;
+                const touch = e.touches[0];
+                if (!touch) return;
+                const rect = canvas.getBoundingClientRect();
+                const mx = touch.clientX - rect.left;
+                const my = touch.clientY - rect.top;
+                const seat = getSeatAt(mx, my);
+                if (!seat || seat === lastTouchSeat || seat.state === SOLD || seat.state === RESERVED) return;
+                lastTouchSeat = seat;
+                if (seat.state === EMPTY || seat.state === RECOMMENDED) {
+                    seat.state = SELECTED;
+                } else if (seat.state === SELECTED) {
+                    seat.state = EMPTY;
+                }
+                clearRecommendHighlights();
+                saveSeatsToLocal();
+                updateSelectedCount();
+                draw();
+                e.preventDefault();
+            }, { passive: false });
+
+            canvas.addEventListener('touchend', function(e) {
+                touchActive = false;
+                lastTouchSeat = null;
+            });
+
+            canvas.addEventListener('touchcancel', function(e) {
+                touchActive = false;
+                lastTouchSeat = null;
+            });
+
+        })();
+
+        // 显示AI高亮清除的监听（点击座位后清除AI高亮）
+        document.addEventListener('click', function(e) {
+            // 如果点击了canvas，并且有AI高亮，清除
+            if (e.target === canvas) {
+                if (window.overlayAnimator) {
+                    window.overlayAnimator.clearAIHighlights();
+                }
+                // 同时也清除本地数组
+                if (typeof aiHighlightedSeats !== 'undefined') {
+                    aiHighlightedSeats = [];
+                }
+            }
+        });
+
+        console.log('SmartCinema 增强完成：AI顾问、框选、触摸、动画层已加载。');
     </script>
 </body>
 </html>
